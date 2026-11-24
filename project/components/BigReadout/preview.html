@@ -1,0 +1,64 @@
+<!-- @dsCard group="Data display" height=430 subtitle="One huge scan-lined value with slashed zeros, red end bars and labelled chips · Tactical theme · frames 109, 203" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6); }
+  .ro { position: relative; padding: var(--space-6) var(--space-6) var(--space-5); background:
+      linear-gradient(90deg, color-mix(in srgb, var(--mint-700) 70%, transparent), transparent 70%), var(--color-background-body); overflow: hidden; }
+  .ro::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, var(--color-scanline) 0 1px, transparent 1px 3px); pointer-events: none; }
+  .val { display: flex; align-items: center; gap: var(--space-4); color: var(--gold-300); font-weight: 700; line-height: 0.9; }
+  .val .bar { width: 9px; align-self: stretch; background: var(--alert-300); box-shadow: 0 0 10px var(--alert-300); }
+  .val b { display: inline-flex; font-size: 150px; letter-spacing: -0.02em; transform: scaleX(var(--compress-standard)); transform-origin: left; margin-right: -14%;
+    filter: drop-shadow(0 0 3px #f2e178) drop-shadow(0 0 16px #dcd84999) drop-shadow(0 0 40px #e2431966); font-variant-numeric: tabular-nums; }
+  /* each glyph is scan-lined; zeros carry the film's slash */
+  .val b span, .val .u { position: relative; background: repeating-linear-gradient(0deg, var(--gold-300) 0 4px, #c9a640 4px 5px); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .val b span.z::after { content: ""; position: absolute; left: 50%; top: 14%; bottom: 14%; width: 9px; background: var(--gold-300); transform: translateX(-50%) skewX(-24deg); }
+  .hex { position: absolute; inset: 0; opacity: .5; pointer-events: none; }
+  .corner { position: absolute; top: 4px; font: 700 8px var(--font-sans); color: var(--gold-300); border: 1px solid var(--tac-orange-500); padding: 1px 6px; z-index: 1; }
+  .corner.l { left: 6px; } .corner.r { right: 6px; } .corner.r2 { right: 70px; }
+  .hz { height: 9px; margin-top: 8px; width: 46%; background: repeating-linear-gradient(-45deg, var(--gold-300) 0 5px, transparent 5px 10px); opacity: .9; }
+  .val .u { font-size: 90px; }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-top: var(--space-3); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border: 1.5px solid var(--tac-orange-500); color: var(--gold-300);
+    font-size: 22px; font-weight: 700; background: #0006; text-shadow: var(--shadow-bloom); }
+  .chip.sub { font-size: 16px; }
+  .chip i { width: 30px; height: 8px; background: repeating-linear-gradient(90deg, var(--tac-orange-400) 0 3px, transparent 3px 6px); }
+  /* compact: map overlay value */
+  .mini { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 4px; align-self: flex-end; color: var(--tac-orange-400); }
+  .mini .lab { padding: 2px 8px; border: 1px solid currentColor; font-family: var(--font-jp); font-weight: 700; font-size: 12px; text-align: right; }
+  .mini .lab small { display: block; font-family: var(--font-sans); font-size: 8px; }
+  .mini b { font-size: 46px; font-weight: 700; letter-spacing: 0.02em; color: var(--gold-300); text-shadow: var(--shadow-bloom-strong); }
+  .mini b small { font-size: 28px; }
+</style>
+</head>
+<body>
+  <section class="ro" role="group" aria-label="Synchronization rate">
+    <svg class="hex" aria-hidden="true"><defs><pattern id="hx" width="42" height="24.2" patternUnits="userSpaceOnUse"><path d="M0 12.1 L7 0 H21 L28 12.1 L21 24.2 H7 Z M28 12.1 H42" fill="none" stroke="var(--mint-500)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#hx)"/></svg>
+    <span class="corner l">AUX Projector 01</span><span class="corner r2">Linked</span><span class="corner r">ONLINE</span>
+    <div class="val"><span class="bar"></span><b id="v" role="status" aria-live="off"></b><span class="u">- %</span><span class="bar"></span></div>
+    <div class="chips"><span class="chip">Object: EVA-01</span><span class="chip">Test Subject: BM-03</span><span class="chip">Harmonics: Normal</span>
+      <span class="chip sub"><i></i>All Vitals: Normal</span></div>
+    <div class="hz"></div>
+  </section>
+  <div class="mini" role="group" aria-label="Ground zero probability spread 68.3861 percent">
+    <span class="lab">着地点予測確立分布<small>Ground Zero Probability Spread</small></span>
+    <b id="m">68.3861<small>%</small></b>
+  </div>
+<script>
+// "measuring" sweep: runs up from zero and settles, then holds
+const v = document.getElementById("v"), target = 41.327;
+const show = n => { v.innerHTML = [...n.toFixed(3).padStart(6, "0")].map(c => `<span${c === "0" ? ' class="z"' : ""}>${c}</span>`).join(""); };
+show(0);
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+let t0 = null;
+function run(t) { if (t0 === null) t0 = t; const p = Math.min(1, (t - t0) / 2600), e = 1 - Math.pow(1 - p, 3);
+  const jitter = p < 1 ? (Math.random() - 0.5) * 3 * (1 - p) : 0;
+  show(Math.max(0, target * e + jitter));
+  if (p < 1) requestAnimationFrame(run); else { v.setAttribute("aria-label", target + " percent"); setTimeout(() => { t0 = null; requestAnimationFrame(run); }, 3000); } }
+const force = location.hash === "#zero";   // #zero pins the 00.000 standby frame
+if (force) show(0); else if (still) show(target); else setTimeout(() => requestAnimationFrame(run), 600);
+</script>
+</body>
+</html>

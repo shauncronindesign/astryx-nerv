@@ -1,0 +1,87 @@
+<!-- @dsCard group="Feedback" height=560 subtitle="Neon security gate on a bolted plate: locks red, unlocks green after the code goes in · room status signs · frames 68, 69, 105–107" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #1b0d06; font-family: var(--font-sans); padding: var(--space-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  /* 1. gate sign: glowing panel set into a dark bulkhead */
+  .bulk { grid-column: 1 / 3; position: relative; display: flex; align-items: center; gap: var(--space-6); padding: var(--space-8) var(--space-8); background: linear-gradient(180deg, #2a160b, #160904); border: 1px solid #3a2112; perspective: 900px; }
+  /* bulkhead hardware: a bolted plate, a stencilled panel code, the neon's light on the metal */
+  .bulk::before { content: "CNT-7"; position: absolute; right: 250px; top: 10px; font: 700 13px var(--font-hardware); letter-spacing: .1em; color: #4a2c18; }
+  .mount { position: relative; padding: 22px; background: linear-gradient(180deg, #3a2414, #24140a); border: 1px solid #4a2c18; box-shadow: inset 0 0 0 1px #1a0c05, 0 0 60px color-mix(in srgb, var(--glow, #b1f34d) 22%, transparent); transform: rotateY(9deg) rotateZ(-2.5deg); transform-origin: left center; }
+  .mount i { position: absolute; width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #6a4a30, #1a0c05); }
+  .mount i:nth-child(1) { left: 7px; top: 7px; } .mount i:nth-child(2) { right: 7px; top: 7px; } .mount i:nth-child(3) { left: 7px; bottom: 7px; } .mount i:nth-child(4) { right: 7px; bottom: 7px; }
+  /* neon strike: the tubes stutter when the state changes */
+  .gate.strike { animation: strike .7s steps(1); }
+  @keyframes strike { 0% { opacity: .1; } 12% { opacity: 1; } 20% { opacity: .2; } 34% { opacity: 1; } 42% { opacity: .35; } 55% { opacity: 1; } }
+  .leaf { width: 40px; height: 40px; filter: drop-shadow(0 0 5px var(--g)); } .leaf path { fill: none; stroke: currentColor; stroke-width: 2; }
+  .gate { --g: var(--color-success); position: relative; width: 520px; padding: var(--space-4) var(--space-6) var(--space-3); background: #050302;
+    border: 1px solid #000; box-shadow: inset 0 0 0 4px #0c0704, inset 0 0 40px color-mix(in srgb, var(--g) 18%, transparent); color: var(--g); }
+  .gate.locked { --g: var(--alert-300); }
+  .gate .top { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: var(--space-3); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-shadow: var(--shadow-bloom); }
+  .gate .top small { display: block; font-size: 8px; letter-spacing: 0.12em; opacity: 0.85; }
+  .gate .top .r { text-align: right; }
+  .mark { width: 34px; height: 34px; border: 2px solid currentColor; transform: rotate(45deg); box-shadow: 0 0 6px var(--g); }
+  .gate .name { margin: var(--space-2) 0 var(--space-1); padding: 4px 0; border: 2px solid currentColor; text-align: center; font-family: var(--font-hardware); font-size: 46px; letter-spacing: 0.04em;
+    text-shadow: 0 0 2px var(--g), 0 0 14px var(--g); box-shadow: 0 0 10px color-mix(in srgb, var(--g) 50%, transparent), inset 0 0 10px color-mix(in srgb, var(--g) 30%, transparent); }
+  .gate .state { text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 0.04em; text-shadow: var(--shadow-bloom-strong); }
+  .side { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
+  .lamp { font-family: var(--font-hardware); font-size: 16px; letter-spacing: 0.12em; color: var(--alert-300); text-shadow: 0 0 6px var(--alert-300); }
+  .lamp.off { color: #3a1a12; text-shadow: none; }
+  .side button { font: 700 11px var(--font-sans); letter-spacing: 0.12em; padding: 8px 12px; color: #e8c9a6; background: transparent; border: 1px solid #6a4024; cursor: pointer; }
+  .side button:focus-visible { outline: 1px solid #fff; outline-offset: 2px; }
+  /* 2. room sign: lit plate on a white bulkhead */
+  .room { display: flex; flex-direction: column; align-items: center; gap: var(--space-2); padding: var(--space-4); background: linear-gradient(180deg, #d9d6d8, #a9a3a8); color: #4a4247; }
+  .room .exit { font-size: 11px; letter-spacing: 0.14em; text-align: center; }
+  .room .lit { width: 100%; padding: var(--space-3) var(--space-4); text-align: center; background: var(--alert-400); color: #fff; box-shadow: 0 0 18px color-mix(in srgb, var(--alert-400) 70%, transparent);
+    clip-path: polygon(4% 0, 96% 0, 100% 12%, 100% 88%, 96% 100%, 4% 100%, 0 88%, 0 12%); }
+  .room.ok .lit { background: var(--sign-green); box-shadow: 0 0 18px color-mix(in srgb, var(--sign-green) 70%, transparent); }
+  .room .lit b { display: block; font-family: var(--font-display); font-weight: 900; font-size: 22px; line-height: 1.15; text-shadow: 0 0 6px #fff8; }
+  .room .lit small { display: block; font-size: 10px; letter-spacing: 0.04em; }
+  .room .lit .st { font-family: var(--font-display); font-weight: 900; font-size: 30px; margin-top: var(--space-2); }
+  .room.ok .lit b, .room.ok .lit small { color: #04200a; text-shadow: none; }
+  .room .lvl { font-family: var(--font-signage); font-size: 22px; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+  <div class="bulk">
+    <div class="mount" id="mount"><i></i><i></i><i></i><i></i>
+    <div class="gate" id="gate" role="status" aria-live="polite">
+      <div class="top">
+        <div>SECURITY LEVEL:EEE<small>PERSONAL CODE: ●●●●●●</small></div>
+        <svg class="leaf" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2 L38 20 L20 38 L2 20 Z M20 8 C12 14 12 26 20 32 M20 8 C24 14 26 20 20 32 M20 14 L30 20"/></svg>
+        <div class="r" id="chk">SECURITY:OK<small>NAME:M. KATSURAGI</small></div>
+      </div>
+      <div class="name">CENTRAL DOGMA</div>
+      <div class="state" id="st">FINAL GATE / UNLOCKED</div>
+    </div></div>
+    <div class="side">
+      <span class="lamp off" id="lamp">EMERGENCY</span>
+      <button id="tog">LOCK GATE</button>
+    </div>
+  </div>
+  <div class="room" data-theme="alert">
+    <div class="exit">EXIT TO<br>DECONTAMINATION</div>
+    <div class="lit"><b>長波放射線照射式滅菌処理室</b><small>Long Wave Irradiation Decontamination Room</small><div class="st">使用中</div><small>In Use</small></div>
+    <div class="lvl">LEVEL-01</div>
+  </div>
+  <div class="room ok">
+    <div class="exit">ENTRY PROCEDURE IRREVERSIBLE</div>
+    <div class="lit"><b>全滅菌処理工程完了</b><small>All Sterilization Procedures Complete</small><div class="st">入室可</div><small>Entry Permitted</small></div>
+    <div class="lvl">LEVEL-03</div>
+  </div>
+<script>
+const g = document.getElementById("gate"), b = document.getElementById("tog"), mount = document.getElementById("mount"), chk = document.getElementById("chk"), st = document.getElementById("st"), lamp = document.getElementById("lamp");
+const code = g.querySelector(".top small"), still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function show(locked) { g.classList.toggle("locked", locked); st.textContent = locked ? "FINAL GATE / LOCKED" : "FINAL GATE / UNLOCKED"; chk.firstChild.textContent = locked ? "SECURITY:CHECK" : "SECURITY:OK";
+  lamp.classList.toggle("off", !locked); b.textContent = locked ? "UNLOCK GATE" : "LOCK GATE"; mount.style.setProperty("--glow", locked ? "#e7323d" : "#b1f34d");
+  if (!still) { g.classList.remove("strike"); void g.offsetWidth; g.classList.add("strike"); } }
+// unlocking is a procedure: the personal code goes in digit by digit, then security clears and the tubes strike green
+function unlock() { if (still) return show(false); b.disabled = true; let n = 0; code.textContent = "PERSONAL CODE: ______";
+  const id = setInterval(() => { n++; code.textContent = "PERSONAL CODE: " + "●".repeat(n) + "_".repeat(6 - n); if (n === 6) { clearInterval(id); setTimeout(() => { show(false); b.disabled = false; }, 350); } }, 160); }
+b.onclick = () => g.classList.contains("locked") ? unlock() : show(true);
+if (location.hash === "#locked") { const s0 = still; show(true); g.classList.remove("strike"); }   // #locked pins the red state
+</script>
+</body>
+</html>

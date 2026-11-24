@@ -1,0 +1,84 @@
+<!-- @dsCard group="Feedback" height=470 subtitle="Tactical Mission Notification · plates float in front of a target mesh and switch on line by line · Tactical theme · frames 151, 232, 244" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-8) var(--space-6); display: flex; gap: var(--space-8); flex-wrap: wrap; align-items: flex-start; perspective: 1100px; position: relative; min-height: 380px; overflow: hidden; }
+  /* the space the plates float in: a wire mesh of the target, registration sparks, and tethers from plate to mesh */
+  #net { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  #net .mesh { fill: none; stroke: var(--color-error); stroke-width: 1; opacity: .45; }
+  #net .tether { fill: none; stroke: var(--color-border-accent); stroke-width: 1; opacity: .7; stroke-dasharray: 3 3; }
+  #net .spark { stroke: var(--color-error); stroke-width: 1.5; opacity: .8; }
+  .plate { z-index: 1; cursor: pointer; }
+  .plate.arming .title, .plate.arming .rule, .plate.arming .body p, .plate.arming .foot, .plate.arming .kicker { opacity: 0; }
+  .plate .title, .plate .rule, .plate .body p, .plate .foot { transition: opacity .08s steps(2); }
+  .foot::before, .foot::after { content: ""; flex: 0 0 18px; height: 5px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .plate { --c: var(--chamfer-md); --ink: var(--color-border-accent); position: relative; width: 400px; padding: var(--space-5) var(--space-6) 0;
+    color: var(--color-text-accent);
+    background: var(--ink); --fill: linear-gradient(180deg, color-mix(in srgb, var(--color-background-alert) 90%, transparent), var(--color-background-body));
+    clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, var(--c) 100%, 0 calc(100% - var(--c)));
+    transform: rotateY(-12deg) rotateZ(-2deg); transform-origin: left center; }
+  /* 1px chamfered frame drawn as an inset outline that follows the clip */
+  .plate::before { content: ""; position: absolute; inset: 1px; z-index: -1; background: var(--fill); clip-path: inherit; box-shadow: inset 0 0 10px color-mix(in srgb, var(--ink) 45%, transparent); }
+  .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: var(--color-text-secondary); }
+  .title { display: inline-block; font-size: 48px; font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; color: var(--ink);
+    transform: scaleX(var(--compress-mild)); transform-origin: left; white-space: nowrap; text-shadow: var(--shadow-bloom-strong); }
+  .rule { height: 3px; width: 86%; background: var(--ink); box-shadow: var(--shadow-bloom); margin: var(--space-1) 0 var(--space-3); }
+  .body { font-size: 17px; font-weight: 700; line-height: 1.35; color: var(--color-text-secondary); text-shadow: var(--shadow-bloom); }
+  .body p { margin: 0 0 0 var(--space-6); }
+  .foot { display: flex; align-items: center; gap: var(--space-2); margin: var(--space-4) calc(-1 * var(--space-6)) 0; padding: 0 0 var(--space-3); }
+  .caps { display: grid; grid-template-columns: repeat(3, 10px); gap: 2px; }
+  .caps i { height: 5px; background: var(--ink); opacity: 0.85; }
+  .caps i:nth-child(3n+2) { opacity: 0.5; }
+  .bar { flex: 1; text-align: center; border: var(--border-width) solid var(--ink); padding: 3px var(--space-2) 2px; }
+  .bar b { display: block; font-size: 15px; letter-spacing: 0.01em; color: var(--ink); text-shadow: var(--shadow-bloom); }
+  .bar small { display: block; font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.15em; color: var(--color-text-tertiary); }
+  .warning { --ink: var(--color-error); }
+  .warning .rule { width: 60%; }
+  .confirmed { --ink: var(--color-warning); width: 300px; transform: rotateY(10deg) rotateZ(-6deg); }
+  .confirmed .title { font-size: 34px; }
+</style>
+</head>
+<body>
+  <svg id="net" viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+  <section class="plate" aria-label="Tactical mission notification">
+    <div class="title">Blood Type : BLUE</div>
+    <div class="rule"></div>
+    <div class="body"><p>Detection: DSS Choker</p><p>Possible 13<sup>th</sup> Angel Manifestation</p></div>
+    <div class="foot"><span class="caps"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="bar"><b>Tactical Mission Notification</b><small>EBBS BTP-104 CNL-113</small></span>
+      <span class="caps"><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+  </section>
+  <section class="plate warning" aria-label="Warning notification">
+    <div class="kicker">Incoming Subject: UNKNOWN</div>
+    <div class="title">WARNING</div>
+    <div class="rule"></div>
+    <div class="body"><p>AREA : F Shift</p><p>Anti-AT Field Custom APR : INEFFECTIVE</p></div>
+    <div class="foot"><span class="caps"><i></i><i></i><i></i></span>
+      <span class="bar"><b>ALERT</b><small>CONFIRMED 13TH ANGEL VERIFICATION</small></span>
+      <span class="caps"><i></i><i></i><i></i></span></div>
+  </section>
+  <section class="plate confirmed" aria-label="Confirmed notification">
+    <div class="title">CONFIRMED</div>
+    <div class="rule"></div>
+    <div class="body"><p>Fire Support from EVA-8th</p><p>[IFF-Friendly]</p></div>
+    <div class="foot"><span class="bar"><b>Tactical Mission Notification</b></span></div>
+  </section>
+<script>
+// backdrop: a faceted wire mesh on the right, sparks, and a dashed tether from each plate toward it
+const NS = "http://www.w3.org/2000/svg", net = document.getElementById("net"), el = (t, a) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); net.appendChild(n); return n; };
+let seed = 8; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const pts = Array.from({ length: 16 }, (_, i) => [700 + rnd() * 300, 200 + rnd() * 200]);
+pts.forEach((p, i) => pts.forEach((q, j) => { if (j > i && Math.hypot(p[0] - q[0], p[1] - q[1]) < 120) el("path", { d: `M${p[0]} ${p[1]} L${q[0]} ${q[1]}`, class: "mesh" }); }));
+[[430, 40], [470, 300], [60, 300], [940, 60], [610, 360]].forEach(([x, y]) => el("path", { d: `M${x - 6} ${y} h12 M${x} ${y - 6} v12`, class: "spark" }));
+el("path", { d: `M400 200 L${pts[0][0]} ${pts[0][1]}`, class: "tether" }); el("path", { d: `M330 330 L${pts[3][0]} ${pts[3][1]}`, class: "tether" });
+// arrival: the frame is there first, then title, rule, each line, and the footer switch on in order. Click a plate to replay.
+// Resting state is fully visible, so nothing is hidden where scripts or motion are off.
+function arrive(plate) { const parts = [...plate.querySelectorAll(".kicker, .title, .rule, .body p, .foot")]; plate.classList.add("arming");
+  parts.forEach(n => n.style.opacity = 0); parts.forEach((n, i) => setTimeout(() => { n.style.opacity = ""; if (i === parts.length - 1) plate.classList.remove("arming"); }, 180 + i * 140));
+  plate.classList.remove("arming"); }
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll(".plate").forEach((p, i) => { setTimeout(() => arrive(p), i * 400); p.addEventListener("click", () => arrive(p)); });
+</script>
+</body>
+</html>

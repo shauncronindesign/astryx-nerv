@@ -1,0 +1,88 @@
+<!-- @dsCard group="Targeting" height=420 subtitle="ALERT belts in perspective around the shaft, sensor net and contacts (Wunder) · external power rings (blue) · frames 94–95, 175–184" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); display: grid; grid-template-columns: 1.2fr 1fr; gap: var(--space-0-5); }
+  .v { position: relative; height: 360px; overflow: hidden; background: radial-gradient(80% 70% at 50% 60%, var(--wunder-haze), var(--color-background-body) 70%); }
+  .v.blue { background: radial-gradient(60% 60% at 50% 55%, #101a23, #040405); }
+  svg, canvas { width: 100%; height: 100%; display: block; }
+  .r { fill: none; stroke: var(--color-accent); filter: drop-shadow(0 0 4px var(--color-accent)) drop-shadow(0 0 14px var(--color-accent)); }
+  .rt { font-family: var(--font-sans); font-weight: 700; font-size: 15px; letter-spacing: 0.3em; fill: #00000099; }
+  .grid { stroke: var(--sysblue-300); stroke-width: 0.6; opacity: 0.25; fill: none; }
+  .blip { fill: var(--wunder-red-bright); filter: drop-shadow(0 0 6px var(--wunder-red-bright)); }
+  .lbl { font-family: var(--font-mono); font-size: 8px; fill: var(--color-text-secondary); }
+  .b { fill: none; stroke: var(--sysblue-300); stroke-width: 1.4; filter: drop-shadow(0 0 3px var(--sysblue-300)); }
+  .bt { font-family: var(--font-sans); font-weight: 700; fill: #cfe3ff; text-anchor: middle; }
+  .box { fill: #0000; stroke: var(--mint-400); stroke-width: 1.5; }
+  .boxt { font-family: var(--font-sans); font-weight: 700; font-size: 16px; fill: var(--mint-300); text-anchor: middle; }
+  @media (prefers-reduced-motion: no-preference) {
+    .spin1 { animation: spin 22s linear infinite; } .crawl { animation: crawl 4s linear infinite; }
+    .blip { animation: ping 1.8s ease-out infinite; } .blip:nth-of-type(2) { animation-delay: .6s; } .blip:nth-of-type(3) { animation-delay: 1.2s; } }
+  @keyframes crawl { to { stroke-dashoffset: -108; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes ping { 50% { opacity: 0.3; } }
+</style>
+</head>
+<body>
+  <div class="v" data-theme="wunder">
+    <canvas id="rings" width="1120" height="720" role="img" aria-label="Wunder ring HUD: three ALERT bands circling the central shaft, four contacts on the sensor net"></canvas>
+  </div>
+  <div class="v blue" role="img" aria-label="External power supply mode, verification complete; left and right collectors">
+    <svg viewBox="0 0 400 360">
+      <g class="spin1" style="transform-origin:50% 50%"><circle class="b" cx="200" cy="180" r="160" stroke-dasharray="40 8 4 8"/></g>
+      <circle class="b" cx="200" cy="180" r="120"/><circle class="b" cx="200" cy="180" r="70" opacity="0.7"/>
+      <circle class="b" cx="110" cy="210" r="40"/><circle class="b" cx="290" cy="210" r="40"/>
+      <rect class="box" x="96" y="196" width="28" height="28"/><text class="boxt" x="110" y="216">R</text>
+      <rect class="box" x="276" y="196" width="28" height="28"/><text class="boxt" x="290" y="216">L</text>
+      <text class="bt" x="200" y="176" font-size="9">External Power Supply Mode</text>
+      <text class="bt" x="200" y="190" font-size="9">Verification Complete</text>
+      <path class="b" d="M20 330 H380 M40 330 v-8 M360 330 v-8 M200 330 v-12"/>
+    </svg>
+  </div>
+<script>
+/* Red ALERT belts in real perspective: each belt is a strip on a cylinder, drawn back half, then the shaft, then front half.
+   Lettering is mapped onto the belt: it reads correctly on the near side and mirrored on the far side, where you see the belt from behind. */
+const cv = document.getElementById("rings"), g = cv.getContext("2d"), W = cv.width, H = cv.height, F = 1100, PITCH = 0.42;
+const css = getComputedStyle(cv), RED = css.getPropertyValue("--wunder-red-bright").trim() || "#f0574f", ORANGE = css.getPropertyValue("--tac-orange-400").trim();
+const belts = [ { R: 470, h: 30, y: -210, tz: -0.20, sp: 0.16 }, { R: 400, h: 24, y: -20, tz: 0.14, sp: -0.22 }, { R: 440, h: 40, y: 190, tz: -0.07, sp: 0.18 } ];
+function proj(b, th, y) { const x = b.R * Math.cos(th), z = b.R * Math.sin(th), x1 = x * Math.cos(b.tz) - y * Math.sin(b.tz), y1 = x * Math.sin(b.tz) + y * Math.cos(b.tz);
+  const y2 = y1 * Math.cos(PITCH) - z * Math.sin(PITCH), z2 = y1 * Math.sin(PITCH) + z * Math.cos(PITCH), k = F / (F + z2); return [W / 2 + x1 * k, H / 2 + 30 + y2 * k, z2]; }
+let seed = 6; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const net = Array.from({ length: 70 }, () => ({ th: rnd() * 6.283, y: (rnd() - 0.5) * 620, R: 300 + rnd() * 420 }));
+const contacts = [[0.9, -150, 520, "CNT-01"], [2.6, 40, 560, "CNT-02"], [4.4, 230, 500, "CNT-03"], [5.5, -60, 610, "CNT-04"]];
+function belt(b, t, front) { const STEP = Math.PI / 60, off = t * b.sp;
+  for (let th = 0; th < 6.283; th += STEP) { const m = proj(b, th + STEP / 2, b.y); if ((m[2] < 0) !== front) continue;
+    const p = [proj(b, th, b.y - b.h), proj(b, th + STEP, b.y - b.h), proj(b, th + STEP, b.y + b.h), proj(b, th, b.y + b.h)];
+    g.beginPath(); p.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath();
+    g.fillStyle = front ? "rgba(236,58,50,.92)" : "rgba(140,24,26,.8)"; g.shadowColor = RED; g.shadowBlur = front ? 26 : 10; g.fill(); g.shadowBlur = 0;
+    // teeth along the lower edge
+    const a = proj(b, th, b.y + b.h * 0.55), c = proj(b, th, b.y + b.h); g.strokeStyle = front ? "rgba(60,0,4,.7)" : "rgba(40,0,4,.5)"; g.lineWidth = 2; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(c[0], c[1]); g.stroke(); }
+  // lettering
+  const ch = b.h * 1.25, adv = ch * 0.66 / b.R, word = "ALERT", gap = 9, n = Math.floor(6.283 / (adv * (word.length + gap)));
+  g.font = "bold 100px Helvetica Neue, Helvetica, Arial, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+  for (let w = 0; w < n; w++) for (let i = 0; i < word.length; i++) { const th = off + w * (6.283 / n) + i * adv, p0 = proj(b, th, b.y - b.h * 0.12); if ((p0[2] < 0) !== front) continue;
+    const pt = proj(b, th + 0.01, b.y - b.h * 0.12), pd = proj(b, th, b.y - b.h * 0.12 + 1), s = ch / 100;
+    g.save(); g.setTransform((pt[0] - p0[0]) / (0.01 * b.R) * s, (pt[1] - p0[1]) / (0.01 * b.R) * s, (pd[0] - p0[0]) * s, (pd[1] - p0[1]) * s, p0[0], p0[1]);
+    g.fillStyle = front ? "rgba(50,0,4,.88)" : "rgba(30,0,4,.6)"; g.fillText(word[i], 0, 0); g.restore(); } }
+function shaft() { g.fillStyle = "#07060c"; g.strokeStyle = "#1c1830"; g.lineWidth = 2; g.beginPath(); g.moveTo(W / 2 - 34, 0);
+  [[-70, 150], [-40, 210], [-96, 330], [-60, 420], [-120, 560], [-90, H], [100, H], [70, 540], [118, 400], [64, 320], [86, 200], [40, 120], [52, 0]].forEach(([x, y]) => g.lineTo(W / 2 + x, y)); g.closePath(); g.fill(); g.stroke(); }
+function scene(t) { g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, W, H);
+  // sensor net: faint links, red points
+  const pts = net.map(n => proj({ R: n.R, tz: 0 }, n.th + t * 0.03, n.y)); g.strokeStyle = "rgba(150,130,240,.38)"; g.lineWidth = 1;
+  pts.forEach((p, i) => pts.forEach((q, j) => { if (j > i && Math.hypot(p[0] - q[0], p[1] - q[1]) < 120) { g.beginPath(); g.moveTo(p[0], p[1]); g.lineTo(q[0], q[1]); g.stroke(); } }));
+  g.fillStyle = RED; pts.forEach(p => { g.beginPath(); g.arc(p[0], p[1], 2.5, 0, 7); g.fill(); });
+  belts.forEach(b => belt(b, t, false)); shaft(); belts.forEach(b => belt(b, t, true));
+  // contacts: white-hot core, red halo, mono label
+  contacts.forEach(([th, y, R, label], i) => { const p = proj({ R, tz: 0 }, th + t * 0.03, y), r = 9 + 2 * Math.sin(t * 3 + i); g.shadowColor = RED; g.shadowBlur = 30; g.fillStyle = RED; g.beginPath(); g.arc(p[0], p[1], r * 1.6, 0, 7); g.fill();
+    g.fillStyle = "#fff"; g.beginPath(); g.arc(p[0], p[1], r * 0.8, 0, 7); g.fill(); g.shadowBlur = 0; g.fillStyle = "#e8dcf5"; g.font = "16px Share Tech Mono, monospace"; g.textAlign = "left"; g.fillText(label, p[0] + 22, p[1] - 10); });
+  // status hexes, lower right
+  [[820, 560, "ACTIV", 46], [900, 630, "ALERT", 46], [760, 640, "01", 34]].forEach(([x, y, tx, r]) => { g.strokeStyle = ORANGE; g.lineWidth = 2; g.shadowColor = ORANGE; g.shadowBlur = 8; g.beginPath();
+    for (let a = 0; a < 6; a++) g.lineTo(x + r * Math.cos(a * Math.PI / 3), y + r * 0.86 * Math.sin(a * Math.PI / 3)); g.closePath(); g.stroke(); g.fillStyle = ORANGE; g.font = "bold 18px Helvetica Neue, Arial, sans-serif"; g.textAlign = "center"; g.fillText(tx, x, y + 2); g.shadowBlur = 0; }); }
+const force = (location.hash.match(/t=([\d.]+)/) || [])[1];   // #t=3 pins a frame
+scene(force ? +force : 2);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { scene(ms / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

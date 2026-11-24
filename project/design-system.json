@@ -1,0 +1,336 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-20T17:42:53Z"
+  },
+  "title": "Astryx NERV",
+  "namespace": "AstryxNERV",
+  "libraries": [],
+  "sections": {},
+  "groups": [
+    "References"
+  ],
+  "assetGroups": {
+    "References": {
+      "name": "References",
+      "tile": "l",
+      "order": [
+        "hex-wall-031.jpg",
+        "hex-wall-036.jpg",
+        "hex-wall-052.jpg",
+        "hex-wall-165.jpg",
+        "status-board-116.jpg",
+        "activity-timer-025.jpg",
+        "activity-timer-045.jpg",
+        "clock-board-064.jpg",
+        "clock-board-070.jpg",
+        "notification-plate-244.jpg",
+        "notification-plate-232.jpg",
+        "notification-plate-151.jpg",
+        "warning-tag-230.jpg",
+        "condition-plate-057.jpg",
+        "condition-plate-054.jpg",
+        "gate-sign-068.jpg",
+        "gate-sign-069.jpg",
+        "room-sign-105.jpg",
+        "room-sign-107.jpg",
+        "bracket-caption-009.jpg",
+        "sensor-feed-019.jpg",
+        "bracket-caption-133.jpg",
+        "aaaw-frame-205.jpg",
+        "aaaw-frame-210.jpg",
+        "big-readout-203.jpg",
+        "reticle-127.jpg",
+        "reticle-003.jpg",
+        "comm-card-117.jpg",
+        "live-feed-120.jpg",
+        "keep-out-144.jpg",
+        "schematic-grid-073.jpg",
+        "schematic-grid-022.jpg",
+        "ring-hud-178.jpg",
+        "sync-columns-011.jpg",
+        "sync-columns-017.jpg",
+        "hazard-band-014.jpg",
+        "decryption-key-su03.jpg",
+        "pattern-scope-sp10.jpg",
+        "structural-diagram-ns05.jpg",
+        "sim-grid-as12.jpg",
+        "field-sim-pl02.jpg",
+        "timer-de-as08.jpg",
+        "blueprint-pink-ep04.jpg"
+      ],
+      "files": {
+        "hex-wall-031.jpg": {
+          "name": "hex-wall-031.jpg",
+          "blob": "147182abc5860da7b0ece7101f74765f",
+          "size": 176739,
+          "type": "image/jpeg"
+        },
+        "hex-wall-036.jpg": {
+          "name": "hex-wall-036.jpg",
+          "blob": "bfabbad377cd8e6d24c7f2e700b70e66",
+          "size": 106351,
+          "type": "image/jpeg"
+        },
+        "hex-wall-052.jpg": {
+          "name": "hex-wall-052.jpg",
+          "blob": "79fd53b2f1729d2fcf891db2f328df80",
+          "size": 183006,
+          "type": "image/jpeg"
+        },
+        "hex-wall-165.jpg": {
+          "name": "hex-wall-165.jpg",
+          "blob": "e9336e4d45cbf74e072180221a497ee1",
+          "size": 136067,
+          "type": "image/jpeg"
+        },
+        "status-board-116.jpg": {
+          "name": "status-board-116.jpg",
+          "blob": "499eab90de557859500a1adfc3ca9967",
+          "size": 206649,
+          "type": "image/jpeg"
+        },
+        "activity-timer-025.jpg": {
+          "name": "activity-timer-025.jpg",
+          "blob": "09959c2ada576b4092bc288a26590641",
+          "size": 124511,
+          "type": "image/jpeg"
+        },
+        "activity-timer-045.jpg": {
+          "name": "activity-timer-045.jpg",
+          "blob": "5427fcb4a55a02396f68ec6230c05c1d",
+          "size": 108814,
+          "type": "image/jpeg"
+        },
+        "clock-board-064.jpg": {
+          "name": "clock-board-064.jpg",
+          "blob": "b1f37c151816f5bb00f98a43e259682c",
+          "size": 153080,
+          "type": "image/jpeg"
+        },
+        "clock-board-070.jpg": {
+          "name": "clock-board-070.jpg",
+          "blob": "7ed617773c7fe983ff35301e86881d3b",
+          "size": 160711,
+          "type": "image/jpeg"
+        },
+        "notification-plate-244.jpg": {
+          "name": "notification-plate-244.jpg",
+          "blob": "317cc9333045dbf992e0e924e4c21a38",
+          "size": 88375,
+          "type": "image/jpeg"
+        },
+        "notification-plate-232.jpg": {
+          "name": "notification-plate-232.jpg",
+          "blob": "b0768e44b4626b3e52f75a56357b56cf",
+          "size": 93363,
+          "type": "image/jpeg"
+        },
+        "notification-plate-151.jpg": {
+          "name": "notification-plate-151.jpg",
+          "blob": "07272fda870035090be21306de1167da",
+          "size": 87980,
+          "type": "image/jpeg"
+        },
+        "warning-tag-230.jpg": {
+          "name": "warning-tag-230.jpg",
+          "blob": "5d78ed468e1aa7b904b4da3dfdd86838",
+          "size": 106802,
+          "type": "image/jpeg"
+        },
+        "condition-plate-057.jpg": {
+          "name": "condition-plate-057.jpg",
+          "blob": "5ef0ee9b9b97624456986ea234e9f291",
+          "size": 71256,
+          "type": "image/jpeg"
+        },
+        "condition-plate-054.jpg": {
+          "name": "condition-plate-054.jpg",
+          "blob": "7a645f9c99c9cb2e7e49e3c4dfbc1595",
+          "size": 103308,
+          "type": "image/jpeg"
+        },
+        "gate-sign-068.jpg": {
+          "name": "gate-sign-068.jpg",
+          "blob": "39fccac727015260e08d5e6fbd8867d3",
+          "size": 77709,
+          "type": "image/jpeg"
+        },
+        "gate-sign-069.jpg": {
+          "name": "gate-sign-069.jpg",
+          "blob": "b8388770dbfeddea50fdd30b4badf4aa",
+          "size": 76363,
+          "type": "image/jpeg"
+        },
+        "room-sign-105.jpg": {
+          "name": "room-sign-105.jpg",
+          "blob": "b2a12eca12006f49c22347c4ce6b4b6c",
+          "size": 158014,
+          "type": "image/jpeg"
+        },
+        "room-sign-107.jpg": {
+          "name": "room-sign-107.jpg",
+          "blob": "73d8963fd53680199040b5080de8a52b",
+          "size": 152102,
+          "type": "image/jpeg"
+        },
+        "bracket-caption-009.jpg": {
+          "name": "bracket-caption-009.jpg",
+          "blob": "d83a982bf189362cac346d52559b7dfc",
+          "size": 144468,
+          "type": "image/jpeg"
+        },
+        "sensor-feed-019.jpg": {
+          "name": "sensor-feed-019.jpg",
+          "blob": "7ac0b69ee6a5c79d5cb9eca74eddbb66",
+          "size": 164609,
+          "type": "image/jpeg"
+        },
+        "bracket-caption-133.jpg": {
+          "name": "bracket-caption-133.jpg",
+          "blob": "915aad91d725f729e0d3fa76bf5745f2",
+          "size": 134458,
+          "type": "image/jpeg"
+        },
+        "aaaw-frame-205.jpg": {
+          "name": "aaaw-frame-205.jpg",
+          "blob": "e160169cc1dcbbcedbba1b9b7123aaaa",
+          "size": 144324,
+          "type": "image/jpeg"
+        },
+        "aaaw-frame-210.jpg": {
+          "name": "aaaw-frame-210.jpg",
+          "blob": "8b09b0e1710e70648a8c1227a281fb32",
+          "size": 78901,
+          "type": "image/jpeg"
+        },
+        "big-readout-203.jpg": {
+          "name": "big-readout-203.jpg",
+          "blob": "d492349a4e4b6986fdb775508e8c2fc2",
+          "size": 146585,
+          "type": "image/jpeg"
+        },
+        "reticle-127.jpg": {
+          "name": "reticle-127.jpg",
+          "blob": "39689d817aa6d55c970fcfeb1d85532c",
+          "size": 69312,
+          "type": "image/jpeg"
+        },
+        "reticle-003.jpg": {
+          "name": "reticle-003.jpg",
+          "blob": "1a2b1d984c6cbe4c2b20ea720854e8b5",
+          "size": 158153,
+          "type": "image/jpeg"
+        },
+        "comm-card-117.jpg": {
+          "name": "comm-card-117.jpg",
+          "blob": "19b75f6a0de209bd7e4c6568138d3cd8",
+          "size": 91384,
+          "type": "image/jpeg"
+        },
+        "live-feed-120.jpg": {
+          "name": "live-feed-120.jpg",
+          "blob": "ea6077b58c64a2f811d106a00bf93b73",
+          "size": 126830,
+          "type": "image/jpeg"
+        },
+        "keep-out-144.jpg": {
+          "name": "keep-out-144.jpg",
+          "blob": "e6c5d34c2b2e84d43e6100d0a64375cf",
+          "size": 70815,
+          "type": "image/jpeg"
+        },
+        "schematic-grid-073.jpg": {
+          "name": "schematic-grid-073.jpg",
+          "blob": "087ae7d432ed53decba0e49dfe0fa434",
+          "size": 199212,
+          "type": "image/jpeg"
+        },
+        "schematic-grid-022.jpg": {
+          "name": "schematic-grid-022.jpg",
+          "blob": "89c3ff7db28c1593173cf61723a0ee90",
+          "size": 152076,
+          "type": "image/jpeg"
+        },
+        "ring-hud-178.jpg": {
+          "name": "ring-hud-178.jpg",
+          "blob": "5c079b2e192c70bb018bedcc440a75df",
+          "size": 110403,
+          "type": "image/jpeg"
+        },
+        "sync-columns-011.jpg": {
+          "name": "sync-columns-011.jpg",
+          "blob": "93fcc93d4c20f29b67f4ffcd60fd57a2",
+          "size": 142560,
+          "type": "image/jpeg"
+        },
+        "sync-columns-017.jpg": {
+          "name": "sync-columns-017.jpg",
+          "blob": "afede858a46db3c6bad46e98ed952f70",
+          "size": 183721,
+          "type": "image/jpeg"
+        },
+        "hazard-band-014.jpg": {
+          "name": "hazard-band-014.jpg",
+          "blob": "a56ac01309caf73a980b4fac312a83c1",
+          "size": 124691,
+          "type": "image/jpeg"
+        },
+        "decryption-key-su03.jpg": {
+          "name": "decryption-key-su03.jpg",
+          "blob": "8c16514436eb616ccd54e933afec4279",
+          "size": 196905,
+          "type": "image/jpeg"
+        },
+        "pattern-scope-sp10.jpg": {
+          "name": "pattern-scope-sp10.jpg",
+          "blob": "abc64e35ce4e7789302b173c0fac01a1",
+          "size": 105281,
+          "type": "image/jpeg"
+        },
+        "structural-diagram-ns05.jpg": {
+          "name": "structural-diagram-ns05.jpg",
+          "blob": "1ffc4c4adf936534bf7b40b9526513cb",
+          "size": 157974,
+          "type": "image/jpeg"
+        },
+        "sim-grid-as12.jpg": {
+          "name": "sim-grid-as12.jpg",
+          "blob": "fcedf321b08ba6afc4b29652ef77f1fe",
+          "size": 149173,
+          "type": "image/jpeg"
+        },
+        "field-sim-pl02.jpg": {
+          "name": "field-sim-pl02.jpg",
+          "blob": "69498c263461ee2250ba033d5b0af3e3",
+          "size": 223330,
+          "type": "image/jpeg"
+        },
+        "timer-de-as08.jpg": {
+          "name": "timer-de-as08.jpg",
+          "blob": "1562bdab0947bffeb5ceeb306c77a521",
+          "size": 80853,
+          "type": "image/jpeg"
+        },
+        "blueprint-pink-ep04.jpg": {
+          "name": "blueprint-pink-ep04.jpg",
+          "blob": "61aa1f93febdfd0e5fc8d74ae290d1ad",
+          "size": 228857,
+          "type": "image/jpeg"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": {
+    "sections": []
+  },
+  "lastChange": {
+    "by": "Shaun Cronin",
+    "at": "2026-11-24T04:30:00Z",
+    "via": "Claude Code",
+    "note": "Second pass on the six basics: guarded action and mode keys (Button), film badges (Badge), personal code and command line (TextInput), report sheets and stamp (Card), check-in cycle (StatusList), MAGI vote and auto-cancel (Dialog)"
+  }
+}

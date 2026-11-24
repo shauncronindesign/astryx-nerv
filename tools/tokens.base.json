@@ -1,0 +1,1634 @@
+{
+ "name": "Astryx NERV",
+ "version": 1,
+ "color": {
+  "themes": [
+   {
+    "id": "rebuild",
+    "name": "Rebuild"
+   },
+   {
+    "id": "terminal",
+    "name": "Terminal"
+   }
+  ],
+  "tokens": [
+   {
+    "name": "ground-void",
+    "value": "#000000",
+    "usage": "Rebuild ground · Absolute black. Hard cuts, title cards, SEELE monoliths."
+   },
+   {
+    "name": "ground-base",
+    "value": "#050401",
+    "usage": "Rebuild ground · Screen ground. Warm near-black with amber undertone — NERV command screens, MAGI terminals."
+   },
+   {
+    "name": "ground-panel",
+    "value": "#0d0b07",
+    "usage": "Rebuild ground · Panel surface. Secondary displays, cockpit instrument clusters."
+   },
+   {
+    "name": "ground-lift",
+    "value": "#181208",
+    "usage": "Rebuild ground · Surface lift. Active readout backgrounds under bright data."
+   },
+   {
+    "name": "amber-rule",
+    "value": "#3d2600",
+    "usage": "Rebuild amber · Hairline rules and separators only. Never text."
+   },
+   {
+    "name": "amber-low",
+    "value": "#7a4d00",
+    "usage": "Rebuild amber · Secondary labels, keys, inactive field names. 2.8:1 on ground-base — large or disabled text only."
+   },
+   {
+    "name": "amber-mid",
+    "value": "#b87820",
+    "usage": "Rebuild amber · Body text, standard data values, clock readouts."
+   },
+   {
+    "name": "amber-core",
+    "value": "#e09030",
+    "usage": "Rebuild amber · The definitive Rebuild amber. Progress fills, sync bars, radar rings."
+   },
+   {
+    "name": "amber-bright",
+    "value": "#f0a840",
+    "usage": "Rebuild amber · Selected/active highlights, hero numbers, MAGI verdicts."
+   },
+   {
+    "name": "amber-peak",
+    "value": "#ffd070",
+    "usage": "Rebuild amber · Phosphor peak glow. Critical-but-not-red warnings. Never large areas."
+   },
+   {
+    "name": "red-deep",
+    "value": "#3d0000",
+    "usage": "Rebuild red · Alert-zone background tint, critical panel borders."
+   },
+   {
+    "name": "red-mid",
+    "value": "#aa1100",
+    "usage": "Rebuild red · Offline / disconnected values, severed umbilical."
+   },
+   {
+    "name": "red-core",
+    "value": "#dd2200",
+    "usage": "Rebuild red · Primary alert fills, WARNING strips, hostile radar blips. 4.2:1 on ground-base — fills, not small text."
+   },
+   {
+    "name": "red-bright",
+    "value": "#ff3300",
+    "usage": "Rebuild red · Max-urgency blink, full-screen alert overlay."
+   },
+   {
+    "name": "green-deep",
+    "value": "#003d18",
+    "usage": "Rebuild green · Nominal-zone background tint. Use with transparency."
+   },
+   {
+    "name": "green-mid",
+    "value": "#008833",
+    "usage": "Rebuild green · Standard OK label, friendly unit blips."
+   },
+   {
+    "name": "green-core",
+    "value": "#00bb44",
+    "usage": "Rebuild green · MAGI APPROVE verdict, safe-range progress."
+   },
+   {
+    "name": "green-bright",
+    "value": "#33ee77",
+    "usage": "Rebuild green · Active OK highlight, waveform peaks. Minimal use."
+   },
+   {
+    "name": "blue-deep",
+    "value": "#001855",
+    "usage": "Rebuild blue · Angel-contact background tint."
+   },
+   {
+    "name": "blue-pattern",
+    "value": "#2244bb",
+    "usage": "Rebuild blue · PATTERN BLUE designation fill. 2.5:1 on ground — fills only, use blue-bright for text."
+   },
+   {
+    "name": "blue-bright",
+    "value": "#4488ee",
+    "usage": "Rebuild blue · Classification readout values in Angel context."
+   },
+   {
+    "name": "blue-wille",
+    "value": "#7ab8d8",
+    "usage": "Rebuild blue · WILLE / AAA Wunder interface only (3.33)."
+   },
+   {
+    "name": "white-pure",
+    "value": "#ffffff",
+    "usage": "Rebuild white · SEELE monolith text, flash frames, title cards. Never a UI background."
+   },
+   {
+    "name": "white-warm",
+    "value": "#e8dcc8",
+    "usage": "Rebuild white · Maximum-priority readout text."
+   },
+   {
+    "name": "white-dim",
+    "value": "#b0a888",
+    "usage": "Rebuild white · Faded SEELE designations, outlined numerals."
+   },
+   {
+    "name": "signal-900",
+    "value": "#3d1200",
+    "usage": "Terminal orange · Deepest signal tint."
+   },
+   {
+    "name": "signal-700",
+    "value": "#7a2600",
+    "usage": "Terminal orange · Dim signal, heatmap low end."
+   },
+   {
+    "name": "signal-500",
+    "value": "#c44a00",
+    "usage": "Terminal orange · Mid signal."
+   },
+   {
+    "name": "signal-400",
+    "value": "#e05a00",
+    "usage": "Terminal orange · Signal dim — pressed / secondary signal."
+   },
+   {
+    "name": "signal-300",
+    "value": "#f07020",
+    "usage": "Terminal orange · PRIMARY. Labels, callouts, numbers, borders — the voice."
+   },
+   {
+    "name": "signal-200",
+    "value": "#f58a44",
+    "usage": "Terminal orange · Inline code, lighter signal text."
+   },
+   {
+    "name": "signal-100",
+    "value": "#ffb070",
+    "usage": "Terminal orange · Heatmap peak, caution highlight."
+   },
+   {
+    "name": "threat-900",
+    "value": "#1a0000",
+    "usage": "Terminal red · Alert panel background in critical state."
+   },
+   {
+    "name": "threat-700",
+    "value": "#5a0000",
+    "usage": "Terminal red · Deep threat."
+   },
+   {
+    "name": "threat-500",
+    "value": "#8c0000",
+    "usage": "Terminal red · Threat mid."
+   },
+   {
+    "name": "threat-400",
+    "value": "#aa0000",
+    "usage": "Terminal red · Critical failure, hostile contact, AT Field breach (fill)."
+   },
+   {
+    "name": "threat-300",
+    "value": "#cc0000",
+    "usage": "Terminal red · Alert border, pulsing danger glow. ~3.5:1 on threat-900 — large text only."
+   },
+   {
+    "name": "threat-200",
+    "value": "#e03030",
+    "usage": "Terminal red · Danger text on void."
+   },
+   {
+    "name": "threat-100",
+    "value": "#ff6060",
+    "usage": "Terminal red · Danger text on surfaces."
+   },
+   {
+    "name": "scan-900",
+    "value": "#001a0a",
+    "usage": "Terminal green · Deepest scan tint."
+   },
+   {
+    "name": "scan-700",
+    "value": "#003d1a",
+    "usage": "Terminal green · Nominal background tint."
+   },
+   {
+    "name": "scan-500",
+    "value": "#006630",
+    "usage": "Terminal green · Scan mid."
+   },
+   {
+    "name": "scan-400",
+    "value": "#008040",
+    "usage": "Terminal green · Scan fill."
+   },
+   {
+    "name": "scan-300",
+    "value": "#30c080",
+    "usage": "Terminal green · Active, nominal, online. Radar/map geometry."
+   },
+   {
+    "name": "scan-200",
+    "value": "#50e0a0",
+    "usage": "Terminal green · Glowing scan lines, animated sweep."
+   },
+   {
+    "name": "scan-100",
+    "value": "#80f0c0",
+    "usage": "Terminal green · Scan peak."
+   },
+   {
+    "name": "system-900",
+    "value": "#00000f",
+    "usage": "Terminal blue · Deepest system tint."
+   },
+   {
+    "name": "system-700",
+    "value": "#050538",
+    "usage": "Terminal blue · Deep panel backdrop."
+   },
+   {
+    "name": "system-500",
+    "value": "#0c0c6a",
+    "usage": "Terminal blue · Large tinted panel backdrops (radar, data wall)."
+   },
+   {
+    "name": "system-400",
+    "value": "#1c1c8a",
+    "usage": "Terminal blue · System panel."
+   },
+   {
+    "name": "system-300",
+    "value": "#3232aa",
+    "usage": "Terminal blue · System mid."
+   },
+   {
+    "name": "system-200",
+    "value": "#5555cc",
+    "usage": "Terminal blue · System light."
+   },
+   {
+    "name": "system-100",
+    "value": "#8888ee",
+    "usage": "Terminal blue · System text on dark."
+   },
+   {
+    "name": "indigo-700",
+    "value": "#252560",
+    "usage": "Terminal indigo · Secondary overlay panels."
+   },
+   {
+    "name": "indigo-500",
+    "value": "#404080",
+    "usage": "Terminal indigo · Overlay mid."
+   },
+   {
+    "name": "indigo-300",
+    "value": "#5a5aaa",
+    "usage": "Terminal indigo · Grid overlays, inactive selectors, hover ring."
+   },
+   {
+    "name": "indigo-100",
+    "value": "#9090cc",
+    "usage": "Terminal indigo · Token names, indigo text."
+   },
+   {
+    "name": "ochre-500",
+    "value": "#7a5a10",
+    "usage": "Terminal ochre · Archival dim."
+   },
+   {
+    "name": "ochre-300",
+    "value": "#a07820",
+    "usage": "Terminal ochre · Scanner labels."
+   },
+   {
+    "name": "ochre-100",
+    "value": "#c8a040",
+    "usage": "Terminal ochre · Archival classification, predicted state."
+   },
+   {
+    "name": "gray-abyss",
+    "value": "#080808",
+    "usage": "Terminal neutral · Abyss."
+   },
+   {
+    "name": "gray-deep",
+    "value": "#0d0d0d",
+    "usage": "Terminal neutral · Deep."
+   },
+   {
+    "name": "gray-surface-1",
+    "value": "#111111",
+    "usage": "Terminal neutral · Primary panel surface — the glass layer."
+   },
+   {
+    "name": "gray-surface-2",
+    "value": "#1a1a1a",
+    "usage": "Terminal neutral · Hover/focus on panels, nested containers."
+   },
+   {
+    "name": "gray-surface-3",
+    "value": "#222222",
+    "usage": "Terminal neutral · Tooltip/dropdown background; ghost-kanji ink."
+   },
+   {
+    "name": "gray-ghost",
+    "value": "#2a2a2a",
+    "usage": "Terminal neutral · Ghost rules."
+   },
+   {
+    "name": "gray-rule",
+    "value": "#333333",
+    "usage": "Terminal neutral · Hairline borders, dividers, ticks."
+   },
+   {
+    "name": "gray-muted",
+    "value": "#555555",
+    "usage": "Terminal neutral · Disabled/placeholder. ~2.5:1 — never readable text."
+   },
+   {
+    "name": "gray-dim",
+    "value": "#777777",
+    "usage": "Terminal neutral · Dim text / emphasized rule."
+   },
+   {
+    "name": "gray-subdued",
+    "value": "#999999",
+    "usage": "Terminal neutral · Metadata, units, tertiary labels."
+   },
+   {
+    "name": "gray-light",
+    "value": "#cccccc",
+    "usage": "Terminal neutral · Secondary body text, column headers."
+   },
+   {
+    "name": "gray-near-white",
+    "value": "#f0f0f0",
+    "usage": "Terminal neutral · High-priority body text."
+   },
+   {
+    "name": "color-accent",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "{signal-300}"
+    },
+    "usage": "Primary action fill — primary buttons, active states, focus ring, progress."
+   },
+   {
+    "name": "color-accent-muted",
+    "value": {
+     "rebuild": "#e0903033",
+     "terminal": "#f0702033"
+    },
+    "usage": "Soft accent tint — hover/selected surfaces, accent badges."
+   },
+   {
+    "name": "color-on-accent",
+    "value": {
+     "rebuild": "{ground-base}",
+     "terminal": "{ground-void}"
+    },
+    "usage": "Text and icons on accent fills — dark ink, never white."
+   },
+   {
+    "name": "color-neutral",
+    "value": {
+     "rebuild": "#e090301f",
+     "terminal": "#ffffff14"
+    },
+    "usage": "Neutral fill for secondary buttons and low-emphasis surfaces."
+   },
+   {
+    "name": "color-background-body",
+    "value": {
+     "rebuild": "{ground-base}",
+     "terminal": "{ground-void}"
+    },
+    "usage": "Page canvas. Rebuild: warm screen ground. Terminal: pure void."
+   },
+   {
+    "name": "color-background-surface",
+    "value": {
+     "rebuild": "{ground-panel}",
+     "terminal": "{gray-surface-1}"
+    },
+    "usage": "Base elevated surface — panels, default component background."
+   },
+   {
+    "name": "color-background-card",
+    "value": {
+     "rebuild": "{ground-panel}",
+     "terminal": "{gray-surface-1}"
+    },
+    "usage": "Card surface."
+   },
+   {
+    "name": "color-background-popover",
+    "value": {
+     "rebuild": "{ground-lift}",
+     "terminal": "{gray-surface-3}"
+    },
+    "usage": "Popover, menu, tooltip, dialog surface."
+   },
+   {
+    "name": "color-background-muted",
+    "value": {
+     "rebuild": "#e090300d",
+     "terminal": "#ffffff08"
+    },
+    "usage": "Low-emphasis fill — disabled tracks, muted panels, empty states."
+   },
+   {
+    "name": "color-background-inverted",
+    "value": {
+     "rebuild": "{white-warm}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Inverted surface — the rare max-contrast callout. SEELE-style."
+   },
+   {
+    "name": "color-background-error-inverted",
+    "value": {
+     "rebuild": "{red-mid}",
+     "terminal": "{threat-400}"
+    },
+    "usage": "Solid alert surface carrying text — WARNING strips, destructive confirmations. Rebuild uses red-mid here because red-core fails text contrast; red-core stays for text-free fills."
+   },
+   {
+    "name": "color-background-alert",
+    "value": {
+     "rebuild": "{red-deep}",
+     "terminal": "{threat-900}"
+    },
+    "usage": "Alert-zone panel background in critical state."
+   },
+   {
+    "name": "color-background-system",
+    "value": {
+     "rebuild": "{blue-deep}",
+     "terminal": "{system-500}"
+    },
+    "usage": "Tinted system backdrop — radar, data wall, Angel-contact zone."
+   },
+   {
+    "name": "color-overlay",
+    "value": {
+     "rebuild": "#000000b3",
+     "terminal": "#000000cc"
+    },
+    "usage": "Scrim behind dialogs."
+   },
+   {
+    "name": "color-overlay-hover",
+    "value": {
+     "rebuild": "#e0903014",
+     "terminal": "#ffffff0d"
+    },
+    "usage": "Hover tint over interactive surfaces."
+   },
+   {
+    "name": "color-overlay-pressed",
+    "value": {
+     "rebuild": "#e0903029",
+     "terminal": "#ffffff1a"
+    },
+    "usage": "Pressed tint over interactive surfaces."
+   },
+   {
+    "name": "color-text-primary",
+    "value": {
+     "rebuild": "{amber-bright}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Primary body and heading text."
+   },
+   {
+    "name": "color-text-secondary",
+    "value": {
+     "rebuild": "{amber-mid}",
+     "terminal": "{gray-light}"
+    },
+    "usage": "Secondary and supporting text, captions."
+   },
+   {
+    "name": "color-text-tertiary",
+    "value": {
+     "rebuild": "{amber-mid}",
+     "terminal": "{gray-subdued}"
+    },
+    "usage": "Metadata, units (mV, %, sec), tertiary labels."
+   },
+   {
+    "name": "color-text-disabled",
+    "value": {
+     "rebuild": "{amber-low}",
+     "terminal": "{gray-muted}"
+    },
+    "usage": "Disabled text and placeholders. Below 4.5:1 by design — never content."
+   },
+   {
+    "name": "color-text-accent",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "{signal-300}"
+    },
+    "usage": "Signal text — HUD labels, callouts, numbers, links."
+   },
+   {
+    "name": "color-text-ghost",
+    "value": {
+     "rebuild": "{amber-rule}",
+     "terminal": "{gray-surface-3}"
+    },
+    "usage": "Ghost kanji texture layer. Decorative only; if you can read it at a glance it is too bright."
+   },
+   {
+    "name": "color-on-dark",
+    "value": {
+     "rebuild": "{white-warm}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Text on surfaces that are always dark."
+   },
+   {
+    "name": "color-on-light",
+    "value": {
+     "rebuild": "{ground-void}",
+     "terminal": "{ground-void}"
+    },
+    "usage": "Text on surfaces that are always light."
+   },
+   {
+    "name": "color-icon-accent",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "{signal-300}"
+    },
+    "usage": "Accent icons."
+   },
+   {
+    "name": "color-icon-primary",
+    "value": {
+     "rebuild": "{amber-bright}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Primary icons."
+   },
+   {
+    "name": "color-icon-secondary",
+    "value": {
+     "rebuild": "{amber-mid}",
+     "terminal": "{gray-subdued}"
+    },
+    "usage": "Secondary icons."
+   },
+   {
+    "name": "color-icon-disabled",
+    "value": {
+     "rebuild": "{amber-low}",
+     "terminal": "{gray-muted}"
+    },
+    "usage": "Disabled icons."
+   },
+   {
+    "name": "color-success",
+    "value": {
+     "rebuild": "{green-core}",
+     "terminal": "{scan-300}"
+    },
+    "usage": "Nominal / approved / connected — text, icon, border."
+   },
+   {
+    "name": "color-success-muted",
+    "value": {
+     "rebuild": "#00bb4426",
+     "terminal": "#30c08026"
+    },
+    "usage": "Nominal-zone background tint."
+   },
+   {
+    "name": "color-on-success",
+    "value": {
+     "rebuild": "{ground-base}",
+     "terminal": "{ground-void}"
+    },
+    "usage": "Text on solid nominal fills."
+   },
+   {
+    "name": "color-error",
+    "value": {
+     "rebuild": "{red-bright}",
+     "terminal": "{threat-100}"
+    },
+    "usage": "Critical / hostile / failure — text, icon, border."
+   },
+   {
+    "name": "color-error-muted",
+    "value": {
+     "rebuild": "#dd220033",
+     "terminal": "#cc000033"
+    },
+    "usage": "Alert background tint."
+   },
+   {
+    "name": "color-on-error",
+    "value": {
+     "rebuild": "{white-warm}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Text on solid alert fills."
+   },
+   {
+    "name": "color-warning",
+    "value": {
+     "rebuild": "{amber-peak}",
+     "terminal": "{signal-100}"
+    },
+    "usage": "Caution / attention — lighter than accent so the two separate by lightness."
+   },
+   {
+    "name": "color-warning-muted",
+    "value": {
+     "rebuild": "#ffd07026",
+     "terminal": "#ffb07026"
+    },
+    "usage": " Caution background tint."
+   },
+   {
+    "name": "color-on-warning",
+    "value": {
+     "rebuild": "{ground-base}",
+     "terminal": "{ground-void}"
+    },
+    "usage": "Text on solid caution fills — dark ink."
+   },
+   {
+    "name": "color-info",
+    "value": {
+     "rebuild": "{blue-bright}",
+     "terminal": "{system-100}"
+    },
+    "usage": "Classification / Pattern Blue readouts — text and icons."
+   },
+   {
+    "name": "color-info-fill",
+    "value": {
+     "rebuild": "{blue-pattern}",
+     "terminal": "{system-400}"
+    },
+    "usage": "Solid Pattern Blue fill."
+   },
+   {
+    "name": "color-on-info",
+    "value": {
+     "rebuild": "{white-warm}",
+     "terminal": "{gray-near-white}"
+    },
+    "usage": "Text on solid info fills."
+   },
+   {
+    "name": "color-border",
+    "value": {
+     "rebuild": "{amber-rule}",
+     "terminal": "{gray-rule}"
+    },
+    "usage": "Default 1px hairline — dividers, structure. Never 2px+ unless an alert frame."
+   },
+   {
+    "name": "color-border-emphasized",
+    "value": {
+     "rebuild": "{amber-mid}",
+     "terminal": "{gray-dim}"
+    },
+    "usage": "Emphasized hairline — input outlines, selected rows (3:1+)."
+   },
+   {
+    "name": "color-border-accent",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "{signal-300}"
+    },
+    "usage": "Signal hairline — masthead rules, primary type cards, focus."
+   },
+   {
+    "name": "color-border-alert",
+    "value": {
+     "rebuild": "{red-core}",
+     "terminal": "{threat-300}"
+    },
+    "usage": "Alert-frame border — the one place a 2px frame is allowed."
+   },
+   {
+    "name": "color-skeleton",
+    "value": {
+     "rebuild": "{ground-lift}",
+     "terminal": "{gray-surface-3}"
+    },
+    "usage": "Loading placeholder fill."
+   },
+   {
+    "name": "color-track",
+    "value": {
+     "rebuild": "{amber-rule}",
+     "terminal": "{gray-rule}"
+    },
+    "usage": "Slim channel — progress bars, sync meters, switch off-state."
+   },
+   {
+    "name": "color-shadow",
+    "value": {
+     "rebuild": "#e0903040",
+     "terminal": "#f0702040"
+    },
+    "usage": "Glow tint for live elements."
+   },
+   {
+    "name": "color-tint-hover",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "#ffffff"
+    },
+    "usage": "Hover-tint base at low opacity."
+   },
+   {
+    "name": "color-scanline",
+    "value": {
+     "rebuild": "#0000001f",
+     "terminal": "#0000000a"
+    },
+    "usage": "Scanline overlay stripe (Rebuild 3px/4px pitch; Terminal 1px/3px)."
+   },
+   {
+    "name": "color-background-amber",
+    "value": {
+     "rebuild": "#e0903026",
+     "terminal": "#f0702026"
+    },
+    "usage": "Background for amber categorical tags — Signal / standard data."
+   },
+   {
+    "name": "color-border-amber",
+    "value": {
+     "rebuild": "{amber-rule}",
+     "terminal": "{signal-700}"
+    },
+    "usage": "Border for amber categorical tags — Signal / standard data."
+   },
+   {
+    "name": "color-icon-amber",
+    "value": {
+     "rebuild": "{amber-core}",
+     "terminal": "{signal-300}"
+    },
+    "usage": "Icon for amber categorical tags — Signal / standard data."
+   },
+   {
+    "name": "color-text-amber",
+    "value": {
+     "rebuild": "{amber-bright}",
+     "terminal": "{signal-200}"
+    },
+    "usage": "Text for amber categorical tags — Signal / standard data."
+   },
+   {
+    "name": "color-background-red",
+    "value": {
+     "rebuild": "#dd220033",
+     "terminal": "#cc000033"
+    },
+    "usage": "Background for red categorical tags — Hostile / threat."
+   },
+   {
+    "name": "color-border-red",
+    "value": {
+     "rebuild": "{red-mid}",
+     "terminal": "{threat-500}"
+    },
+    "usage": "Border for red categorical tags — Hostile / threat."
+   },
+   {
+    "name": "color-icon-red",
+    "value": {
+     "rebuild": "{red-bright}",
+     "terminal": "{threat-200}"
+    },
+    "usage": "Icon for red categorical tags — Hostile / threat."
+   },
+   {
+    "name": "color-text-red",
+    "value": {
+     "rebuild": "#ff8a70",
+     "terminal": "{threat-100}"
+    },
+    "usage": "Text for red categorical tags — Hostile / threat."
+   },
+   {
+    "name": "color-background-green",
+    "value": {
+     "rebuild": "#00bb4426",
+     "terminal": "#30c08026"
+    },
+    "usage": "Background for green categorical tags — Nominal / scan data."
+   },
+   {
+    "name": "color-border-green",
+    "value": {
+     "rebuild": "{green-mid}",
+     "terminal": "{scan-500}"
+    },
+    "usage": "Border for green categorical tags — Nominal / scan data."
+   },
+   {
+    "name": "color-icon-green",
+    "value": {
+     "rebuild": "{green-core}",
+     "terminal": "{scan-300}"
+    },
+    "usage": "Icon for green categorical tags — Nominal / scan data."
+   },
+   {
+    "name": "color-text-green",
+    "value": {
+     "rebuild": "{green-bright}",
+     "terminal": "{scan-200}"
+    },
+    "usage": "Text for green categorical tags — Nominal / scan data."
+   },
+   {
+    "name": "color-background-blue",
+    "value": {
+     "rebuild": "#2244bb40",
+     "terminal": "#3232aa40"
+    },
+    "usage": "Background for blue categorical tags — Pattern Blue / system."
+   },
+   {
+    "name": "color-border-blue",
+    "value": {
+     "rebuild": "{blue-pattern}",
+     "terminal": "{system-300}"
+    },
+    "usage": "Border for blue categorical tags — Pattern Blue / system."
+   },
+   {
+    "name": "color-icon-blue",
+    "value": {
+     "rebuild": "{blue-bright}",
+     "terminal": "{system-200}"
+    },
+    "usage": "Icon for blue categorical tags — Pattern Blue / system."
+   },
+   {
+    "name": "color-text-blue",
+    "value": {
+     "rebuild": "#8fb8ff",
+     "terminal": "{system-100}"
+    },
+    "usage": "Text for blue categorical tags — Pattern Blue / system."
+   },
+   {
+    "name": "color-background-wille",
+    "value": {
+     "rebuild": "#7ab8d826",
+     "terminal": "#7ab8d826"
+    },
+    "usage": "Background for wille categorical tags — WILLE / AAA Wunder."
+   },
+   {
+    "name": "color-border-wille",
+    "value": {
+     "rebuild": "#3d6a80",
+     "terminal": "#3d6a80"
+    },
+    "usage": "Border for wille categorical tags — WILLE / AAA Wunder."
+   },
+   {
+    "name": "color-icon-wille",
+    "value": {
+     "rebuild": "{blue-wille}",
+     "terminal": "{blue-wille}"
+    },
+    "usage": "Icon for wille categorical tags — WILLE / AAA Wunder."
+   },
+   {
+    "name": "color-text-wille",
+    "value": {
+     "rebuild": "{blue-wille}",
+     "terminal": "{blue-wille}"
+    },
+    "usage": "Text for wille categorical tags — WILLE / AAA Wunder."
+   },
+   {
+    "name": "color-background-indigo",
+    "value": {
+     "rebuild": "#5a5aaa33",
+     "terminal": "#5a5aaa33"
+    },
+    "usage": "Background for indigo categorical tags — Grid / overlay / reference series."
+   },
+   {
+    "name": "color-border-indigo",
+    "value": {
+     "rebuild": "{indigo-500}",
+     "terminal": "{indigo-500}"
+    },
+    "usage": "Border for indigo categorical tags — Grid / overlay / reference series."
+   },
+   {
+    "name": "color-icon-indigo",
+    "value": {
+     "rebuild": "{indigo-300}",
+     "terminal": "{indigo-300}"
+    },
+    "usage": "Icon for indigo categorical tags — Grid / overlay / reference series."
+   },
+   {
+    "name": "color-text-indigo",
+    "value": {
+     "rebuild": "{indigo-100}",
+     "terminal": "{indigo-100}"
+    },
+    "usage": "Text for indigo categorical tags — Grid / overlay / reference series."
+   },
+   {
+    "name": "color-background-ochre",
+    "value": {
+     "rebuild": "#c8a04026",
+     "terminal": "#c8a04026"
+    },
+    "usage": "Background for ochre categorical tags — Archival / predicted."
+   },
+   {
+    "name": "color-border-ochre",
+    "value": {
+     "rebuild": "{ochre-500}",
+     "terminal": "{ochre-500}"
+    },
+    "usage": "Border for ochre categorical tags — Archival / predicted."
+   },
+   {
+    "name": "color-icon-ochre",
+    "value": {
+     "rebuild": "{ochre-300}",
+     "terminal": "{ochre-300}"
+    },
+    "usage": "Icon for ochre categorical tags — Archival / predicted."
+   },
+   {
+    "name": "color-text-ochre",
+    "value": {
+     "rebuild": "{ochre-100}",
+     "terminal": "{ochre-100}"
+    },
+    "usage": "Text for ochre categorical tags — Archival / predicted."
+   },
+   {
+    "name": "color-background-gray",
+    "value": {
+     "rebuild": "#b0a88826",
+     "terminal": "#ffffff14"
+    },
+    "usage": "Background for gray categorical tags — SEELE / neutral / offline."
+   },
+   {
+    "name": "color-border-gray",
+    "value": {
+     "rebuild": "#5a5444",
+     "terminal": "{gray-rule}"
+    },
+    "usage": "Border for gray categorical tags — SEELE / neutral / offline."
+   },
+   {
+    "name": "color-icon-gray",
+    "value": {
+     "rebuild": "{white-dim}",
+     "terminal": "{gray-subdued}"
+    },
+    "usage": "Icon for gray categorical tags — SEELE / neutral / offline."
+   },
+   {
+    "name": "color-text-gray",
+    "value": {
+     "rebuild": "{white-warm}",
+     "terminal": "{gray-light}"
+    },
+    "usage": "Text for gray categorical tags — SEELE / neutral / offline."
+   }
+  ]
+ },
+ "type": {
+  "fonts": [
+   {
+    "family": "Noto Serif JP",
+    "file": "fonts/NotoSerifJP-Black.woff2",
+    "weight": "900",
+    "style": "normal"
+   },
+   {
+    "family": "Share Tech Mono",
+    "file": "fonts/ShareTechMono-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "IBM Plex Mono",
+    "file": "fonts/IBMPlexMono-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "Inter",
+    "file": "fonts/Inter-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "Inter",
+    "file": "fonts/Inter-Bold.woff2",
+    "weight": "700",
+    "style": "normal"
+   },
+   {
+    "family": "Zen Kaku Gothic New",
+    "file": "fonts/ZenKakuGothicNew-Light.woff2",
+    "weight": "300",
+    "style": "normal"
+   },
+   {
+    "family": "Zen Kaku Gothic New",
+    "file": "fonts/ZenKakuGothicNew-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "Zen Kaku Gothic New",
+    "file": "fonts/ZenKakuGothicNew-Bold.woff2",
+    "weight": "700",
+    "style": "normal"
+   },
+   {
+    "family": "Jost",
+    "file": "fonts/Jost-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "Jost",
+    "file": "fonts/Jost-Medium.woff2",
+    "weight": "500",
+    "style": "normal"
+   },
+   {
+    "family": "Jost",
+    "file": "fonts/Jost-Bold.woff2",
+    "weight": "700",
+    "style": "normal"
+   },
+   {
+    "family": "Bebas Neue",
+    "file": "fonts/BebasNeue-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "Eurostile",
+    "file": "fonts/Eurostile-Regular.woff2",
+    "weight": "400",
+    "style": "normal"
+   },
+   {
+    "family": "EuroStyle",
+    "file": "fonts/EuroStyle-Normal.woff2",
+    "weight": "400",
+    "style": "normal"
+   }
+  ],
+  "families": {
+   "display": "\"Matisse Pro EB\", \"Noto Serif JP\", \"Hiragino Mincho ProN\", \"Yu Mincho\", Georgia, serif",
+   "sans": "\"Neue Helvetica\", \"Helvetica Neue\", Helvetica, Inter, Arial, sans-serif",
+   "mono": "\"Share Tech Mono\", \"OCR B\", \"IBM Plex Mono\", monospace",
+   "jp": "\"Zen Kaku Gothic New\", \"Noto Sans JP\", sans-serif",
+   "signage": "\"Futura PT\", Futura, Jost, \"Century Gothic\", sans-serif",
+   "poster": "\"Bebas Neue\", Impact, sans-serif",
+   "hardware": "Eurostile, EuroStyle, \"Arial Black\", sans-serif"
+  },
+  "groups": [
+   {
+    "name": "Display",
+    "family": "display",
+    "styles": [
+     {
+      "name": "display-1",
+      "fontSize": "3.25rem",
+      "lineHeight": 1,
+      "fontWeight": 900,
+      "sample": "新世紀エヴァンゲリオン",
+      "usage": "Title-card identity. Matisse EB substitute; apply compress-standard (scaleX 0.70)."
+     },
+     {
+      "name": "display-2",
+      "fontSize": "2.25rem",
+      "lineHeight": 1,
+      "fontWeight": 900,
+      "sample": "使徒、襲来",
+      "usage": "Episode / section title card. Mechanically compressed."
+     },
+     {
+      "name": "display-3",
+      "fontSize": "1.75rem",
+      "lineHeight": 1.05,
+      "fontWeight": 900,
+      "sample": "色彩基盤",
+      "usage": "Panel headers in Japanese. Rebuild stretches with stretch-rebuild (scaleX 1.18)."
+     }
+    ]
+   },
+   {
+    "name": "Headings",
+    "family": "sans",
+    "styles": [
+     {
+      "name": "heading-1",
+      "fontSize": "1.5rem",
+      "lineHeight": 1.15,
+      "fontWeight": 700,
+      "letterSpacing": "0.06em",
+      "sample": "EMERGENCY STATUS",
+      "usage": "Alert headline. ALL CAPS, Helvetica, often compress-mild."
+     },
+     {
+      "name": "heading-2",
+      "fontSize": "1.25rem",
+      "lineHeight": 1.2,
+      "fontWeight": 700,
+      "letterSpacing": "0.08em",
+      "sample": "6th ANGEL: A.T. FIELD; EXTENDED",
+      "usage": "HUD callout. ALL CAPS."
+     },
+     {
+      "name": "heading-3",
+      "fontSize": "1.0625rem",
+      "lineHeight": 1.25,
+      "fontWeight": 700,
+      "letterSpacing": "0.1em",
+      "sample": "OPERATING SCHEMATIC",
+      "usage": "Section titles. ALL CAPS."
+     },
+     {
+      "name": "heading-4",
+      "fontSize": "0.875rem",
+      "lineHeight": 1.3,
+      "fontWeight": 700,
+      "letterSpacing": "0.12em",
+      "sample": "ACTIVE LINKS",
+      "usage": "Card and group titles. ALL CAPS."
+     },
+     {
+      "name": "heading-5",
+      "fontSize": "0.75rem",
+      "lineHeight": 1.4,
+      "fontWeight": 700,
+      "letterSpacing": "0.2em",
+      "sample": "DIRECT LINK 108",
+      "usage": "Eyebrow / data label. ALL CAPS."
+     },
+     {
+      "name": "heading-6",
+      "fontSize": "0.625rem",
+      "lineHeight": 1.4,
+      "fontWeight": 700,
+      "letterSpacing": "0.3em",
+      "sample": "SECTION BREAK · 02",
+      "usage": "Smallest label — section breaks, legend headers. ALL CAPS."
+     }
+    ]
+   },
+   {
+    "name": "Text",
+    "family": "mono",
+    "styles": [
+     {
+      "name": "body",
+      "fontSize": "0.8125rem",
+      "lineHeight": 1.6,
+      "fontWeight": 400,
+      "letterSpacing": "0.04em",
+      "sample": "Direct Link 108 → SUB-LINK 280",
+      "usage": "Default body and data copy — the MAGI terminal voice."
+     },
+     {
+      "name": "large",
+      "fontSize": "1rem",
+      "lineHeight": 1.5,
+      "fontWeight": 400,
+      "letterSpacing": "0.04em",
+      "sample": "SYNC RATE 89.2%",
+      "usage": "Hero readouts and lead lines."
+     },
+     {
+      "name": "label",
+      "fontSize": "0.75rem",
+      "lineHeight": 1.4,
+      "fontWeight": 400,
+      "letterSpacing": "0.15em",
+      "sample": "MAGI SYSTEM · OPERATIONAL",
+      "usage": "Form and control labels. Uppercase."
+     },
+     {
+      "name": "supporting",
+      "fontSize": "0.6875rem",
+      "lineHeight": 1.6,
+      "fontWeight": 400,
+      "letterSpacing": "0.1em",
+      "sample": "±0:02:18649",
+      "usage": "Captions, units, timestamps, helper text."
+     }
+    ]
+   },
+   {
+    "name": "Code",
+    "family": "mono",
+    "styles": [
+     {
+      "name": "code",
+      "fontSize": "0.8125rem",
+      "lineHeight": 1.4,
+      "fontWeight": 400,
+      "sample": "MEMORY CHECK  640TB + 2048TB  OK",
+      "usage": "MAGI boot dumps, config tables, code."
+     }
+    ]
+   },
+   {
+    "name": "Texture",
+    "family": "jp",
+    "styles": [
+     {
+      "name": "ghost-kanji",
+      "fontSize": "1.125rem",
+      "lineHeight": 1.2,
+      "fontWeight": 300,
+      "letterSpacing": "0.1em",
+      "sample": "第87タンパク壁",
+      "usage": "Ghost texture layer in color-text-ghost. Never carries meaning."
+     },
+     {
+      "name": "signage",
+      "family": "signage",
+      "fontSize": "0.875rem",
+      "lineHeight": 1.3,
+      "fontWeight": 500,
+      "letterSpacing": "0.18em",
+      "sample": "REALTIME DATA FEED",
+      "usage": "Futura-style environmental signage, axis markers, secondary panel labels."
+     },
+     {
+      "name": "jp-subtitle",
+      "fontSize": "0.6875rem",
+      "lineHeight": 1.6,
+      "fontWeight": 300,
+      "letterSpacing": "0.2em",
+      "sample": "カラーファウンデーションシステム",
+      "usage": "Japanese subtitle under an English masthead, in color-text-secondary."
+     }
+    ]
+   },
+   {
+    "name": "Poster",
+    "family": "poster",
+    "styles": [
+     {
+      "name": "poster-1",
+      "fontSize": "3.75rem",
+      "lineHeight": 1,
+      "fontWeight": 400,
+      "letterSpacing": "0.08em",
+      "sample": "COLOR FOUNDATION",
+      "usage": "Document masthead (Bebas Neue, as in the v2 spec)."
+     },
+     {
+      "name": "poster-2",
+      "fontSize": "1.25rem",
+      "lineHeight": 1.1,
+      "fontWeight": 400,
+      "letterSpacing": "0.15em",
+      "sample": "COLOR ROLES & USAGE",
+      "usage": "Spec section titles, philosophy card titles."
+     }
+    ]
+   },
+   {
+    "name": "Hardware",
+    "family": "hardware",
+    "styles": [
+     {
+      "name": "stencil",
+      "fontSize": "1.5rem",
+      "lineHeight": 1.1,
+      "fontWeight": 400,
+      "letterSpacing": "0.22em",
+      "sample": "RESCUE NERV",
+      "usage": "Eurostile — vehicle and equipment stencils, military hardware labels. EuroStyle is the fallback."
+     },
+     {
+      "name": "stencil-sm",
+      "fontSize": "0.875rem",
+      "lineHeight": 1.2,
+      "fontWeight": 400,
+      "letterSpacing": "0.28em",
+      "sample": "R-08 · EXTENDED",
+      "usage": "Small hardware markings."
+     }
+    ]
+   }
+  ]
+ },
+ "spacing": {
+  "tokens": [
+   {
+    "name": "space-0",
+    "value": "0px",
+    "usage": "Zero — swatch rows butt together with only a 2px seam."
+   },
+   {
+    "name": "space-0-5",
+    "value": "2px",
+    "usage": "The NERV seam — gap between adjacent swatches, cards, panels."
+   },
+   {
+    "name": "space-1",
+    "value": "4px",
+    "usage": "Base unit — tight internal padding."
+   },
+   {
+    "name": "space-1-5",
+    "value": "6px",
+    "usage": "Icon-to-label, dot-to-text."
+   },
+   {
+    "name": "space-2",
+    "value": "8px",
+    "usage": "Compact padding — badges, legend rows."
+   },
+   {
+    "name": "space-3",
+    "value": "12px",
+    "usage": "Default component padding."
+   },
+   {
+    "name": "space-4",
+    "value": "16px",
+    "usage": "Section gutter; card padding at density."
+   },
+   {
+    "name": "space-5",
+    "value": "20px",
+    "usage": "Panel padding."
+   },
+   {
+    "name": "space-6",
+    "value": "24px",
+    "usage": "Section header spacing."
+   },
+   {
+    "name": "space-8",
+    "value": "32px",
+    "usage": "Document side padding."
+   },
+   {
+    "name": "space-10",
+    "value": "40px",
+    "usage": "Sub-section break."
+   },
+   {
+    "name": "space-12",
+    "value": "48px",
+    "usage": "Rule-divider margin."
+   },
+   {
+    "name": "space-14",
+    "value": "56px",
+    "usage": "Section-label top margin."
+   },
+   {
+    "name": "space-18",
+    "value": "72px",
+    "usage": "Section spacing."
+   }
+  ]
+ },
+ "radius": {
+  "tokens": [
+   {
+    "name": "radius-none",
+    "value": "0px",
+    "usage": "Default for everything — NERV UI is square precision instrumentation."
+   },
+   {
+    "name": "radius-inner",
+    "value": "0px",
+    "usage": "Nested elements — kept for Astryx parity, square."
+   },
+   {
+    "name": "radius-element",
+    "value": "1px",
+    "usage": "Buttons, inputs, badges — the 1px softening from the source role-badge."
+   },
+   {
+    "name": "radius-container",
+    "value": "0px",
+    "usage": "Cards, menus — square."
+   },
+   {
+    "name": "radius-page",
+    "value": "0px",
+    "usage": "Dialogs, sheets — square."
+   },
+   {
+    "name": "radius-chat",
+    "value": "0px",
+    "usage": "Chat surfaces — square."
+   },
+   {
+    "name": "radius-full",
+    "value": "9999px",
+    "usage": "Status dots and blips only."
+   }
+  ]
+ },
+ "size": {
+  "tokens": [
+   {
+    "name": "size-element-sm",
+    "value": "24px",
+    "usage": "Compact control height."
+   },
+   {
+    "name": "size-element-md",
+    "value": "30px",
+    "usage": "Default control height."
+   },
+   {
+    "name": "size-element-lg",
+    "value": "36px",
+    "usage": "Large control height."
+   }
+  ]
+ },
+ "border": {
+  "tokens": [
+   {
+    "name": "border-width",
+    "value": "1px",
+    "usage": "Every structural rule. Hairlines, not heavy borders."
+   },
+   {
+    "name": "border-width-alert",
+    "value": "2px",
+    "usage": "Alert frames only (EMERGENCY box)."
+   },
+   {
+    "name": "border-width-rail",
+    "value": "3px",
+    "usage": "Compression callout / usage-card leading rail."
+   }
+  ]
+ },
+ "compression": {
+  "note": "Mechanical compression doctrine — apply as transform: scaleX(value) with transform-origin: left.",
+  "tokens": [
+   {
+    "name": "compress-none",
+    "value": "1",
+    "usage": "Normal width."
+   },
+   {
+    "name": "compress-mild",
+    "value": "0.82",
+    "usage": "Mild — HUD headings."
+   },
+   {
+    "name": "compress-standard",
+    "value": "0.70",
+    "usage": "Standard — title cards, alert headlines."
+   },
+   {
+    "name": "compress-extreme",
+    "value": "0.55",
+    "usage": "Extreme — panic states, subliminal frames."
+   },
+   {
+    "name": "stretch-rebuild",
+    "value": "1.18",
+    "usage": "Rebuild-film horizontal stretch for display Japanese."
+   }
+  ]
+ },
+ "shadow": {
+  "tokens": [
+   {
+    "name": "shadow-low",
+    "value": {
+     "rebuild": "0 0 0 1px rgba(224,144,48,0.18)",
+     "terminal": "0 0 0 1px rgba(240,112,32,0.18)"
+    },
+    "usage": "Hairline lift — no drop shadows on a black ground."
+   },
+   {
+    "name": "shadow-med",
+    "value": {
+     "rebuild": "0 0 0 1px rgba(224,144,48,0.35), 0 0 12px rgba(224,144,48,0.10)",
+     "terminal": "0 0 0 1px rgba(240,112,32,0.35), 0 0 12px rgba(240,112,32,0.10)"
+    },
+    "usage": "Raised panel — hairline plus faint phosphor bloom."
+   },
+   {
+    "name": "shadow-high",
+    "value": {
+     "rebuild": "0 0 0 1px rgba(224,144,48,0.6), 0 0 24px rgba(224,144,48,0.18)",
+     "terminal": "0 0 0 1px rgba(240,112,32,0.6), 0 0 24px rgba(240,112,32,0.18)"
+    },
+    "usage": "Dialogs — strongest bloom."
+   },
+   {
+    "name": "shadow-glow-accent",
+    "value": {
+     "rebuild": "0 0 6px rgba(224,144,48,0.8)",
+     "terminal": "0 0 6px rgba(240,112,32,0.8)"
+    },
+    "usage": "Live element glow. Glow is earned — only things happening now."
+   },
+   {
+    "name": "shadow-glow-success",
+    "value": {
+     "rebuild": "0 0 6px rgba(0,187,68,0.8)",
+     "terminal": "0 0 6px rgba(48,192,128,0.8)"
+    },
+    "usage": "Live nominal indicator."
+   },
+   {
+    "name": "shadow-glow-error",
+    "value": {
+     "rebuild": "0 0 8px rgba(255,51,0,0.85)",
+     "terminal": "0 0 8px rgba(204,0,0,0.9)"
+    },
+    "usage": "Pulsing critical indicator."
+   },
+   {
+    "name": "shadow-inset-hover",
+    "value": {
+     "rebuild": "inset 0 0 0 1px rgba(184,120,32,0.5)",
+     "terminal": "inset 0 0 0 1px rgba(255,255,255,0.15)"
+    },
+    "usage": "Hover ring on inputs."
+   },
+   {
+    "name": "shadow-inset-selected",
+    "value": {
+     "rebuild": "inset 0 0 0 1px rgba(224,144,48,0.9)",
+     "terminal": "inset 0 0 0 1px rgba(240,112,32,0.9)"
+    },
+    "usage": "Focus / selected ring."
+   },
+   {
+    "name": "shadow-inset-success",
+    "value": {
+     "rebuild": "inset 0 0 0 1px rgba(0,187,68,0.6)",
+     "terminal": "inset 0 0 0 1px rgba(48,192,128,0.6)"
+    },
+    "usage": "Nominal validation ring."
+   },
+   {
+    "name": "shadow-inset-warning",
+    "value": {
+     "rebuild": "inset 0 0 0 1px rgba(255,208,112,0.6)",
+     "terminal": "inset 0 0 0 1px rgba(255,176,112,0.6)"
+    },
+    "usage": "Caution validation ring."
+   },
+   {
+    "name": "shadow-inset-error",
+    "value": {
+     "rebuild": "inset 0 0 0 1px rgba(255,51,0,0.7)",
+     "terminal": "inset 0 0 0 1px rgba(255,96,96,0.7)"
+    },
+    "usage": "Alert validation ring."
+   }
+  ]
+ },
+ "meta": {
+  "source": "files",
+  "forkedFrom": "Astryx (https://claude.ai/artifact/KsntSpkg67Fz7bC6FkqBeG)",
+  "foundations": [
+   "nge-rebuild-colors.html (Color Foundations v1.0)",
+   "NGE_Color_Foundation_v2.html (Color + Typography Foundation v2.0)"
+  ]
+ }
+}

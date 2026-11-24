@@ -1,0 +1,49 @@
+<!-- @dsCard group="Alert" height=520 subtitle="KEEP OUT card cutting between its notices, and the red activation banner · frames 144–149, W6, W17" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-0-5); }
+  .ko { height: 440px; background: #000; color: #fff; display: flex; flex-direction: column; align-items: center; padding-top: var(--space-6); overflow: hidden; }
+  .ko h1 { margin: 0; font-size: 158px; font-weight: 700; line-height: 0.82; letter-spacing: -0.03em; transform: scaleX(var(--compress-extreme)); white-space: nowrap;
+    text-shadow: 0 0 2px #fff, 0 0 12px #ffffffaa, 0 0 34px #ffffff55; }
+  .ko hr { width: 86%; border: 0; height: 2px; background: #fff; margin: var(--space-3) 0 var(--space-5); box-shadow: 0 0 8px #fff; }
+  .ko p { margin: 0; text-align: center; font-size: 36px; font-weight: 700; line-height: 1.22; letter-spacing: -0.01em; transform: scaleX(var(--compress-standard)); text-shadow: 0 0 6px #ffffff99; white-space: nowrap; }
+  .ban { position: relative; height: 440px; overflow: hidden; background: var(--alert-950); perspective: 900px; }
+  .ban .plate { position: absolute; left: -6%; right: -6%; top: 26%; height: 52%; background: var(--alert-300); transform: rotateX(18deg) rotateZ(-8deg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 60px #e7323d88;
+    background-image: repeating-linear-gradient(90deg, transparent 0 22px, #00000014 22px 23px), repeating-linear-gradient(0deg, transparent 0 22px, #00000014 22px 23px); }
+  .ban b { font-size: 76px; font-weight: 700; line-height: 1; color: var(--alert-950); letter-spacing: -0.02em; transform: scaleX(var(--compress-mild)); }
+  .ban small { font-size: 30px; font-weight: 700; color: var(--alert-950); transform: scaleX(var(--compress-mild)); }
+  .ban .rail { position: absolute; left: 0; right: 0; height: 18px; background: repeating-linear-gradient(90deg, var(--alert-300) 0 3px, transparent 3px 7px); opacity: 0.6; transform: rotateZ(-8deg); }
+  /* hard cuts only: on a change the card drops out for a few frames, then holds. The resting state is always fully visible. */
+  .cut { opacity: .12; }
+  .ko::after { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 40% at 50% 30%, #ffffff1f, transparent 70%); pointer-events: none; }
+  .ko { position: relative; }
+  .ko .n { position: absolute; left: 14px; bottom: 10px; font: 10px var(--font-mono); color: #ffffff88; letter-spacing: .1em; }
+  @media (prefers-reduced-motion: no-preference) { .ko h1 { animation: hum 3.4s ease-in-out infinite alternate; } }
+  @keyframes hum { from { text-shadow: 0 0 2px #fff, 0 0 12px #ffffffaa, 0 0 34px #ffffff55; } to { text-shadow: 0 0 3px #fff, 0 0 20px #ffffffcc, 0 0 60px #ffffff77; } }
+</style>
+</head>
+<body>
+  <section class="ko" id="ko" aria-label="Keep out. Tokyo-3, near third impact ground zero.">
+    <h1>KEEP OUT</h1><hr>
+    <p id="lines">TOKYO-III<br>NEAR THIRD IMPACT<br>GROUND ZERO</p><span class="n" id="n">NOTICE 1 / 3</span>
+  </section>
+  <section class="ban" aria-label="New EVA unit. Activation signal confirmed.">
+    <div class="rail" style="top:16%"></div><div class="rail" style="top:82%"></div>
+    <div class="plate" id="plate"><b>New EVA-Unit</b><small>- Activation Signal Confirmed -</small></div>
+  </section>
+<script>
+// the card runs through its notices the way the film cuts between them: same heading, new lines, a few dropped frames between
+const NOTES = [["TOKYO-III", "NEAR THIRD IMPACT", "GROUND ZERO"], ["EVA-01 RESTRICTED AREA", "NO ENTRY BEYOND THIS POINT"], ["LILITH PRESERVATION SITE", "ACCESS STRICTLY RESTRICTED"]];
+const ko = document.getElementById("ko"), lines = document.getElementById("lines"), nn = document.getElementById("n"), plate = document.getElementById("plate");
+function show(i) { lines.innerHTML = NOTES[i].join("<br>"); nn.textContent = `NOTICE ${i + 1} / ${NOTES.length}`; ko.setAttribute("aria-label", "Keep out. " + NOTES[i].join(", ") + "."); }
+const flick = (el, then) => { el.classList.add("cut"); setTimeout(() => { then && then(); el.classList.remove("cut"); setTimeout(() => el.classList.add("cut"), 70); setTimeout(() => el.classList.remove("cut"), 130); }, 90); };
+const pin = (location.hash.match(/n=(\d)/) || [])[1];   // #n=2 pins a notice
+show(pin ? +pin - 1 : 0);
+if (!pin && !matchMedia("(prefers-reduced-motion: reduce)").matches) { let i = 0; setInterval(() => { i = (i + 1) % NOTES.length; flick(lines, () => show(i)); if (i === 0) flick(plate); }, 3600); }
+</script>
+</body>
+</html>

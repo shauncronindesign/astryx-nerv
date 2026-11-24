@@ -1,0 +1,61 @@
+<!-- @dsCard group="Data display" height=360 subtitle="Bracket-captioned status rows with glowing markers · Tactical theme" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; padding: var(--space-6); background: var(--color-background-body); font-family: var(--font-sans); }
+  .panel { --c: var(--chamfer-md); position: relative; max-width: 420px; padding: var(--space-3) var(--space-4) var(--space-4); background: var(--color-border);
+    clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+  .panel::before { content: ""; position: absolute; inset: 1px; z-index: -1; background: var(--color-background-card); clip-path: inherit; }
+  .title { display: flex; align-items: baseline; gap: var(--space-2); margin-bottom: var(--space-2); color: var(--color-text-accent); }
+  .title b { display: inline-flex; align-items: center; gap: 0.4em; font-size: 16px; text-shadow: var(--shadow-bloom); }
+  .title b::before, .title b::after { content: ""; width: 1.5px; height: 1em; background: currentColor; }
+  .title small { margin-left: auto; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; color: var(--color-text-tertiary); }
+  ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+  li { --s: var(--color-text-secondary); display: grid; grid-template-columns: 10px 1fr auto; align-items: center; gap: var(--space-3); padding: 5px var(--space-2);
+    border-left: 2px solid var(--s); background: linear-gradient(90deg, color-mix(in srgb, var(--s) 12%, transparent), transparent 70%);
+    font-size: 13px; font-weight: 700; color: var(--color-text-secondary); }
+  .mk { width: 8px; height: 8px; background: var(--s); transform: rotate(45deg); box-shadow: 0 0 6px var(--s); }
+  .val { font-size: 15px; color: var(--s); text-shadow: 0 0 5px color-mix(in srgb, var(--s) 70%, transparent); transform: scaleX(var(--compress-mild)); transform-origin: right; }
+  .nominal { --s: var(--color-success); }
+  .caution { --s: var(--color-warning); }
+  .critical { --s: var(--color-error); background: linear-gradient(90deg, color-mix(in srgb, var(--color-error) 28%, transparent), transparent 85%); }
+  .critical .mk { animation: pulse 0.8s steps(2) infinite; }
+  .offline { --s: var(--color-text-disabled); color: var(--color-text-disabled); background: none; }
+  .offline .mk { background: transparent; box-shadow: inset 0 0 0 1px var(--s); }
+  .offline .val { text-shadow: none; }
+  /* check-in: on a refresh every row goes back to CHECKING, then the rows report one at a time */
+  li.pending { --s: var(--color-text-disabled); color: var(--color-text-tertiary); background: none; }
+  li.pending .mk { background: transparent; box-shadow: inset 0 0 0 1px var(--s); } li.pending .val { text-shadow: none; }
+  li.probe { --s: var(--color-text-accent); background: linear-gradient(90deg, color-mix(in srgb, var(--color-text-accent) 30%, transparent), transparent 90%); }
+  .sum { display: flex; justify-content: space-between; margin-top: var(--space-3); padding-top: var(--space-2); border-top: 1px solid var(--color-border); font: 10px var(--font-mono); letter-spacing: .08em; color: var(--color-text-tertiary); }
+  .sum b { color: var(--color-text-accent); font-weight: 400; }
+  @keyframes pulse { 50% { opacity: 0.3; } }
+  @media (prefers-reduced-motion: reduce) { .critical .mk { animation: none; } }
+</style>
+</head>
+<body>
+  <section class="panel" aria-labelledby="st">
+    <div class="title"><b id="st">System Status</b><small>MAGI-SYS · LIVE</small></div>
+    <ul>
+      <li class="nominal"><span class="mk"></span>EVA-01 Interface<span class="val">NOMINAL</span></li>
+      <li class="nominal"><span class="mk"></span>MAGI Casper<span class="val">ACTIVE</span></li>
+      <li class="caution"><span class="mk"></span>A.T. Field Sync<span class="val">WARNING</span></li>
+      <li class="caution"><span class="mk"></span>Battery Reserve<span class="val">18%</span></li>
+      <li class="critical"><span class="mk"></span>Pattern Blue<span class="val">CONFIRMED</span></li>
+      <li class="offline"><span class="mk"></span>EVA-00 [Offline]<span class="val">STANDBY</span></li>
+    </ul>
+    <div class="sum" role="status"><span id="sum">6 / 6 REPORTING · 1 CRITICAL</span><b id="cycle">CHECK 0412</b></div>
+  </section>
+<script>
+// each row keeps its final state in the markup; the script only plays the check-in over it
+const rows = [...document.querySelectorAll("li")].map(li => ({ li, cls: li.className, val: li.querySelector(".val"), text: li.querySelector(".val").textContent }));
+const sum = document.getElementById("sum"), cyc = document.getElementById("cycle"); let n = 412;
+function show(k) { rows.forEach((r, i) => { const done = i < k, probing = i === k; r.li.className = done ? r.cls : probing ? "pending probe" : "pending"; r.val.textContent = done ? r.text : probing ? "CHECKING" : "—"; });
+  const crit = rows.filter((r, i) => i < k && r.cls === "critical").length; sum.textContent = `${Math.min(k, rows.length)} / ${rows.length} REPORTING` + (k >= rows.length ? ` · ${crit} CRITICAL` : ""); }
+const pin = (location.hash.match(/boot=(\d)/) || [])[1];   // #boot=3 pins the check-in after three rows
+if (pin) show(+pin);
+else if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const run = () => { cyc.textContent = "CHECK " + String(++n).padStart(4, "0"); let k = 0; show(0); const id = setInterval(() => { show(++k); if (k >= rows.length) { clearInterval(id); setTimeout(run, 7000); } }, 380); }; setTimeout(run, 2500); }
+</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!-- @dsCard group="Media" height=560 subtitle="Multi-cam combat simulation · posed wireframe mannequin, dome floor, live timecode · Asuka" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); }
+  .sim { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-width: 980px; }
+  .quad { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .cam { position: relative; background: #0b0b0e; overflow: hidden; aspect-ratio: 16 / 9; }
+  .quad .cam { aspect-ratio: auto; }
+  .cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cam i { position: absolute; width: 9px; height: 9px; border: 1.5px solid var(--tac-orange-400); }
+  .cam i.a { left: 4px; top: 4px; border-right: 0; border-bottom: 0; } .cam i.b { right: 4px; bottom: 4px; border-left: 0; border-top: 0; }
+  .tc, .id, .enemy { position: absolute; color: #dfe4ec; text-shadow: 0 0 4px #000; }
+  .tc { font: 8px var(--font-mono); } .id { font: 700 11px var(--font-sans); transform: scaleX(.82); }
+  .enemy { left: 50%; top: 5px; transform: translateX(-50%); font: 700 8px var(--font-sans); color: var(--gold-300); } .enemy::before { content: "▼ "; }
+  .br .tc { right: 52px; bottom: 6px; } .br .id { right: 14px; bottom: 4px; transform-origin: right; }
+  .tr .tc { right: 52px; top: 6px; } .tr .id { right: 14px; top: 4px; transform-origin: right; }
+  .tl .tc { left: 62px; top: 6px; } .tl .id { left: 14px; top: 4px; transform-origin: left; }
+  .caps { grid-column: 1 / -1; display: flex; justify-content: space-between; font: 700 14px var(--font-sans); color: #eef1f5; padding: 1px 0 3px; }
+  .caps span { transform: scaleX(.82); transform-origin: left; } .caps span + span { transform-origin: right; }
+</style>
+</head>
+<body>
+<div class="sim" id="sim" role="img" aria-label="EVA-02 combat simulation, takes 2199 and 2200: seven camera views of a wireframe figure with a rifle, tracking target ENEMY gamma"></div>
+<script>
+const css = getComputedStyle(document.body), col = v => css.getPropertyValue(v).trim();
+const K = { wire: col("--sim-wire-bright"), dim: col("--sim-wire"), core: col("--sim-core"), gun: col("--sim-violet"), grid: "#3a3d48" };
+// layout: take 2199 = CAM 01 + a quad of 02-05; take 2200 = CAM 06 and 07.
+const sim = document.getElementById("sim"), cams = [];
+const tile = (host, n, pos, pose, view, enemy) => { const d = document.createElement("div"); d.className = "cam " + pos;
+  d.innerHTML = `<canvas width="960" height="540"></canvas><i class="a"></i><i class="b"></i><span class="tc"></span><span class="id">CAM:${String(n).padStart(2, "0")}</span>` + (enemy ? '<span class="enemy">ENEMY-γ</span>' : "");
+  host.appendChild(d); cams.push({ cv: d.querySelector("canvas"), tc: d.querySelector(".tc"), pose, view }); };
+// pose: joint angles in degrees (0 = straight down for limbs). view: zoom, pan, roll, yaw (side-on squash)
+const P = {
+  stand: { lean: 0, armL: [12, 20], armR: [-8, 6], legL: [8, 0], legR: [-8, 0], gun: 0 },
+  aim:   { lean: 6, armL: [72, 96], armR: [48, 104], legL: [16, 8], legR: [-14, 0], gun: 1 },
+  run:   { lean: 16, armL: [60, 100], armR: [40, 112], legL: [-38, 30], legR: [34, 50], gun: 1 },
+  kneel: { lean: 10, armL: [68, 96], armR: [46, 104], legL: [-80, 80], legR: [10, 95], gun: 1 },
+};
+tile(sim, 1, "br", ["stand", "aim"], { z: 1.3, x: -40, y: 10, roll: 0 }, true);
+const q = document.createElement("div"); q.className = "quad"; sim.appendChild(q);
+tile(q, 2, "br", ["aim", "aim"], { z: 2.6, x: 60, y: 150, roll: -24 }); tile(q, 3, "tl", ["aim", "run"], { z: 2.2, x: -40, y: 120, roll: 30 });
+tile(q, 4, "tr", ["run", "kneel"], { z: 1.9, x: 0, y: 40, roll: -48 }); tile(q, 5, "tl", ["stand", "aim"], { z: 3, x: -60, y: 240, roll: 8 });
+sim.insertAdjacentHTML("beforeend", '<div class="caps"><span>Object:EVA-02 Simulation Take 2199</span><span>Object:EVA-02 Simulation Take 2200</span></div>');
+tile(sim, 6, "tr", ["aim", "kneel"], { z: 1.8, x: 20, y: 90, roll: 4 }); tile(sim, 7, "tl", ["run", "aim"], { z: 1.3, x: -120, y: 10, roll: 0 }, true);
+const rad = d => d * Math.PI / 180, mix = (a, b, u) => a + (b - a) * u;
+const lerpPose = (a, b, u) => ({ lean: mix(a.lean, b.lean, u), gun: mix(a.gun, b.gun, u), ...Object.fromEntries(["armL", "armR", "legL", "legR"].map(k => [k, [mix(a[k][0], b[k][0], u), mix(a[k][1], b[k][1], u)]])) });
+// a limb is a capsule outline with cross rungs, so it reads as a wire mesh instead of a stick
+function capsule(g, x0, y0, x1, y1, r, rungs = 4) { const a = Math.atan2(y1 - y0, x1 - x0), nx = -Math.sin(a) * r, ny = Math.cos(a) * r;
+  g.beginPath(); g.moveTo(x0 + nx, y0 + ny); g.lineTo(x1 + nx, y1 + ny); g.arc(x1, y1, r, a + Math.PI / 2, a - Math.PI / 2, true); g.lineTo(x0 - nx, y0 - ny); g.arc(x0, y0, r, a - Math.PI / 2, a + Math.PI / 2, true);
+  g.fill(); g.stroke(); g.beginPath();
+  for (let i = 1; i <= rungs; i++) { const u = i / (rungs + 1), x = mix(x0, x1, u), y = mix(y0, y1, u); g.moveTo(x + nx, y + ny); g.lineTo(x - nx, y - ny); }
+  g.moveTo(x0, y0); g.lineTo(x1, y1); g.save(); g.globalAlpha *= .5; g.stroke(); g.restore(); }
+const limb = (g, x, y, a1, a2, l1, l2, r) => { const ex = x + Math.sin(rad(a1)) * l1, ey = y + Math.cos(rad(a1)) * l1, hx = ex + Math.sin(rad(a2)) * l2, hy = ey + Math.cos(rad(a2)) * l2;
+  capsule(g, x, y, ex, ey, r, 3); capsule(g, ex, ey, hx, hy, r * .8, 3); g.beginPath(); g.arc(ex, ey, r * 1.15, 0, 7); g.stroke(); return [hx, hy]; };
+function figure(g, p, t) {
+  g.save(); g.rotate(rad(p.lean)); g.lineWidth = 1.6; g.strokeStyle = K.wire; g.fillStyle = "rgba(72,216,216,.10)"; g.shadowColor = K.dim; g.shadowBlur = 6;
+  limb(g, -12, 0, p.legL[0], p.legL[1], 78, 84, 9); limb(g, 12, 0, p.legR[0], p.legR[1], 78, 84, 9);       // legs from the hips
+  capsule(g, 0, -4, 0, -96, 15, 6); capsule(g, -13, -98, 13, -98, 7, 2);                                  // spine, shoulders
+  g.beginPath(); g.ellipse(0, -128, 12, 16, 0, 0, 7); g.fill(); g.stroke(); g.beginPath(); g.ellipse(0, -128, 12, 6, 0, 0, 7); g.moveTo(0, -144); g.lineTo(0, -112); g.stroke();   // head with lat/long
+  limb(g, -12, -98, p.armL[0], p.armL[1], 46, 44, 6);
+  const [hx, hy] = limb(g, 12, -98, p.armR[0], p.armR[1], 46, 44, 6);
+  if (p.gun > .05) { g.save(); g.globalAlpha = p.gun; g.strokeStyle = K.gun; g.fillStyle = "rgba(74,80,200,.22)"; g.shadowColor = K.gun; g.translate(hx, hy);    // rifle, boxed in mesh
+    [[-20, -9, 130, 14], [110, -6, 70, 7], [10, 5, 16, 26], [-46, -6, 28, 12], [60, -17, 30, 8]].forEach(([x, y, w, h]) => { g.fillRect(x, y, w, h); g.strokeRect(x, y, w, h); });
+    g.beginPath(); for (let x = 0; x < 110; x += 14) { g.moveTo(x - 20, -9); g.lineTo(x - 20, 5); } g.stroke(); g.restore(); }
+  // core: the one warm thing in frame, pulsing
+  const pulse = 1 + .12 * Math.sin(t * 5); g.shadowColor = K.core; g.shadowBlur = 18; g.fillStyle = K.core; g.beginPath(); g.arc(0, -70, 11 * pulse, 0, 7); g.fill();
+  g.strokeStyle = K.core; g.lineWidth = 1; g.beginPath(); g.ellipse(0, -70, 18, 7, 0, 0, 7); g.ellipse(0, -70, 7, 18, 0, 0, 7); g.stroke(); g.restore(); }
+function floor(g) { g.save(); g.strokeStyle = K.grid; g.lineWidth = 1; g.shadowBlur = 0;
+  for (let i = 1; i <= 7; i++) { g.beginPath(); g.ellipse(0, 170, i * 120, i * 26, 0, 0, 7); g.stroke(); }            // dome rings on the ground plane
+  for (let a = 0; a < 180; a += 12) { g.beginPath(); g.moveTo(Math.cos(rad(a)) * 840, 170 + Math.sin(rad(a)) * 182); g.lineTo(-Math.cos(rad(a)) * 840, 170 - Math.sin(rad(a)) * 182); g.stroke(); }
+  g.setLineDash([2, 5]); g.strokeStyle = "#cfd6e2"; g.globalAlpha = .7; g.beginPath(); g.moveTo(-900, 150); g.lineTo(900, 150); g.moveTo(-900, 196); g.lineTo(900, 196); g.stroke();   // dotted horizon lines
+  g.setLineDash([]); g.globalAlpha = .5; for (let x = -420; x <= 420; x += 140) for (let y = -200; y <= 60; y += 130) { g.beginPath(); g.moveTo(x - 5, y); g.lineTo(x + 5, y); g.moveTo(x, y - 5); g.lineTo(x, y + 5); g.stroke(); }   // registration crosses
+  g.restore(); }
+function draw(t) { const u = .5 - .5 * Math.cos((t % 6) / 6 * 6.283), fr = Math.floor(t * 30);
+  const tc = `00:00:${String(Math.floor(t) % 60).padStart(2, "0")}:${String(fr % 30).padStart(2, "0")}`;
+  cams.forEach(c => { const g = c.cv.getContext("2d"), v = c.view; g.clearRect(0, 0, 960, 540); g.save(); g.translate(480 + v.x, 300 + v.y); g.rotate(rad(v.roll)); g.scale(v.z, v.z);
+    floor(g); figure(g, lerpPose(P[c.pose[0]], P[c.pose[1]], u), t); g.restore(); c.tc.textContent = tc; }); }
+const force = (location.hash.match(/t=([\d.]+)/) || [])[1];   // #t=1.5 pins a frame
+draw(force ? +force : 1.4);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = t => { draw(t / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

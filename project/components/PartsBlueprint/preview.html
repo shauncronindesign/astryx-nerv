@@ -1,0 +1,84 @@
+<!-- @dsCard group="Data display" height=470 subtitle="Parts blueprint · scaffold towers in pink line art, part codes, centred captions, inventory scan · New Eva Parts" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); }
+  svg { display: block; width: 100%; max-width: 980px; height: auto; background: var(--blush-paper); }
+  .l { fill: none; stroke: var(--blush-300); stroke-width: .8; }
+  .l2 { fill: none; stroke: var(--blush-500); stroke-width: 1.2; }
+  .side { fill: #e490a814; stroke: var(--blush-300); stroke-width: .8; }
+  .p { fill: #e490a830; stroke: var(--blush-500); stroke-width: 1.1; stroke-linejoin: round; }
+  .ph { fill: url(#hatch); stroke: var(--blush-500); stroke-width: 1.1; stroke-linejoin: round; }
+  .pd { fill: #db708e66; stroke: var(--blush-500); stroke-width: 1; }
+  .cap { font: 400 14px var(--font-sans); fill: #c8486c; text-anchor: middle; letter-spacing: .01em; paint-order: stroke; stroke: #eef3e8aa; stroke-width: 3px; }
+  .code { font: 8.5px var(--font-mono); fill: var(--blush-500); text-anchor: middle; }
+  .city { fill: none; stroke: var(--blush-300); stroke-width: .7; opacity: .7; }
+  .blob { fill: #e0402c; filter: url(#bokeh); }
+  .scan { fill: #db708e; opacity: .5; } .scanline { stroke: #c8486c; stroke-width: 1.5; }
+</style>
+</head>
+<body>
+<svg id="b" viewBox="0 0 980 400" role="img" aria-label="Parts blueprint: three scaffold towers holding a launcher unit, the JA-02 main body and upper limbs, and torso restraining gear">
+  <defs>
+    <pattern id="hatch" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#e490a822"/><path d="M0 0 V5" stroke="#db708e" stroke-width="1"/></pattern>
+    <filter id="bokeh" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="halo" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <linearGradient id="wash" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".45" stop-color="#fff" stop-opacity=".15"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <clipPath id="clip"><rect width="980" height="400"/></clipPath>
+  </defs>
+  <g clip-path="url(#clip)">
+    <g id="city"></g>
+    <g id="towers" filter="url(#halo)"></g>
+    <rect width="980" height="400" fill="url(#wash)" style="mix-blend-mode: screen" pointer-events="none"/>
+    <g id="caps"></g>
+    <g id="scan"></g>
+    <circle class="blob" cx="58" cy="14" r="9"/><circle class="blob" cx="884" cy="262" r="20"/><circle class="blob" cx="100" cy="394" r="6"/><circle class="blob" cx="64" cy="150" r="7" opacity=".7"/>
+  </g>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg", el = (t, a, p, tx) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); if (tx != null) n.textContent = tx; p.appendChild(n); return n; };
+const $ = id => document.getElementById(id);
+let seed = 4; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+// far city: two rows of small blocks under the towers
+[[300, 10, 26], [326, 16, 44]].forEach(([y, w, hmax]) => { for (let x = -4; x < 980; x += w + 2) { const h = 6 + rnd() * hmax; el("path", { d: `M${x} ${y + 60} V${y + 40 - h} H${x + w} V${y + 60} M${x} ${y + 44 - h / 2} H${x + w} M${x + w / 2} ${y + 40 - h} V${y + 60}`, class: "city" }, $("city")); } });
+// a part is drawn once and mirrored about the tower's centre line
+const mirror = (g, cls, d) => { el("path", { d, class: cls }, g); el("path", { d, class: cls, transform: "scale(-1 1)" }, g); };
+const parts = {
+  launcher(g) { for (let r = 0; r < 5; r++) for (let c = -2; c <= 2; c++) { el("rect", { x: c * 26 - 11, y: 70 + r * 30, width: 22, height: 26, class: (r + c) % 2 ? "p" : "ph" }, g); el("circle", { cx: c * 26, cy: 83 + r * 30, r: 7, class: "pd" }, g); }
+    mirror(g, "p", "M70 62 h14 v166 h-14 z M84 90 h10 v20 h-10 z M84 180 h10 v20 h-10 z"); el("path", { d: "M-84 228 H84 V244 H-84 Z M-60 244 V268 M60 244 V268 M-84 62 H84", class: "p" }, g); },
+  torso(g) { el("path", { d: "M-14 62 H14 L20 78 V96 H-20 V78 Z", class: "ph" }, g); el("path", { d: "M-8 70 H8 V84 H-8 Z", class: "pd" }, g);                      // head
+    mirror(g, "p", "M0 100 H34 L62 112 L70 140 L58 150 H0 Z");                                                                                              // collar + shoulder
+    mirror(g, "ph", "M0 154 H52 L44 190 H0 Z"); mirror(g, "p", "M0 194 H42 L34 224 H0 Z"); mirror(g, "pd", "M0 228 H30 L22 252 H0 Z");                     // chest plates
+    mirror(g, "p", "M64 152 H84 L88 214 H70 Z M70 218 H88 L84 280 H72 Z M60 124 L84 118 L90 146 L66 148 Z");                                               // arm
+    mirror(g, "l2", "M8 104 V148 M22 104 V148 M10 160 L40 160 M10 172 L44 172 M72 170 H86 M72 190 H87 M74 240 H86 M74 258 H85");
+    el("circle", { cx: 0, cy: 128, r: 9, class: "pd" }, g); el("path", { d: "M-22 256 H22 L28 286 H-28 Z", class: "ph" }, g); },
+  gear(g) { for (let i = 0; i < 7; i++) { const y = 70 + i * 28, w = 78 - i * 6; mirror(g, i % 2 ? "p" : "ph", `M0 ${y + 18} L${w} ${y - 6} V${y + 12} L0 ${y + 36} Z`); }
+    mirror(g, "p", "M78 60 h12 v210 h-12 z"); mirror(g, "l2", "M90 96 h10 M90 150 h10 M90 204 h10 M84 60 V40 H0");
+    el("path", { d: "M-10 60 H10 L0 78 Z", class: "pd" }, g); },
+};
+const towers = [
+  { x: 150, code: "SSM-0414", part: "launcher", cap: ["EXPLOSIVE CHARGE", "LAUNCHER UNIT", "(SYSTEM SPECIFIC)"] },
+  { x: 480, code: "SSM-0616", part: "torso", cap: ["JA-02", "MAIN BODY & UPPER LIMBS", "COMPONENTS"] },
+  { x: 800, code: "SSM-0816", part: "gear", cap: ["PRODUCTION TYPE EVA COMPATIBLE", "TORSO RESTRAINING GEAR"] },
+];
+const W = 124, scans = [];
+towers.forEach(({ x, code, part, cap }) => { const g = el("g", { transform: `translate(${x} 0)` }, $("towers"));
+  // tower: front face, receding side face, roof
+  el("path", { d: `M${W} 26 l34 -16 V400 H${W} Z`, class: "side" }, g); el("path", { d: `M${-W} 26 l34 -16 H${W + 34} L${W} 26 Z`, class: "side" }, g);
+  for (let y = 26; y < 400; y += 22) { el("path", { d: `M${-W} ${y} H${W} l34 -16`, class: "l" }, g); }
+  for (let c = -W; c <= W; c += 31) el("path", { d: `M${c} 26 V400`, class: "l" }, g);
+  for (let y = 26; y < 400; y += 44) mirror(g, "l", `M${W - 31} ${y} L${W} ${y + 44} M${W} ${y} L${W - 31} ${y + 44}`);     // scaffold cross-bracing in the outer bays
+  el("path", { d: `M${-W} 400 V26 H${W} V400 M${-W + 31} 26 V400 M${W - 31} 26 V400`, class: "l2" }, g);
+  parts[part](el("g", {}, g));
+  el("text", { x: 0, y: 44, class: "code" }, g, code); el("path", { d: "M-26 48 H26", class: "l2" }, g);
+  const cg = el("g", { transform: `translate(${x} 0)` }, $("caps")); cap.forEach((t, i) => el("text", { x: 0, y: 296 + i * 17, class: "cap" }, cg, t));
+  const sg = el("g", { transform: `translate(${x} 0)`, opacity: 0 }, $("scan")); el("rect", { x: -W, y: -26, width: W * 2, height: 26, class: "scan", fill: "url(#hatch)" }, sg); el("path", { d: `M${-W - 8} 0 H${W + 8}`, class: "scanline" }, sg);
+  const chk = el("text", { x: W + 12, y: 4, class: "code", "text-anchor": "start" }, sg, "CHECK"); scans.push(sg); });
+// inventory scan: a bar reads down one tower at a time
+function scan(t) { const k = Math.floor(t / 3) % 3, u = (t % 3) / 3; scans.forEach((s, i) => { s.setAttribute("opacity", i === k ? 1 : 0); if (i === k) s.setAttribute("transform", `translate(${towers[i].x} ${50 + u * 330})`); }); }
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = t => { scan(t / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

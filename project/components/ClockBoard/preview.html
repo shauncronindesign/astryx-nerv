@@ -1,0 +1,95 @@
+<!-- @dsCard group="Data display" height=780 subtitle="Operation time board with giant unit digits, plus the three-row breach clock · live time · Clock theme · frames 63, 64, 70" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); }
+  .board { position: relative; width: 820px; padding: var(--space-5) var(--space-6); background: var(--color-border-accent);
+    --c: var(--chamfer-lg); clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, var(--c) 100%, 0 calc(100% - var(--c))); }
+  .board::before { content: ""; position: absolute; inset: 2px; z-index: -1; background: var(--color-background-body); clip-path: inherit; }
+  .board::after { content: ""; position: absolute; inset: 8px; border: 1px solid var(--color-border); pointer-events: none;
+    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px)); }
+  .row { position: relative; display: grid; grid-template-columns: 260px 1fr; align-items: center; gap: var(--space-4); padding: var(--space-2) 0; }
+  .lab b { display: block; font-family: var(--font-display); font-weight: 900; font-size: 40px; line-height: 1; color: var(--color-text-accent); text-shadow: var(--shadow-bloom); }
+  .lab small { display: block; font-size: 14px; font-weight: 700; color: var(--color-text-secondary); margin-top: 3px; text-shadow: var(--shadow-bloom); }
+  .val { position: relative; padding-top: 18px; }
+  .val .tag { position: absolute; top: 0; left: 0; font-size: 14px; font-weight: 700; color: var(--color-text-accent); text-shadow: var(--shadow-bloom); }
+  .digits { display: flex; align-items: flex-end; gap: 4px; transform: skewX(-6deg); }
+  .digits svg { height: 64px; width: auto; overflow: visible; }
+  .seg, .colon { fill: var(--color-text-accent); filter: drop-shadow(0 0 4px var(--color-text-accent)); }
+  .off { fill: var(--color-text-accent); opacity: 0.07; }
+  .dash { fill: var(--color-text-accent); filter: drop-shadow(0 0 4px var(--color-text-accent)); }
+  /* --- operation board (frame 70): giant unit digits, zone chips, T+ counter --- */
+  .op { width: 820px; margin-bottom: var(--space-6); display: grid; grid-template-columns: 210px 86px 1fr; gap: 10px 12px; align-items: center; color: var(--color-text-accent); }
+  .zone { justify-self: start; border: 1.5px solid var(--color-border-accent); padding: 4px 10px 3px; transform: skewX(-6deg); box-shadow: var(--shadow-bloom); }
+  .zone b { display: block; font-family: var(--font-display); font-weight: 900; font-size: 30px; line-height: 1; color: var(--bloom-core); text-shadow: var(--shadow-bloom); white-space: nowrap; }
+  .zone small { display: block; font-size: 9px; font-weight: 700; color: var(--color-text-accent); margin-top: 2px; }
+  .zone.big b { font-size: 38px; }
+  .chipz { position: relative; justify-self: center; font: 700 15px var(--font-hardware); letter-spacing: .18em; color: var(--bloom-core); padding: 7px 12px 6px 16px; border: 1.5px solid var(--color-border-accent);
+           clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px); background: var(--color-background-popover); text-shadow: var(--shadow-bloom); }
+  .frame { position: relative; padding: 16px 20px 8px; background: var(--color-border-accent); --c: 16px;
+           clip-path: polygon(var(--c) 0, 100% 0, 100% calc(100% - var(--c)), calc(100% - var(--c)) 100%, 0 100%, 0 var(--c)); }
+  .frame::before { content: ""; position: absolute; inset: 2px; z-index: -1; background: var(--color-background-surface); clip-path: inherit; }
+  .frame .tag { position: absolute; left: 22px; top: 3px; font-size: 12px; font-weight: 700; color: var(--bloom-core); text-shadow: var(--shadow-bloom); }
+  .frame .tag + .tag { left: 22px; top: 16px; font-size: 9px; color: var(--color-text-accent); }
+  .hero { grid-column: 1 / -1; display: grid; grid-template-columns: 210px 1fr; gap: 12px; align-items: start; }
+  .giant { display: flex; align-items: flex-end; justify-content: space-between; padding-top: 6px; }
+  /* rounded, scan-lined numerals: bright cream cores on amber bloom */
+  .num { font: 700 124px/0.86 var(--font-hardware); letter-spacing: -0.02em; display: inline-block; transform: scaleX(.66); transform-origin: left; margin-right: -64px;
+         background: repeating-linear-gradient(0deg, var(--bloom-cream) 0 3px, #f6c56a 3px 4px); -webkit-background-clip: text; background-clip: text; color: transparent;
+         filter: drop-shadow(0 0 6px var(--clock-amber)) drop-shadow(0 0 18px #ed8d2599); }
+  .unit { display: flex; flex-direction: column; justify-content: space-between; height: 100px; margin: 0 14px 4px 0; font-weight: 700; color: var(--bloom-core); text-shadow: var(--shadow-bloom); }
+  .unit i { font: 700 20px var(--font-sans); font-style: normal; } .unit b { font: 900 22px var(--font-display); }
+  .tplus { display: flex; align-items: flex-end; gap: 2px; padding-top: 10px; }
+  .tplus .pre { font: 700 44px/0.9 var(--font-hardware); color: var(--bloom-core); text-shadow: var(--shadow-bloom); margin-right: 4px; transform: scaleX(.8); }
+  .tplus .digits svg { height: 44px; } .tplus .cs { transform: skewX(-6deg); display: flex; align-items: flex-end; } .tplus .cs svg { height: 26px; }
+  .tplus .dot { width: 5px; height: 5px; background: var(--color-text-accent); margin: 0 3px 1px; box-shadow: var(--shadow-bloom); }
+</style>
+</head>
+<body data-theme="clock">
+  <div class="op" role="group" aria-label="Operation time board: Japan Standard Time, H-hour, Greenwich Mean Time">
+    <div class="hero">
+      <div class="zone big"><b>日本標準時</b><small>Japan Standard Time</small></div>
+      <div class="frame"><span class="tag">Live</span>
+        <div class="giant" id="giant" aria-live="off"></div></div>
+    </div>
+    <div class="zone"><b>作戦開始時間</b><small>H - Hour</small></div><span class="chipz">MST</span>
+    <div class="frame"><span class="tag">Countdown</span><span class="tag">GET</span><div class="tplus"><span class="pre">T+</span><div class="digits" data-fmt="get"></div><i class="dot"></i><div class="cs" data-fmt="getcs"></div></div></div>
+    <div class="zone"><b>世界標準時</b><small>Greenwich Mean Time</small></div><span class="chipz">GMT</span>
+    <div class="frame"><span class="tag">GMT</span><div class="tplus"><div class="digits" data-fmt="gmt"></div></div></div>
+  </div>
+  <div class="board" role="group" aria-label="Operation clocks">
+    <div class="row"><div class="lab"><b>到達予想時刻</b><small>Estimated Time Of Breach</small></div>
+      <div class="val"><span class="tag">About</span><div class="digits" data-fmt="eta" aria-label=""></div></div></div>
+    <div class="row"><div class="lab"><b>到達予想時間</b><small>Estimated Time Remaining</small></div>
+      <div class="val"><span class="tag">Countdown</span><div class="digits" data-fmt="count"></div></div></div>
+    <div class="row"><div class="lab"><b>日本標準時</b><small>Japan Standard Time</small></div>
+      <div class="val"><span class="tag">Live</span><div class="digits" data-fmt="jst"></div></div></div>
+  </div>
+<script>
+const MAP = { 0:"abcdef",1:"bc",2:"abged",3:"abgcd",4:"fgbc",5:"afgcd",6:"afgedc",7:"abc",8:"abcdefg",9:"abcfgd","-":"g" };
+const S = { a:"10,4 50,4 44,12 16,12", b:"52,6 52,48 46,44 46,14", c:"52,52 52,94 46,86 46,56", d:"10,96 50,96 44,88 16,88",
+            e:"8,52 8,94 14,86 14,56", f:"8,6 8,48 14,44 14,14", g:"12,50 18,45 42,45 48,50 42,55 18,55" };
+const digit = n => `<svg viewBox="0 0 60 100" aria-hidden="true">${Object.entries(S).map(([k,p])=>`<polygon points="${p}" class="${MAP[n].includes(k)?"seg":"off"}"/>`).join("")}</svg>`;
+const colon = `<svg viewBox="0 0 16 100" aria-hidden="true"><rect class="colon" x="4" y="30" width="8" height="10"/><rect class="colon" x="4" y="64" width="8" height="10"/></svg>`;
+const render = s => s.split("").map(ch => ch === ":" ? colon : digit(ch)).join("");
+const pad = n => String(n).padStart(2, "0");
+const start = Date.now(), breach = start + (10*3600 + 14*60 + 59) * 1000 + 31*1000/60;
+function frame(){
+  const now = Date.now(), jst = new Date(now + 9*3600e3);
+  const j = `${pad(jst.getUTCHours())}:${pad(jst.getUTCMinutes())}:${pad(jst.getUTCSeconds())}:${pad(Math.floor(jst.getUTCMilliseconds()/10))}`;
+  let r = Math.max(0, breach - now); const h = Math.floor(r/3600e3), m = Math.floor(r/60e3)%60, s = Math.floor(r/1e3)%60, f = Math.floor((r%1000)*60/1000);
+  const b = new Date(breach + 9*3600e3);
+  const g = new Date(now), e = now - start, eh = Math.floor(e/3600e3), em = Math.floor(e/60e3)%60, es = Math.floor(e/1e3)%60;
+  const unit = (v, en, jp) => `<span class="num">${pad(v)}</span><span class="unit"><i>${en}</i><b>${jp}</b></span>`;
+  document.getElementById("giant").innerHTML = unit(jst.getUTCHours(), "h", "時") + unit(jst.getUTCMinutes(), "m", "分") + unit(jst.getUTCSeconds(), "s", "秒");
+  document.getElementById("giant").setAttribute("aria-label", `Japan Standard Time ${pad(jst.getUTCHours())}:${pad(jst.getUTCMinutes())}`);
+  const out = { get: `${pad(eh)}:${pad(em)}:${pad(es)}`, getcs: pad(Math.floor((e%1000)/10)), gmt: `${pad(g.getUTCHours())}:${pad(g.getUTCMinutes())}:${pad(g.getUTCSeconds())}`, jst: j, count: `${pad(h)}:${pad(m)}:${pad(s)}:${pad(f)}`, eta: `${pad(b.getUTCHours())}:${pad(b.getUTCMinutes())}:${pad(b.getUTCSeconds())}:--` };
+  document.querySelectorAll("[data-fmt]").forEach(el => { el.innerHTML = render(out[el.dataset.fmt]); });
+}
+frame();
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(frame, 50); else setInterval(frame, 1000);
+</script>
+</body>
+</html>

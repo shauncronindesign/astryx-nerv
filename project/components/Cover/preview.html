@@ -1,0 +1,68 @@
+<!-- @dsCard height=320 -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { width: 960px; height: 320px; background: var(--color-background-body); overflow: hidden; }
+  .accent { fill: var(--color-accent); }
+  .peak { fill: var(--color-warning); }
+  .tint { fill: var(--color-accent-muted); }
+  .alert { fill: var(--color-background-error-inverted); }
+  .plus { fill: var(--color-on-accent); }
+  .name { fill: var(--color-text-primary); font-family: var(--font-display); font-weight: 900; }
+  .tagline { fill: var(--color-text-secondary); font-family: var(--font-mono); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<!--
+  blocks: color-accent slab 240x320 bleeding top and bottom · color-warning 238x136 bleeding top/right ·
+    color-accent-muted 238x112 · color-background-error-inverted 72x68 (the one state hue, kept small)
+  arrangement: a ramp strip read sideways — blocks butt at the 2px NERV seam (space-0-5), all square (radius-none)
+  pattern: plus grid — "precise instrumentation, mono, 4px grid" (README: hairlines, not heavy borders);
+    30 crosshairs at a 32px pitch (space-8), 1px arms (border-width), cut from the slab in color-on-accent
+  scale: space-0-5 seams, space-8 pitch, space-12 left inset, radius-none corners
+-->
+<svg width="960" height="320" viewBox="0 0 960 320" xmlns="http://www.w3.org/2000/svg">
+  <rect class="accent" x="480" y="0" width="240" height="320" />
+  <rect class="peak" x="722" y="0" width="238" height="136" />
+  <rect class="tint" x="722" y="138" width="238" height="112" />
+  <rect class="alert" x="722" y="252" width="72" height="68" />
+  <g class="plus">
+    <rect x="531" y="72" width="11" height="1" /><rect x="536" y="67" width="1" height="11" />
+    <rect x="563" y="72" width="11" height="1" /><rect x="568" y="67" width="1" height="11" />
+    <rect x="595" y="72" width="11" height="1" /><rect x="600" y="67" width="1" height="11" />
+    <rect x="627" y="72" width="11" height="1" /><rect x="632" y="67" width="1" height="11" />
+    <rect x="659" y="72" width="11" height="1" /><rect x="664" y="67" width="1" height="11" />
+    <rect x="531" y="104" width="11" height="1" /><rect x="536" y="99" width="1" height="11" />
+    <rect x="563" y="104" width="11" height="1" /><rect x="568" y="99" width="1" height="11" />
+    <rect x="595" y="104" width="11" height="1" /><rect x="600" y="99" width="1" height="11" />
+    <rect x="627" y="104" width="11" height="1" /><rect x="632" y="99" width="1" height="11" />
+    <rect x="659" y="104" width="11" height="1" /><rect x="664" y="99" width="1" height="11" />
+    <rect x="531" y="136" width="11" height="1" /><rect x="536" y="131" width="1" height="11" />
+    <rect x="563" y="136" width="11" height="1" /><rect x="568" y="131" width="1" height="11" />
+    <rect x="595" y="136" width="11" height="1" /><rect x="600" y="131" width="1" height="11" />
+    <rect x="627" y="136" width="11" height="1" /><rect x="632" y="131" width="1" height="11" />
+    <rect x="659" y="136" width="11" height="1" /><rect x="664" y="131" width="1" height="11" />
+    <rect x="531" y="168" width="11" height="1" /><rect x="536" y="163" width="1" height="11" />
+    <rect x="563" y="168" width="11" height="1" /><rect x="568" y="163" width="1" height="11" />
+    <rect x="595" y="168" width="11" height="1" /><rect x="600" y="163" width="1" height="11" />
+    <rect x="627" y="168" width="11" height="1" /><rect x="632" y="163" width="1" height="11" />
+    <rect x="659" y="168" width="11" height="1" /><rect x="664" y="163" width="1" height="11" />
+    <rect x="531" y="200" width="11" height="1" /><rect x="536" y="195" width="1" height="11" />
+    <rect x="563" y="200" width="11" height="1" /><rect x="568" y="195" width="1" height="11" />
+    <rect x="595" y="200" width="11" height="1" /><rect x="600" y="195" width="1" height="11" />
+    <rect x="627" y="200" width="11" height="1" /><rect x="632" y="195" width="1" height="11" />
+    <rect x="659" y="200" width="11" height="1" /><rect x="664" y="195" width="1" height="11" />
+    <rect x="531" y="232" width="11" height="1" /><rect x="536" y="227" width="1" height="11" />
+    <rect x="563" y="232" width="11" height="1" /><rect x="568" y="227" width="1" height="11" />
+    <rect x="595" y="232" width="11" height="1" /><rect x="600" y="227" width="1" height="11" />
+    <rect x="627" y="232" width="11" height="1" /><rect x="632" y="227" width="1" height="11" />
+    <rect x="659" y="232" width="11" height="1" /><rect x="664" y="227" width="1" height="11" />
+  </g>
+  <text class="name" x="48" y="146" font-size="104">Astryx</text>
+  <text class="name" x="48" y="246" font-size="104">NERV</text>
+  <text class="tagline" x="48" y="284" font-size="13">Astryx roles on Evangelion foundations.</text>
+</svg>
+</body>
+</html>

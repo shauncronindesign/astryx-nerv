@@ -1,0 +1,78 @@
+<!-- @dsCard group="Feedback" height=440 subtitle="警報 CONDITION RED / YELLOW inside a flare, with ALERT hexes and live values · frames 54, 57, 58" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); display: flex; gap: var(--space-8); flex-wrap: wrap; overflow: hidden; }
+  .cond { position: relative; width: 470px; height: 380px; --plate: var(--alert-500); --ink: var(--bloom-cream); --hexfill: var(--alert-600); }
+  .cond.yellow { --plate: var(--hazard-yellow); --ink: var(--hazard-black); --hexfill: var(--gold-700); }
+  /* the film shows this plate inside a blinding flare: a blown-out core behind it, light spilling over its edges */
+  .cond::before { content: ""; position: absolute; inset: -70px; background: radial-gradient(closest-side, #fffdf0 0%, color-mix(in srgb, var(--plate) 55%, #fff5c8) 28%, color-mix(in srgb, var(--plate) 60%, transparent) 55%, transparent 78%); opacity: .8; pointer-events: none; }
+  .cond::after { content: ""; position: absolute; inset: 0; background: radial-gradient(closest-side, #ffffff66, transparent 70%); mix-blend-mode: screen; pointer-events: none; z-index: 3; }
+  .cond > * { z-index: 1; }
+  .hz { height: 12px; margin-top: 4px; background: repeating-linear-gradient(-45deg, currentColor 0 6px, transparent 6px 12px); opacity: .75; }
+  .plate { position: absolute; left: 50px; right: 50px; top: 60px; bottom: 60px; display: grid; grid-template-columns: 1fr 1.15fr; gap: var(--space-3);
+    padding: var(--space-4); background: color-mix(in srgb, var(--plate) 88%, transparent); color: var(--ink); box-shadow: 0 0 30px color-mix(in srgb, var(--plate) 60%, transparent), 0 0 90px #fff8;
+    clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px); }
+  .big { display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 2px solid color-mix(in srgb, var(--ink) 45%, transparent); }
+  .big b { font-family: var(--font-display); font-weight: 900; font-size: 74px; line-height: 0.95; }
+  .big small { font-size: 13px; font-weight: 700; letter-spacing: 0.3em; margin-top: 6px; }
+  .big .lv { font-family: var(--font-hardware); font-size: 34px; letter-spacing: 0.08em; margin-top: 2px; }
+  .data { display: flex; flex-direction: column; gap: var(--space-2); justify-content: center; }
+  .data .ttl { font-family: var(--font-jp); font-weight: 700; font-size: 14px; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+  .data .ttl small { display: block; font-family: var(--font-sans); font-size: 9px; letter-spacing: 0.1em; }
+  .r { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: var(--space-2); }
+  .r span { font-family: var(--font-jp); font-weight: 700; font-size: 12px; line-height: 1.1; }
+  .r span small { display: block; font-family: var(--font-sans); font-size: 8px; letter-spacing: 0.12em; }
+  .r em { font-style: normal; font-weight: 700; font-size: 26px; line-height: 1; display: inline-block; transform: scaleX(var(--compress-mild)); transform-origin: right; }
+  .hex { position: absolute; width: 96px; height: 84px; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+    background: var(--plate); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--ink); }
+  .hex::before { content: ""; position: absolute; inset: 3px; clip-path: inherit; background: var(--hexfill); opacity: 0.35; }
+  .hex b { position: relative; font-weight: 700; font-size: 15px; letter-spacing: 0.04em; }
+  .hex i { position: relative; width: 0; height: 0; border-left: 7px solid transparent; border-right: 7px solid transparent; border-bottom: 11px solid currentColor; }
+  .hex.dn i { border-bottom: 0; border-top: 11px solid currentColor; order: 2; }
+  .t1 { left: 0; top: 0; } .t2 { left: 187px; top: 0; } .t3 { right: 0; top: 0; }
+  .b1 { left: 0; bottom: 0; } .b2 { left: 187px; bottom: 0; } .b3 { right: 0; bottom: 0; }
+  @media (prefers-reduced-motion: no-preference) { .cond:not(.yellow) .hex { animation: blink 1s steps(1) infinite; } .cond::before { animation: flare 3.2s ease-in-out infinite alternate; } .cond.yellow::before { animation-delay: -1.4s; } .crit { animation: blink .5s steps(1) infinite; } }
+  @keyframes blink { 50% { filter: brightness(0.6); } }
+  @keyframes flare { from { opacity: .55; transform: scale(.94); } to { opacity: .95; transform: scale(1.06); } }
+</style>
+</head>
+<body data-theme="tactical">
+  <section class="cond" role="alert" aria-label="Condition red. EVA-01 damage level 56 percent, survival system critical">
+    <div class="hex dn t1"><b>ALERT</b><i></i></div><div class="hex dn t2"><b>ALERT</b><i></i></div><div class="hex dn t3"><b>ALERT</b><i></i></div>
+    <div class="hex b1"><i></i><b>ALERT</b></div><div class="hex b2"><i></i><b>ALERT</b></div><div class="hex b3"><i></i><b>ALERT</b></div>
+    <div class="plate">
+      <div class="big"><b>警報</b><small>CONDITION</small><span class="lv">RED</span></div>
+      <div class="data">
+        <div class="ttl">EVA初号機 状況<small>EVA-01 CONDITION</small></div>
+        <div class="r"><span>損傷状況<small>DAMAGE LEVEL</small></span><em id="dmg">56%</em></div>
+        <div class="r"><span>生命維持状況<small>SURVIVAL SYSTEM</small></span><em class="crit">CRITICAL</em></div>
+        <div class="r"><span>損傷箇所<small>DAMAGED PART</small></span><em>一覧</em></div>
+        <div class="hz"></div>
+      </div>
+    </div>
+  </section>
+  <section class="cond yellow" role="status" aria-label="Condition yellow. EVA-01 unit condition 11 percent">
+    <div class="hex dn t1"><b>ALERT</b><i></i></div><div class="hex dn t2"><b>ALERT</b><i></i></div><div class="hex dn t3"><b>ALERT</b><i></i></div>
+    <div class="hex b1"><i></i><b>ALERT</b></div><div class="hex b2"><i></i><b>ALERT</b></div><div class="hex b3"><i></i><b>ALERT</b></div>
+    <div class="plate">
+      <div class="big"><b>警報</b><small>CONDITION</small><span class="lv">YELLOW</span></div>
+      <div class="data">
+        <div class="ttl">EVA初号機 状況<small>UNIT CONDITION</small></div>
+        <div class="r"><span>機体状況<small>UNIT CONDITION</small></span><em>11%</em></div>
+        <div class="r"><span>同調率<small>SYNC RATIO</small></span><em id="sync">41.3%</em></div>
+        <div class="r"><span>電源<small>POWER</small></span><em>EXT</em></div>
+        <div class="hz"></div>
+      </div>
+    </div>
+  </section>
+<script>
+// the numbers are live: damage creeps up on the red plate, sync wavers on the yellow one
+const dmg = document.getElementById("dmg"), syn = document.getElementById("sync"), red = document.querySelector(".cond");
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { const t = performance.now() / 1000, d = 56 + Math.floor((t / 2.5) % 9);
+  dmg.textContent = d + "%"; syn.textContent = (41.3 + Math.sin(t * 1.7) * 0.9).toFixed(1) + "%"; red.setAttribute("aria-label", `Condition red. EVA-01 damage level ${d} percent, survival system critical`); }, 400);
+</script>
+</body>
+</html>

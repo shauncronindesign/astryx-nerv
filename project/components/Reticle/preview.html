@@ -1,0 +1,86 @@
+<!-- @dsCard group="Targeting" height=420 subtitle="Ring and triangle that seek, then lock, with Object tag; and the bracket sight · frames 3, 4, 127" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { font-family: var(--font-sans); padding: var(--space-6); display: grid; grid-template-columns: 1.3fr 1fr; gap: var(--space-0-5); background: #000; }
+  .view { position: relative; height: 360px; overflow: hidden; }
+  .v1 { background: radial-gradient(50% 60% at 45% 55%, #2a4f9a, #0c1a3a 60%, #201810); }
+  .v2 { background: linear-gradient(180deg, #9ed0e5 0%, #457b85 55%, #2c4e3c 56%, #1e3324); }
+  svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ring { fill: none; stroke: var(--clock-amber); stroke-width: 1.6; filter: drop-shadow(0 0 3px var(--clock-amber)); }
+  .tick { stroke: var(--clock-amber); stroke-width: 2; }
+  .tri { fill: none; stroke: var(--sign-green); stroke-width: 2.5; filter: drop-shadow(0 0 4px var(--sign-green)); }
+  .vtx { fill: var(--aaaw-green); filter: drop-shadow(0 0 6px var(--aaaw-green)); }
+  /* acquisition: seeking (amber, open triangle chasing the target) then locked (green, vertices lit) */
+  .seek .tri { stroke: var(--clock-amber); stroke-dasharray: 10 8; filter: none; } .seek .vtx { display: none; }
+  .state { position: absolute; left: 14px; top: 12px; font: 700 11px var(--font-sans); letter-spacing: .14em; color: var(--sign-green); text-shadow: 0 0 6px var(--sign-green); }
+  .seek .state { color: var(--clock-amber); text-shadow: var(--shadow-bloom); }
+  .rng { font: 9px var(--font-mono); fill: var(--clock-amber); }
+  .cross { stroke: var(--gold-300); stroke-width: 1; stroke-dasharray: 4 4; opacity: 0.7; }
+  .tag { position: absolute; left: 68%; top: 34%; color: var(--clock-amber); font-weight: 700; }
+  .tag .h { display: inline-flex; align-items: center; gap: 6px; font-size: 22px; }
+  .tag .h::before { content: ""; width: 4px; height: 24px; background: currentColor; }
+  .tag .h span { border: 1.5px solid currentColor; padding: 0 6px; text-shadow: var(--shadow-bloom); }
+  .tag ul { list-style: none; margin: 6px 0 0 10px; padding: 0; font-size: 14px; line-height: 1.35; }
+  .tag li { padding-left: 6px; border-left: 2px solid currentColor; text-shadow: var(--shadow-bloom); }
+  .tag li.off { color: var(--color-error); }
+  /* bracket sight */
+  .br { stroke: var(--hazard-yellow); stroke-width: 4; fill: none; filter: drop-shadow(0 0 3px var(--hazard-yellow)); }
+  .hz { stroke: #e8f6ff; stroke-width: 1; opacity: 0.85; }
+  .hzt { font-family: var(--font-sans); font-size: 7px; fill: #e8f6ff; }
+  .center { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: 120px; height: 34px; background: #0a0d10;
+    clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); color: var(--hazard-yellow); font-size: 7px; font-weight: 700; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 6px; letter-spacing: 0.1em; }
+  .bat { position: absolute; left: 14px; bottom: 30px; display: flex; gap: 8px; align-items: center; color: #e8f6ff; font-weight: 700; font-size: 13px; }
+  .bat i { width: 30px; height: 7px; background: repeating-linear-gradient(90deg, var(--hazard-yellow) 0 4px, transparent 4px 6px); }
+  @media (prefers-reduced-motion: no-preference) { #spin { animation: spin 14s linear infinite; transform-origin: 230px 180px; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body data-theme="tactical">
+  <div class="view v1" id="v1" role="img" aria-label="Target locked: 9th Angel's core, designated hostile, FCS offline">
+    <span class="state" id="state">LOCK</span>
+    <svg viewBox="0 0 520 360" preserveAspectRatio="xMidYMid slice">
+      <line class="cross" x1="230" y1="40" x2="230" y2="320"/><line class="cross" x1="60" y1="180" x2="400" y2="180"/>
+      <g id="spin"><circle class="ring" cx="230" cy="180" r="112"/>
+        <g class="tick"><line x1="230" y1="58" x2="230" y2="80"/><line x1="230" y1="280" x2="230" y2="302"/><line x1="108" y1="180" x2="130" y2="180"/><line x1="330" y1="180" x2="352" y2="180"/>
+        <line x1="150" y1="100" x2="158" y2="108"/><line x1="310" y1="100" x2="302" y2="108"/><line x1="150" y1="260" x2="158" y2="252"/><line x1="310" y1="260" x2="302" y2="252"/></g></g>
+      <g class="tick"><line x1="80" y1="168" x2="80" y2="192"/><line x1="80" y1="180" x2="104" y2="180"/><line x1="352" y1="180" x2="400" y2="180"/></g>
+      <g id="lock"><polygon class="tri" points="230,105 295,215 165,215"/><circle class="vtx" cx="230" cy="105" r="4"/><circle class="vtx" cx="295" cy="215" r="4"/><circle class="vtx" cx="165" cy="215" r="4"/></g>
+      <text class="rng" id="rng" x="238" y="316">RNG 0412</text>
+    </svg>
+    <div class="tag"><div class="h"><span>Object</span></div>
+      <ul><li>9<sup>th</sup> Angel's Core</li><li>Ex-EVA-03 Entry Plug</li><li>Designated Hostile Target</li><li class="off">FCS Mode - Offline</li></ul></div>
+  </div>
+  <div class="view v2" role="img" aria-label="Plug sight: bracket reticle centred, battery and operation clock">
+    <svg viewBox="0 0 400 360" preserveAspectRatio="xMidYMid slice">
+      <g id="tape"></g>
+      <path class="br" d="M170 168 v-10 h14 M230 168 v-10 h-14 M170 192 v10 h14 M230 192 v10 h-14"/>
+      <path class="br" d="M188 180 h-10 M212 180 h10" />
+      <rect x="194" y="174" width="12" height="12" fill="none" stroke="#e8f6ff" stroke-width="1"/>
+    </svg>
+    <div class="bat"><i></i>00:08:06:38</div>
+    <div class="center">CENTER</div>
+  </div>
+<script>
+// heading tape along the top and a pitch ladder on the right, as on frame 3
+const NS = "http://www.w3.org/2000/svg", tape = document.getElementById("tape");
+const mk = (t, a) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); tape.appendChild(n); return n; };
+mk("line", { x1: 10, y1: 22, x2: 390, y2: 22, class: "hz" });
+for (let i = 0; i <= 38; i++) { const x = 10 + i * 10; mk("line", { x1: x, y1: 22, x2: x, y2: i % 5 ? 26 : 30, class: "hz" });
+  if (i % 5 === 0) mk("text", { x: x - 5, y: 16, class: "hzt" }).textContent = String((i - 19) * 5); }
+for (let i = 0; i <= 12; i++) { const y = 60 + i * 20; mk("line", { x1: 350, y1: y, x2: i % 2 ? 358 : 366, y2: y, class: "hz" });
+  if (i % 2 === 0) mk("text", { x: 370, y: y + 3, class: "hzt" }).textContent = String(30 - i * 5); }
+// lock-on loop: the triangle hunts around the ring centre while seeking, then snaps on and holds
+const v1 = document.getElementById("v1"), lock = document.getElementById("lock"), st = document.getElementById("state"), rng = document.getElementById("rng");
+function aim(t) { const u = t % 7, seek = u < 2.6, k = seek ? 1 - u / 2.6 : 0, dx = Math.sin(t * 5) * 46 * k, dy = Math.cos(t * 3.7) * 30 * k, sc = 1 + 0.5 * k;
+  v1.classList.toggle("seek", seek); st.textContent = seek ? "SEEKING" : "LOCK"; lock.setAttribute("transform", `translate(${230 + dx} ${180 + dy}) scale(${sc}) translate(-230 -180)`);
+  rng.textContent = "RNG " + String(Math.round(412 + k * 900 + Math.sin(t * 9) * 3)).padStart(4, "0");
+  v1.setAttribute("aria-label", seek ? "Seeking target: 9th Angel's core" : "Target locked: 9th Angel's core, designated hostile, FCS offline"); }
+const force = (location.hash.match(/t=([\d.]+)/) || [])[1];   // #t=1 seeking, #t=4 locked
+aim(force ? +force : 4);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { aim(ms / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

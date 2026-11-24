@@ -1,0 +1,112 @@
+<!-- @dsCard group="Media" height=420 subtitle="Monitored-object tiles with a pilot stand-in, heartbeat strip and timecode; a lost feed shows static · Clock theme · frames 50, 120, 121" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); }
+  .feeds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; width: 900px; }
+  .feed { position: relative; aspect-ratio: 3 / 3.6; overflow: hidden; border-left: 2px solid var(--color-border-accent); box-shadow: -2px 0 8px -2px var(--color-border-accent); }
+  .feed:first-child { border-left: 0; box-shadow: none; }
+  /* stand-in for the video: the consumer puts a <video> or <img> here */
+  .media { position: absolute; inset: 0; background:
+      radial-gradient(60% 45% at 50% 45%, color-mix(in srgb, var(--clock-amber) 35%, transparent), transparent 70%),
+      linear-gradient(180deg, #1c150b, #0a0703);
+    filter: sepia(0.4); }
+  .media::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, #0000002e 0 1px, transparent 1px 3px); }
+  .media video, .media img { width: 100%; height: 100%; object-fit: cover; }
+  /* stand-in picture: a pilot in the plug seat, lit amber through LCL, with bubbles rising */
+  .media svg { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(.5) contrast(1.15) blur(.6px); }
+  .media::before { content: ""; position: absolute; inset: 0; z-index: 1; background: radial-gradient(70% 55% at 50% 42%, transparent 30%, #0a0602cc 100%); }
+  .seat { fill: #2a1c0c; stroke: #8a6426; stroke-width: 2; } .suit { fill: #a8946a; stroke: #e0b060; stroke-width: 1.5; } .skin { fill: #c09a6c; }
+  .hair { fill: var(--hair, #3a2a1a); } .clip { fill: #e8e0d0; stroke: #7a5a2a; } .shade { fill: #1a1006; opacity: .35; }
+  .bub { fill: none; stroke: #ffe2b0; stroke-width: 1; opacity: .6; }
+  @media (prefers-reduced-motion: no-preference) { .pilot { animation: breathe 4.5s ease-in-out infinite alternate; transform-origin: 50% 100%; } .bub { animation: rise 7s linear infinite; } .bub:nth-child(2n) { animation-duration: 9s; animation-delay: -3s; } .bub:nth-child(3n) { animation-delay: -5s; } }
+  @keyframes breathe { to { transform: scale(1.015) translateY(-1px); } }
+  @keyframes rise { from { transform: translateY(40px); } to { transform: translateY(-380px); } }
+  .tc { position: absolute; right: 12px; top: 40%; margin-top: -16px; font: 8px var(--font-mono); color: var(--color-text-accent); }
+  /* vitals strip above the footer */
+  .ecg { position: absolute; left: 12px; right: 12px; bottom: 92px; height: 26px; z-index: 2; }
+  .ecg polyline { fill: none; stroke: var(--color-text-accent); stroke-width: 1.5; filter: drop-shadow(0 0 3px var(--color-text-accent)); }
+  .lost .ecg polyline { stroke: var(--color-error); filter: none; }
+  .nosig { position: absolute; left: 0; right: 0; top: 44%; text-align: center; font: 700 20px var(--font-sans); letter-spacing: .2em; color: var(--color-error); text-shadow: 0 0 8px var(--color-error); }
+  .lost .media svg { display: none; }
+  .lost .media { background: repeating-linear-gradient(0deg, #1c1c1c 0 2px, #0a0a0a 2px 4px); filter: none; }
+  .lost .noise { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .5; mix-blend-mode: screen; }
+  .lost .media::before { display: none; }
+  .hd, .ft, .tc, .nosig { z-index: 2; }
+  .ticks { position: absolute; inset: 10px; pointer-events: none;
+    background:
+      linear-gradient(var(--color-text-accent), var(--color-text-accent)) left 0 top 40% / 10px 1px no-repeat,
+      linear-gradient(var(--color-text-accent), var(--color-text-accent)) right 0 top 40% / 10px 1px no-repeat,
+      linear-gradient(var(--color-text-accent), var(--color-text-accent)) left 0 top 70% / 10px 1px no-repeat,
+      linear-gradient(var(--color-text-accent), var(--color-text-accent)) right 0 top 70% / 10px 1px no-repeat; opacity: 0.7; }
+  .hd { position: absolute; top: var(--space-4); left: 0; right: 0; text-align: center; color: #f4eee4; }
+  .hd small { display: block; font-size: 11px; font-weight: 700; }
+  .hd b { display: inline-flex; align-items: center; gap: 6px; font-size: 22px; font-weight: 700; line-height: 1; }
+  .hd b::before, .hd b::after { content: ""; width: 5px; height: 26px; border: 2px solid currentColor; }
+  .hd b::before { border-right: 0; } .hd b::after { border-left: 0; }
+  .hd i { display: block; font-style: normal; font-size: 7px; letter-spacing: 0.2em; opacity: 0.8; }
+  .ft { position: absolute; left: var(--space-3); right: var(--space-3); bottom: var(--space-3); display: flex; justify-content: space-between; align-items: flex-end; color: #f4eee4; }
+  .who b { display: block; font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+  .who span { display: block; padding-left: 8px; border-left: 2px solid currentColor; font-size: 11px; font-weight: 700; line-height: 1.3; }
+  .live { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .live b { padding: 0 6px; border: 2px solid var(--color-text-accent); color: var(--color-text-accent); font-size: 22px; font-weight: 700; line-height: 1.1; text-shadow: var(--shadow-bloom); box-shadow: var(--shadow-bloom); }
+  .live em { font-style: normal; padding: 1px 5px; background: #000; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: 0.08em; }
+  .live small { font-family: var(--font-mono); font-size: 7px; color: var(--color-error); }
+  .feed.lost .media { filter: grayscale(1) brightness(0.5); }
+  .feed.lost .live b { color: var(--color-error); border-color: var(--color-error); }
+  .feed.lost .live em { background: var(--alert-400); }
+  @media (prefers-reduced-motion: no-preference) { .live b { animation: pulse 2s steps(2) infinite; } }
+  @keyframes pulse { 50% { opacity: 0.75; } }
+</style>
+</head>
+<body data-theme="clock">
+  <div class="feeds">
+    <figure class="feed" style="margin:0; --hair:#8fa6b8" aria-label="Test plug 00 live feed, all vitals normal">
+      <div class="media"><svg viewBox="0 0 300 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="seat" d="M40 360 V150 Q40 60 150 60 Q260 60 260 150 V360 Z"/><path class="seat" d="M78 360 V170 Q78 100 150 100 Q222 100 222 170 V360 Z"/>
+        <g class="pilot"><path class="suit" d="M56 360 Q60 270 112 250 L132 240 H168 L188 250 Q240 270 244 360 Z"/><path class="shade" d="M132 240 L150 300 L168 240 Z"/>
+          <path class="suit" d="M120 250 Q150 270 180 250 L176 232 H124 Z"/><rect class="skin" x="136" y="206" width="28" height="34" rx="6"/>
+          <ellipse class="skin" cx="150" cy="176" rx="34" ry="42"/><path class="shade" d="M116 176 Q150 236 184 176 Q176 222 150 222 Q124 222 116 176 Z"/>
+          <path class="hair" d="M110 186 Q102 120 150 118 Q198 120 190 186 Q184 150 166 142 Q150 160 124 150 Q114 160 110 186 Z"/>
+          <rect class="clip" x="114" y="128" width="14" height="8" rx="2"/><rect class="clip" x="172" y="128" width="14" height="8" rx="2"/></g>
+        <g><circle class="bub" cx="60" cy="340" r="4"/><circle class="bub" cx="236" cy="300" r="3"/><circle class="bub" cx="96" cy="360" r="2.5"/><circle class="bub" cx="204" cy="350" r="5"/><circle class="bub" cx="150" cy="370" r="2"/><circle class="bub" cx="30" cy="380" r="3"/></g>
+      </svg></div><span class="tc"></span><svg class="ecg" viewBox="0 0 280 26" preserveAspectRatio="none" aria-hidden="true"><polyline/></svg><div class="ticks"></div>
+      <div class="hd"><small>Monitored Object:</small><b>TEST PLUG 00</b><i>OBJ-SYNC TEST</i></div>
+      <div class="ft"><div class="who"><b>Pilot: R. Ayanami</b><span>All Vitals: Normal</span><span>Harmonics: Normal</span></div>
+        <div class="live"><b>LIVE</b><em>ONLINE</em><small>MV-X00</small></div></div>
+    </figure>
+    <figure class="feed" style="margin:0; --hair:#2a2018" aria-label="Test plug 01 live feed, all vitals normal">
+      <div class="media"><svg viewBox="0 0 300 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <path class="seat" d="M40 360 V150 Q40 60 150 60 Q260 60 260 150 V360 Z"/><path class="seat" d="M78 360 V170 Q78 100 150 100 Q222 100 222 170 V360 Z"/>
+        <g class="pilot"><path class="suit" d="M56 360 Q60 270 112 250 L132 240 H168 L188 250 Q240 270 244 360 Z"/><path class="shade" d="M132 240 L150 300 L168 240 Z"/>
+          <path class="suit" d="M120 250 Q150 270 180 250 L176 232 H124 Z"/><rect class="skin" x="136" y="206" width="28" height="34" rx="6"/>
+          <ellipse class="skin" cx="150" cy="176" rx="34" ry="42"/><path class="shade" d="M116 176 Q150 236 184 176 Q176 222 150 222 Q124 222 116 176 Z"/>
+          <path class="hair" d="M110 186 Q102 120 150 118 Q198 120 190 186 Q184 150 166 142 Q150 160 124 150 Q114 160 110 186 Z"/>
+          <rect class="clip" x="114" y="128" width="14" height="8" rx="2"/><rect class="clip" x="172" y="128" width="14" height="8" rx="2"/></g>
+        <g><circle class="bub" cx="60" cy="340" r="4"/><circle class="bub" cx="236" cy="300" r="3"/><circle class="bub" cx="96" cy="360" r="2.5"/><circle class="bub" cx="204" cy="350" r="5"/><circle class="bub" cx="150" cy="370" r="2"/><circle class="bub" cx="30" cy="380" r="3"/></g>
+      </svg></div><span class="tc"></span><svg class="ecg" viewBox="0 0 280 26" preserveAspectRatio="none" aria-hidden="true"><polyline/></svg><div class="ticks"></div>
+      <div class="hd"><small>Monitored Object:</small><b>TEST PLUG 01</b><i>OBJ-SYNC TEST</i></div>
+      <div class="ft"><div class="who"><b>Pilot: S. Ikari</b><span>All Vitals: Normal</span><span>Harmonics: Normal</span></div>
+        <div class="live"><b>LIVE</b><em>ONLINE</em><small>MV-X01</small></div></div>
+    </figure>
+    <figure class="feed lost" style="margin:0" aria-label="Test plug 02 feed, signal lost">
+      <div class="media"><canvas class="noise" width="150" height="180"></canvas></div><span class="nosig">NO SIGNAL</span><svg class="ecg" viewBox="0 0 280 26" preserveAspectRatio="none" aria-hidden="true"><polyline/></svg><div class="ticks"></div>
+      <div class="hd"><small>Monitored Object:</small><b>TEST PLUG 02</b><i>OBJ-SYNC TEST</i></div>
+      <div class="ft"><div class="who"><b>Pilot: S. Asuka Langley</b><span>All Vitals: —</span><span>Harmonics: Lost</span></div>
+        <div class="live"><b>LIVE</b><em>OFFLINE</em><small>MV-X02</small></div></div>
+    </figure>
+  </div>
+<script>
+// vitals: a heartbeat trace scrolls across each live tile; the lost tile flat-lines and shows static
+const feeds = [...document.querySelectorAll(".feed")].map((f, i) => ({ lost: f.classList.contains("lost"), line: f.querySelector(".ecg polyline"), tc: f.querySelector(".tc"), noise: f.querySelector(".noise"), rate: 1.1 + i * 0.17 }));
+const beat = u => { const x = u % 1; return x < 0.06 ? -3 * Math.sin(x / 0.06 * Math.PI) : x < 0.1 ? 0 : x < 0.13 ? 3 : x < 0.17 ? -11 : x < 0.21 ? 6 : x < 0.34 ? 0 : x < 0.46 ? -3.5 * Math.sin((x - 0.34) / 0.12 * Math.PI) : 0; };
+function frame(t) { feeds.forEach(f => { let pts = ""; for (let x = 0; x <= 280; x += 2) pts += `${x},${(15 + (f.lost ? (Math.random() - .5) * 1.2 : beat((x / 90 + t * f.rate)))).toFixed(1)} `; f.line.setAttribute("points", pts);
+    if (f.tc) f.tc.textContent = `00:${String(Math.floor(t / 60) % 60).padStart(2, "0")}:${String(Math.floor(t) % 60).padStart(2, "0")}:${String(Math.floor(t * 30) % 30).padStart(2, "0")}`;
+    if (f.noise) { const g = f.noise.getContext("2d"), im = g.createImageData(150, 180); for (let i = 0; i < im.data.length; i += 4) { const v = Math.random() * 255; im.data[i] = im.data[i + 1] = im.data[i + 2] = v; im.data[i + 3] = 255; } g.putImageData(im, 0, 0); } }); }
+frame(8.4);
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { frame(ms / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

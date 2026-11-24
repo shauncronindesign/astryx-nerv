@@ -1,0 +1,73 @@
+<!-- @dsCard group="Data display" height=330 subtitle="Pipe-bracketed status lines over a glass entry plug in ring gear · Tactical and Pattern themes · frames 9, 47, 133, 205" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-0-5); }
+  .stage { position: relative; min-height: 270px; padding: var(--space-5); background: var(--color-background-body); overflow: hidden; }
+  .stage::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, var(--color-scanline) 0 1px, transparent 1px 3px); }
+  .cap { position: absolute; display: flex; flex-direction: column; gap: 3px; }
+  .cap.tl { top: var(--space-5); left: var(--space-5); }
+  .cap.br { right: var(--space-5); bottom: var(--space-5); align-items: flex-end; }
+  /* one line: | Label : Value |  — pipes are drawn so they stay hairline-thin */
+  .line { display: inline-flex; align-items: center; gap: 0.5em; font-size: 15px; font-weight: 700; line-height: 1.2; color: var(--color-text-accent); text-shadow: var(--shadow-bloom); white-space: nowrap; }
+  .line::before, .line::after { content: ""; width: 1.5px; height: 1em; background: currentColor; box-shadow: var(--shadow-bloom); }
+  .line.open::after { display: none; }
+  .line .k { color: var(--color-text-secondary); font-weight: 700; }
+  .line.hd { font-size: 13px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-primary); }
+  .line.crit { color: var(--color-error); }
+  /* the subject under the captions: a glass entry plug lit through the spectrum, held in green ring gear, with a depth marker sliding along it */
+  .plug { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .struts { fill: none; stroke: #7a8aa8; stroke-width: 1; opacity: .5; }
+  .cap-in { fill: #ffffff55; stroke: #fff; stroke-width: 1; }
+  .seat { fill: #ffffff33; stroke: #fff; stroke-width: 1; opacity: .8; }
+  .rings ellipse { fill: #40e06022; stroke: var(--mint-300); stroke-width: 3; filter: drop-shadow(0 0 5px var(--mint-400)); }
+  .rings .thin { stroke-width: 1.2; fill: none; } .rings .dash { fill: none; stroke-width: 1.5; stroke-dasharray: 14 8; }
+  .lock rect { fill: #fff; filter: drop-shadow(0 0 6px #fff); } .lock text { font: 700 8px var(--font-sans); fill: #fff; text-anchor: middle; letter-spacing: .1em; }
+  .lock { transform: translateX(300px); }
+  @media (prefers-reduced-motion: no-preference) { .lock { animation: depth 6s ease-in-out infinite alternate; } .rings .dash { animation: turn 3s linear infinite; } .blinkline { animation: bl 1.2s steps(2) infinite; } }
+  @keyframes depth { from { transform: translateX(120px); } to { transform: translateX(410px); } }
+  @keyframes turn { to { stroke-dashoffset: -44; } }
+  @keyframes bl { 50% { opacity: .5; } }
+</style>
+</head>
+<body>
+  <div class="stage" data-theme="pattern">
+    <svg class="plug" viewBox="0 0 520 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="sp" x1="0" x2="1"><stop offset="0" stop-color="#ff3ad0"/><stop offset=".2" stop-color="#ff2a3a"/><stop offset=".38" stop-color="#ffb020"/><stop offset=".55" stop-color="#e8f040"/><stop offset=".72" stop-color="#40e060"/><stop offset=".88" stop-color="#30d0e8"/><stop offset="1" stop-color="#3a7cff"/></linearGradient>
+        <linearGradient id="gl" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".75"/><stop offset=".35" stop-color="#fff" stop-opacity=".1"/><stop offset=".7" stop-color="#000" stop-opacity=".25"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient>
+        <filter id="pg" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <g class="struts"><path d="M0 60 L200 150 M0 250 L190 170 M40 0 L210 140 M520 40 L330 130 M520 280 L340 160 M470 0 L330 120"/><circle cx="90" cy="150" r="70"/><circle cx="90" cy="150" r="48"/></g>
+      <g transform="rotate(-20 260 150)">
+        <g filter="url(#pg)"><rect x="80" y="122" width="370" height="56" rx="28" fill="url(#sp)" opacity=".9"/></g>
+        <rect x="80" y="122" width="370" height="56" rx="28" fill="url(#gl)"/>
+        <rect x="100" y="138" width="60" height="24" rx="12" class="cap-in"/><rect x="372" y="136" width="58" height="28" rx="14" class="cap-in"/>
+        <path class="seat" d="M200 164 q10 -26 34 -26 h24 q14 0 18 14 l6 12 z"/>
+        <g class="rings"><ellipse cx="300" cy="150" rx="26" ry="92"/><ellipse cx="300" cy="150" rx="20" ry="74"/><ellipse cx="318" cy="150" rx="22" ry="80" class="thin"/><ellipse cx="282" cy="150" rx="22" ry="80" class="thin"/><ellipse cx="300" cy="150" rx="34" ry="112" class="dash"/></g>
+        <g class="lock"><rect x="-3" y="112" width="6" height="76"/><text x="0" y="104">DEPTH</text></g>
+      </g>
+    </svg>
+    <div class="cap tl" data-theme="tactical"><span class="line">Monitored Target Subject : EVA-01 Entry Plug</span></div>
+    <div class="cap br" data-theme="tactical">
+      <span class="line blinkline">Status : Locking Down Interior Array</span>
+      <span class="line">See Separate Graphic for Plug Depth Status</span>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="cap tl">
+      <span class="line hd">Monitored Object Pattern Analysis</span>
+      <span class="line"><span class="k">Model Structure :</span> Interior of EVA-01 Entry Plug</span>
+      <span class="line crit"><span class="k">Status :</span> Interior Array Breaching Safety Levels</span>
+    </div>
+    <div class="cap br">
+      <span class="line open">DSS Choker Connectivity: ACTIVE</span>
+      <span class="line open">Synchronization Observation: ACTIVE</span>
+      <span class="line open">Suppression Function: ACTIVE</span>
+    </div>
+  </div>
+</body>
+</html>

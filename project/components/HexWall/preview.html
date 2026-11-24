@@ -1,0 +1,131 @@
+<!-- @dsCard group="Alert" height=640 subtitle="MAGI wall as a honeycomb of red glass · switches from battle stations to pattern analysis · Alert theme · frames 31, 52, W14" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); }
+  .wall { position: relative; height: 380px; overflow: hidden; background: var(--color-background-body);
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 39px, color-mix(in srgb, var(--color-border) 45%, transparent) 39px 40px),
+      repeating-linear-gradient(90deg, transparent 0 39px, color-mix(in srgb, var(--color-border) 45%, transparent) 39px 40px); }
+  /* blue sky-grid panels behind the outer cells */
+  .sky { position: absolute; top: 0; bottom: 0; width: 150px; background: var(--color-background-system);
+    background-image: repeating-linear-gradient(45deg, transparent 0 15px, #ffffff2e 15px 16px), repeating-linear-gradient(-45deg, transparent 0 15px, #ffffff2e 15px 16px); }
+  .sky.l { left: 0; } .sky.r { right: 0; }
+
+  /* hex: outline = outer fill, body = ::before inset by the stroke */
+  .hex { position: absolute; --cut: 18%; clip-path: polygon(var(--cut) 0, calc(100% - var(--cut)) 0, 100% 50%, calc(100% - var(--cut)) 100%, var(--cut) 100%, 0 50%);
+    background: var(--color-border); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .hex::before { content: ""; position: absolute; inset: var(--border-width-alert); clip-path: inherit; background: var(--hex-fill, var(--color-background-surface)); z-index: 0; }
+  .hex > * { position: relative; z-index: 1; }
+
+  .plate { left: 190px; right: 190px; top: 22px; height: 150px; --cut: 9%; background: var(--color-border-accent); --hex-fill: var(--alert-300); }
+  .plate .jp { font-family: var(--font-display); font-weight: 900; font-size: 46px; line-height: 1; color: var(--alert-950); letter-spacing: 0.04em; }
+  .plate .en { font-weight: 700; font-size: 17px; color: var(--alert-950); margin-top: var(--space-2); }
+  .plate .tag { position: absolute; top: 18px; padding: 2px 6px; border: var(--border-width) solid var(--alert-950); font-family: var(--font-jp); font-weight: 700; font-size: 13px; color: var(--alert-950); }
+  .plate .tag.l { left: 14%; } .plate .tag.r { right: 14%; }
+
+  .warn { width: 200px; height: 112px; top: 132px; --cut: 22%; }
+  .warn.l { left: 40px; } .warn.r { right: 40px; }
+  .warn .tri { width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent; border-bottom: 18px solid var(--color-text-primary); }
+  .warn .lvl { font-size: 9px; letter-spacing: 0.2em; color: var(--color-text-secondary); margin: 3px 0 1px; }
+  .word { display: inline-block; font-weight: 700; color: var(--color-text-primary); text-shadow: var(--shadow-bloom); transform: scaleX(var(--compress-mild)); }
+  .warn .word { font-size: 34px; letter-spacing: -0.01em; }
+
+  .chip { position: absolute; padding: 3px 10px; border: var(--border-width) solid var(--color-border-accent); background: var(--color-background-popover);
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: var(--color-text-primary); }
+  .mode { left: 290px; top: 196px; }
+  .verify { right: 290px; top: 196px; font-family: var(--font-jp); }
+
+  .magi { position: absolute; bottom: 26px; color: var(--color-text-primary); font-weight: 700; line-height: 1; }
+  .magi small { display: block; font-size: 15px; letter-spacing: 0.02em; }
+  .magi b { display: inline-block; font-size: 40px; text-shadow: var(--shadow-bloom); transform: scaleX(var(--compress-mild)); transform-origin: left; }
+  .magi.m1 { left: 200px; } .magi.m2 { left: 418px; } .magi.m3 { left: 640px; }
+  .rail { position: absolute; left: 190px; right: 190px; bottom: 82px; height: var(--border-width-alert); background: var(--color-border); }
+
+  /* the wall: translucent red glass cells over the blue sky grid */
+  #wall { display: block; width: 100%; max-width: 980px; height: auto; }
+  #wall text { font-family: var(--font-sans); font-weight: 700; }
+  .cellp { fill: var(--alert-400); stroke: var(--alert-200); stroke-width: 1.5; }
+  .plate-s { fill: var(--alert-300); stroke: #fff; stroke-width: 2.5; filter: drop-shadow(0 0 6px #ffffffaa); }
+  .flank { fill: var(--alert-500); stroke: #fff; stroke-width: 2; filter: drop-shadow(0 0 5px #ffffff88); }
+  .ink { fill: var(--alert-950); } .wht { fill: #fff; }
+  .chipr { fill: var(--alert-700); stroke: #fff; stroke-width: 1.2; }
+
+  /* single cells */
+  .cells { display: flex; gap: var(--space-0-5); margin-top: var(--space-5); position: relative; }
+  .cell { position: relative; width: 150px; height: 130px; --cut: 25%; }
+  .cell .word { font-size: 24px; }
+  .cell .sub { font-size: 9px; letter-spacing: 0.24em; color: var(--color-text-secondary); margin-top: 2px; }
+  .cell.dark { --hex-fill: var(--color-background-popover); }
+  .cell.hz { background: var(--color-hazard); --hex-fill: var(--color-background-surface); }
+</style>
+</head>
+<body data-theme="alert">
+  <svg id="wall" viewBox="0 0 980 400" role="img" aria-label="MAGI wall">
+    <defs>
+      <pattern id="sky" width="22" height="22" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="22" height="22" fill="var(--sysblue-500)"/><path d="M0 0 H22 M0 0 V22" stroke="#ffffff55" stroke-width="1"/></pattern>
+      <radialGradient id="haze" cx="50%" cy="50%" r="60%"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".72" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".85"/></radialGradient>
+      <filter id="wb" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <clipPath id="wc"><rect width="980" height="400"/></clipPath>
+    </defs>
+    <g clip-path="url(#wc)">
+      <rect width="980" height="400" fill="url(#sky)"/>
+      <g id="comb"></g>
+      <rect width="980" height="400" fill="url(#haze)" pointer-events="none"/>
+      <!-- title plate: one wide cell spanning the top of the wall -->
+      <path class="plate-s" d="M236 96 L292 18 H688 L744 96 L688 174 H292 Z"/>
+      <g id="title"></g>
+      <g id="flanks"></g>
+      <g id="chips"></g>
+      <path d="M210 318 H770" stroke="var(--alert-200)" stroke-width="2"/>
+      <g class="magi-s" filter="url(#wb)"></g>
+      <g id="magi"></g>
+    </g>
+  </svg>
+  <div class="cells">
+    <div class="hex cell"><div class="tri" style="border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:15px solid var(--color-text-primary)"></div><span class="word">ALERT</span><span class="sub">LEVEL 3</span></div>
+    <div class="hex cell dark"><span class="word">EMERGENCY</span><span class="sub">LEVEL 5</span></div>
+    <div class="hex cell hz"><span class="word">DANGER</span><span class="sub">CODE 102</span></div>
+    <div class="hex cell"><span class="word" style="font-family:var(--font-jp)">分析終了</span><span class="sub">ANALYSIS END</span></div>
+  </div>
+<script>
+const NS = "http://www.w3.org/2000/svg", el = (t, a, p, tx) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); if (tx != null) n.textContent = tx; p.appendChild(n); return n; };
+const $ = id => document.getElementById(id);
+const hex = (cx, cy, r, sy = 1) => "M" + [0, 60, 120, 180, 240, 300].map(a => `${(cx + r * Math.cos(a * Math.PI / 180)).toFixed(1)} ${(cy + r * sy * Math.sin(a * Math.PI / 180)).toFixed(1)}`).join(" L") + " Z";
+// honeycomb: flat-top cells. Cells thin out toward the flanks so the sky shows through.
+let seed = 3; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const R = 40, cells = [];
+for (let c = -1; c * R * 1.5 < 1020; c++) for (let r = -1; r < 7; r++) { const x = c * R * 1.5, y = r * R * 1.732 + (c % 2 ? R * 0.866 : 0), edge = Math.min(x, 980 - x);
+  if (edge < 150 && rnd() > edge / 150) continue;
+  cells.push({ x, n: el("path", { d: hex(x, y, R - 1.5), class: "cellp" }, $("comb")), base: 0.82 + rnd() * 0.16, ph: rnd() * 6.28 }); }
+// two wall states, as in the films: battle stations, then pattern analysis
+const STATES = [
+  { label: "Battle Stations Condition One, warning level 1 on both flanks, mode tactics", jp: ["第一種戦闘配置"], en: ["Battle Stations Condition One"], tag: ["警報", "Alert"], flank: ["WARNING", "LEVEL 1"], chips: ["MODE: Tactics", "検証中"] },
+  { label: "Pattern analysis blue, hypothesized as the 6th Angel, alert level 3 on both flanks, verification in progress", jp: ["分析パターン：青", "第6使徒と推測"], en: ["Pattern Analysis : Blood Type BLUE 06", "Hypothesized As 6th Angel"], tag: ["分析終了", "Analysis Complete"], flank: ["ALERT", "LEVEL 3"], chips: ["解析中", "検証中"] },
+];
+function build(k) { const S = STATES[k]; $("wall").setAttribute("aria-label", "MAGI wall: " + S.label);
+  const T = $("title"); T.textContent = ""; const two = S.jp.length > 1;
+  S.jp.forEach((t, i) => el("text", { x: 490, y: two ? 68 + i * 44 : 96, "font-size": two ? 36 : 44, "text-anchor": "middle", class: "ink", style: "font-family: var(--font-display); font-weight: 900", "letter-spacing": 2 }, T, t));
+  S.en.forEach((t, i) => el("text", { x: 490, y: (two ? 134 : 128) + i * 16, "font-size": two ? 13 : 17, "text-anchor": "middle", class: "ink" }, T, t));
+  [292, 688].forEach(x => { el("rect", { x: x - 36, y: 78, width: 72, height: 34, fill: "none", stroke: "var(--alert-950)", "stroke-width": 1.5 }, T);
+    el("text", { x, y: 98, "font-size": 15, "text-anchor": "middle", class: "ink", style: "font-family: var(--font-jp)" }, T, S.tag[0]); el("text", { x, y: 108, "font-size": 6.5, "text-anchor": "middle", class: "ink" }, T, S.tag[1]); });
+  const F = $("flanks"); F.textContent = "";
+  [118, 862].forEach(x => { el("path", { d: hex(x, 214, 108, 0.82), class: "flank" }, F); el("path", { d: `M${x - 13} 186 h26 l-13 -21 z`, class: "wht" }, F);
+    el("text", { x, y: 200, "font-size": 9, "text-anchor": "middle", class: "wht", "letter-spacing": 2 }, F, S.flank[1]);
+    el("text", { "font-size": 40, "text-anchor": "middle", class: "wht", filter: "url(#wb)", transform: `translate(${x} 240) scale(.84 1)` }, F, S.flank[0]); });
+  const C = $("chips"); C.textContent = "";
+  [[330, S.chips[0]], [650, S.chips[1]]].forEach(([x, t]) => { el("path", { d: `M${x - 62} 222 l10 -15 h104 l10 15 l-10 15 h-104 z`, class: "chipr" }, C); el("text", { x, y: 227, "font-size": 13, "text-anchor": "middle", class: "wht", style: "font-family: var(--font-sans), var(--font-jp)" }, C, t); });
+}
+[["Melchior 1", 214], ["Balthasar 2", 432], ["Casper 3", 654]].forEach(([n, x]) => { el("text", { x, y: 342, "font-size": 15, class: "wht" }, $("magi"), "MAGI"); el("text", { "font-size": 40, class: "wht", filter: "url(#wb)", transform: `translate(${x} 380) scale(.84 1)` }, $("magi"), n); });
+const force = (location.hash.match(/state=(\d)/) || [])[1];   // #state=0 or #state=1 pins a state
+let state = force ? +force : 0, t0 = -9; build(state);
+// glass: every cell breathes a little; on a state change a white wave crosses the wall left to right
+function paint(t) { cells.forEach(c => { const w = t - t0 - c.x / 980 * 0.6, flash = w > 0 && w < 0.35 ? 1 - w / 0.35 : 0;
+  c.n.style.opacity = c.base + 0.05 * Math.sin(t * 1.3 + c.ph); c.n.style.fill = flash > 0.05 ? `color-mix(in srgb, #fff ${Math.round(flash * 80)}%, var(--alert-400))` : ""; }); }
+paint(0);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { let last = 0; const loop = ms => { const t = ms / 1000; if (t - last > 5) { last = t; t0 = t; state = 1 - state; setTimeout(() => build(state), 300); } paint(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

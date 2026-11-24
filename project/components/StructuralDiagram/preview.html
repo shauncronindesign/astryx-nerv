@@ -1,0 +1,79 @@
+<!-- @dsCard group="Data display" height=500 subtitle="S-BLOCK structural diagram on the handheld viewer · vertebra chains, serpentine linkage, spear head · Schematic theme · New Spear" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); padding-top: 34px; }
+  svg { display: block; width: 100%; max-width: 980px; height: auto; overflow: visible; filter: drop-shadow(0 0 14px #f09c4844); }
+  text { font-family: var(--font-sans); font-weight: 700; }
+  .paper { fill: var(--color-background-body); } .rail { fill: var(--blush-paper); }
+  .truss { fill: none; stroke: var(--label-orange); stroke-width: 1; opacity: .55; }
+  .v-body { fill: var(--rust-500); stroke: var(--rust-700); stroke-width: 1.5; }
+  .v-line { fill: none; stroke: var(--label-orange); stroke-width: 1; opacity: .8; }
+  .v-core { fill: var(--rust-700); }
+  .tube { fill: none; stroke: var(--rust-700); stroke-width: 19; stroke-linejoin: round; } .tube-in { fill: none; stroke: var(--paper-50); stroke-width: 15; stroke-linejoin: round; }
+  .tube-c { fill: none; stroke: var(--paper-400); stroke-width: 1; stroke-dasharray: 5 4; }
+  .barb { fill: var(--label-orange); stroke: var(--rust-700); stroke-width: 1; }
+  .plate { fill: var(--color-label-plate); } .slot { fill: var(--paper-50); }
+  .tab { fill: var(--field-lime); }
+  .pulse { fill: var(--bloom-core); opacity: 0; }
+  .call { font: 700 9px var(--font-mono); fill: var(--color-text-secondary); } .lead { stroke: var(--color-text-secondary); stroke-width: 1; fill: none; }
+</style>
+</head>
+<body data-theme="schematic">
+<svg id="d" data-theme="schematic" viewBox="0 0 980 400" role="img" aria-label="Structural diagram of the S-BLOCK spinal linkage system: three vertebra chains, the middle one opened to show the serpentine linkage and spear head">
+  <defs>
+    <clipPath id="screen"><rect width="980" height="400" rx="10"/></clipPath>
+    <!-- one vertebra: armoured body, contour lines, core -->
+    <symbol id="vert" viewBox="-24 -34 48 68" overflow="visible">
+      <path class="v-body" d="M-20 -22 L-8 -32 H8 L20 -22 L24 -6 V6 L20 22 L8 32 H-8 L-20 22 L-24 6 V-6 Z"/>
+      <path class="v-line" d="M-14 -18 L-5 -25 H5 L14 -18 L17 -5 V5 L14 18 L5 25 H-5 L-14 18 L-17 5 V-5 Z M-8 -12 H8 L11 0 L8 12 H-8 L-11 0 Z M-24 0 H-11 M11 0 H24 M0 -32 V-12 M0 12 V32"/>
+      <path class="v-core" d="M0 -6 L5 0 L0 6 L-5 0 Z"/>
+    </symbol>
+  </defs>
+  <g clip-path="url(#screen)">
+    <rect class="paper" width="980" height="400"/>
+    <rect class="rail" width="64" height="400"/>
+    <g id="truss"></g>
+    <g id="chains"></g>
+    <!-- serpentine linkage in the opened middle section -->
+    <path id="tubeA" class="tube"/><path id="tubeB" class="tube-in"/><path id="tubeC" class="tube-c"/>
+    <path class="lead" d="M716 138 V262" stroke-width="1.5"/>
+    <g id="head"></g>
+    <g id="pulses"></g>
+    <path class="lead" d="M452 168 L500 120 H560 M828 200 L880 150 H930"/><text class="call" x="504" y="116">LINKAGE S-07 / FLEX 12°</text><text class="call" x="884" y="146">SPEAR HEAD</text>
+    <!-- label plate with its paper slot -->
+    <rect class="plate" x="96" y="34" width="30" height="340"/><rect class="slot" x="130" y="34" width="26" height="340"/>
+    <text font-size="17" fill="#fff" transform="translate(117 366) rotate(-90)">S-BLOCK: Spinal Linkage System</text>
+    <text font-size="16" fill="var(--label-orange)" transform="translate(149 366) rotate(-90)">Structural Diagram</text>
+    <g fill="var(--label-orange)" font-size="13" text-anchor="middle" id="magi"></g>
+  </g>
+  <rect class="tab" x="382" y="-14" width="216" height="14"/><text x="490" y="-3.5" font-size="10" fill="#10180a" text-anchor="middle">Structural Diagram: S-BLOCK</text>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg", el = (t, a, p, tx) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); if (tx != null) n.textContent = tx; p.appendChild(n); return n; };
+const $ = id => document.getElementById(id);
+[["3", 66], ["2", 200], ["1", 334]].forEach(([n, y]) => { const g = el("g", { transform: `translate(34 ${y}) rotate(-90)` }, $("magi")); el("text", { y: -3 }, g, "MAGI"); el("text", { y: 12 }, g, "Achiral " + n); });
+// structural trusses behind everything: frames, braces, bolt circles
+const tr = $("truss"); for (let x = 180; x < 980; x += 100) { el("path", { d: `M${x} 110 V290 M${x} 110 L${x + 100} 150 M${x} 290 L${x + 100} 250 M${x + 50} 96 V304`, class: "truss" }, tr); el("circle", { cx: x + 50, cy: 126, r: 8, class: "truss" }, tr); el("circle", { cx: x + 50, cy: 274, r: 8, class: "truss" }, tr); }
+el("path", { d: "M170 104 H980 M170 296 H980 M170 150 H330 M650 150 H980 M170 250 H330 M650 250 H980", class: "truss" }, tr);
+// chains: overlapping vertebrae. Top and bottom lanes run the full width; the middle lane is opened up.
+const verts = [];
+const chain = (y, x0, x1, lane) => { for (let x = x0; x <= x1; x += 40) { const u = el("use", { href: "#vert", x: x - 24, y: y - 34, width: 48, height: 68 }, $("chains")); if (lane === 1) verts.push([x, y]); } };
+chain(58, 80, 980, 0); chain(342, 80, 980, 2); chain(200, 180, 330, 1);
+// serpentine: seven U-turns between the two halves of the middle chain
+let d = "M330 200 H352", x = 352; for (let i = 0; i < 7; i++) { const up = i % 2 === 0, y = up ? 164 : 236; d += ` V${y} H${x + 40} V200`; x += 40; if (i < 6) d += ` H${x + 1}`; }
+d += " H650"; ["tubeA", "tubeB", "tubeC"].forEach(id => $(id).setAttribute("d", d));
+chain(200, 652, 692, 1);
+// spear head: a heavier vertebra with barbs fanning forward
+const h = $("head"); el("use", { href: "#vert", x: 736, y: 150, width: 70, height: 100 }, h);
+[-58, -34, -12, 12, 34, 58].forEach(a => el("path", { d: "M0 -5 L46 -9 L58 0 L46 9 L0 5 L10 0 Z", class: "barb", transform: `translate(806 200) rotate(${a}) translate(8 0)` }, h));
+// a signal runs down the middle lane, lighting one vertebra at a time
+verts.push([771, 200]); const pulses = verts.map(([x, y]) => el("circle", { cx: x, cy: y, r: 9, class: "pulse" }, $("pulses")));
+const step = n => pulses.forEach((p, i) => p.style.opacity = i === n % pulses.length ? .9 : i === (n - 1) % pulses.length ? .35 : 0);
+step(3);
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { let n = 0; setInterval(() => step(n++), 260); }
+</script>
+</body>
+</html>

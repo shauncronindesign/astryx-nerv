@@ -1,0 +1,81 @@
+<!-- @dsCard group="Data display" height=300 subtitle="Clipped solid states, bar-marked categories, and badges taken from the films: hex cell, LIVE stack, file tab, zone chip · Tactical theme" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; padding: var(--space-6); background: var(--color-background-body); font-family: var(--font-sans); display: flex; flex-direction: column; gap: var(--space-4); }
+  .row { display: flex; gap: var(--space-2); flex-wrap: wrap; align-items: center; }
+  .b { --c: 5px; height: 20px; padding: 0 9px; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap;
+    clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+  /* semantic: solid fills with a tiny segmented tail */
+  .s::after { content: ""; width: 8px; height: 6px; background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px); opacity: 0.5; }
+  .neutral { background: var(--color-background-gray); color: var(--color-text-gray); }
+  .info { background: var(--color-info-fill); color: var(--color-on-info); }
+  .success { background: var(--color-success); color: var(--color-on-success); box-shadow: 0 0 8px var(--color-success); }
+  .warning { background: var(--color-warning); color: var(--color-on-warning); }
+  .error { background: var(--color-background-error-inverted); color: var(--color-on-error); box-shadow: 0 0 10px var(--color-error); }
+  /* categorical: tint + 3px leading bar, text glows in its hue */
+  .k { padding-left: 0; background: var(--bg); color: var(--fg); box-shadow: inset 0 0 0 1px var(--bd); }
+  .k::before { content: ""; align-self: stretch; width: 3px; background: var(--fg); box-shadow: 0 0 4px var(--fg); }
+  .k { text-shadow: 0 0 4px color-mix(in srgb, var(--fg) 60%, transparent); }
+  .amber { --bg: var(--color-background-amber); --bd: var(--color-border-amber); --fg: var(--color-text-amber); }
+  .red { --bg: var(--color-background-red); --bd: var(--color-border-red); --fg: var(--color-text-red); }
+  .green { --bg: var(--color-background-green); --bd: var(--color-border-green); --fg: var(--color-text-green); }
+  .blue { --bg: var(--color-background-blue); --bd: var(--color-border-blue); --fg: var(--color-text-blue); }
+  .wille { --bg: var(--color-background-wille); --bd: var(--color-border-wille); --fg: var(--color-text-wille); }
+  .indigo { --bg: var(--color-background-indigo); --bd: var(--color-border-indigo); --fg: var(--color-text-indigo); }
+  .ochre { --bg: var(--color-background-ochre); --bd: var(--color-border-ochre); --fg: var(--color-text-ochre); }
+  .gray { --bg: var(--color-background-gray); --bd: var(--color-border-gray); --fg: var(--color-text-gray); }
+  .magenta { --bg: var(--color-background-magenta); --bd: var(--color-border-magenta); --fg: var(--color-text-magenta); }
+  .violet { --bg: var(--color-background-violet); --bd: var(--color-border-violet); --fg: var(--color-text-violet); }
+  .cyan { --bg: var(--color-background-cyan); --bd: var(--color-border-cyan); --fg: var(--color-text-cyan); }
+  .mint { --bg: var(--color-background-mint); --bd: var(--color-border-mint); --fg: var(--color-text-mint); }
+  .gold { --bg: var(--color-background-gold); --bd: var(--color-border-gold); --fg: var(--color-text-gold); }
+  .live { padding: 0 5px; height: 20px; display: inline-flex; align-items: center; border: 2px solid var(--color-text-accent); color: var(--color-text-accent); font-size: 14px; font-weight: 700; text-shadow: var(--shadow-bloom); box-shadow: var(--shadow-bloom); }
+  .on { background: #000; color: #fff; padding: 1px 5px; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; }
+  /* --- badges lifted straight from the films --- */
+  .rowlab { width: 100%; font-size: 10px; font-weight: 700; letter-spacing: .16em; color: var(--color-text-tertiary); margin-top: var(--space-2); }
+  .hexb { width: 74px; height: 64px; clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%); background: var(--alert-200); display: inline-flex; position: relative; }
+  .hexb::before { content: ""; position: absolute; inset: 2px; clip-path: inherit; background: var(--alert-500); }
+  .hexb span { position: relative; margin: auto; text-align: center; color: #fff; font-weight: 700; font-size: 13px; line-height: 1.05; text-shadow: 0 0 6px #fff; }
+  .hexb small { display: block; font-size: 6.5px; letter-spacing: .18em; }
+  .hexb i { display: block; width: 0; height: 0; margin: 0 auto 2px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 8px solid #fff; }
+  .stack { display: inline-flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .stack small { font: 7px var(--font-mono); color: var(--color-error); }
+  .filetab { background: var(--field-lime); color: #10180a; font-size: 10px; font-weight: 700; padding: 1px 10px; box-shadow: 0 0 8px #9ccc3c88; }
+  .zone { font: 700 13px var(--font-hardware); letter-spacing: .18em; color: var(--bloom-core); padding: 5px 10px 4px 13px; border: 1.5px solid var(--color-border-accent); background: var(--color-background-popover); text-shadow: var(--shadow-bloom);
+    clip-path: polygon(7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0 calc(100% - 7px), 0 7px); }
+  .brk { display: inline-flex; align-items: center; gap: 6px; color: #f4eee4; font-size: 16px; font-weight: 700; }
+  .brk::before, .brk::after { content: ""; width: 4px; height: 20px; border: 2px solid currentColor; } .brk::before { border-right: 0; } .brk::after { border-left: 0; }
+  .tagb { display: inline-flex; align-items: stretch; font-weight: 700; letter-spacing: .06em; transform: rotate(-8deg); }
+  .tagb b { padding: 3px 9px; background: var(--color-hazard); color: var(--color-on-hazard); font-size: 12px; } .tagb i { width: 12px; background: repeating-linear-gradient(135deg, var(--color-hazard) 0 3px, transparent 3px 6px); }
+  .magi { display: inline-flex; flex-direction: column; align-items: center; color: var(--scope-orange); font-weight: 700; font-size: 12px; line-height: 1; text-shadow: var(--shadow-bloom); }
+  .magi small { font-size: 7px; font-weight: 400; margin-top: 2px; }
+  .plateb { background: var(--color-label-plate); color: var(--color-on-label-plate); font-size: 12px; font-weight: 700; padding: 2px 9px; }
+  @media (prefers-reduced-motion: no-preference) { .live { animation: lv 1.6s steps(2) infinite; } }
+  @keyframes lv { 50% { opacity: .6; } }
+</style>
+</head>
+<body>
+  <div class="row">
+    <span class="b s neutral">Standby</span><span class="b s info">Pattern blue</span><span class="b s success">Nominal</span><span class="b s warning">Warning</span><span class="b s error">Critical</span>
+    <span class="live">LIVE</span><span class="on">ONLINE</span>
+  </div>
+  <div class="row">
+    <span class="b k amber">Primary</span><span class="b k red">Hostile</span><span class="b k green">Data</span><span class="b k blue">System</span><span class="b k wille">Wille</span><span class="b k indigo">Grid</span><span class="b k ochre">Archive</span><span class="b k gray">Seele</span>
+  </div>
+  <div class="row">
+    <span class="b k magenta">A.T. Field</span><span class="b k violet">Spectrum</span><span class="b k cyan">Plug</span><span class="b k mint">Harmonics</span><span class="b k gold">Readout</span>
+  </div>
+  <div class="row" style="gap: var(--space-4)"><span class="rowlab">FROM THE FILMS</span>
+    <span class="hexb" role="img" aria-label="Alert, level 3"><span><i></i>ALERT<small>LEVEL 3</small></span></span>
+    <span class="stack"><span class="live">LIVE</span><span class="on">ONLINE</span><small>MV-X01</small></span>
+    <span class="filetab">Simulation File: Case FA0212</span>
+    <span class="zone">MST</span>
+    <span class="brk">TEST PLUG 01</span>
+    <span class="tagb"><b>READY</b><i></i></span>
+    <span class="magi">MAGI<span>Achiral 2</span><small>Operational</small></span>
+    <span class="plateb">MATCHES</span>
+  </div>
+</body>
+</html>

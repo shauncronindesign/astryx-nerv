@@ -1,0 +1,98 @@
+<!-- @dsCard group="Data display" height=420 subtitle="活動限界まで · internal power countdown · floods red under one minute · frames 25, 45, M4" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--timer-navy); font-family: var(--font-sans); padding: var(--space-6); }
+  .timer { position: relative; display: grid; grid-template-columns: 1fr 230px; grid-template-rows: auto 1fr auto; gap: var(--space-2) var(--space-3);
+    width: 900px; padding: var(--space-4) var(--space-5); color: #fff;
+    background: linear-gradient(100deg, var(--color-timer-start) 0%, var(--color-timer-mid) 18%, var(--timer-indigo) 34%, var(--timer-navy) 60%);
+    clip-path: polygon(0 0, calc(100% - var(--chamfer-lg)) 0, 100% var(--chamfer-lg), 100% 100%, var(--chamfer-lg) 100%, 0 calc(100% - var(--chamfer-lg))); }
+  .head { grid-column: 1; display: flex; align-items: flex-start; gap: var(--space-3); }
+  .jp { font-family: var(--font-display); font-weight: 900; font-size: 30px; line-height: 1; color: #fff; background: var(--timer-navy); padding: 4px 8px; }
+  .jp small { display: block; font-size: 22px; margin-top: 4px; }
+  .en { font-size: 15px; font-weight: 700; letter-spacing: 0.02em; color: #fff; margin-top: 4px; }
+  .digits { grid-column: 1; grid-row: 2; display: flex; align-items: flex-end; gap: 6px; transform: skewX(-8deg); padding-left: var(--space-6); }
+  .digits svg { height: 170px; width: auto; overflow: visible; }
+  .digits .seg { fill: var(--color-timer-digit); filter: drop-shadow(0 0 6px var(--color-timer-digit)); }
+  .digits .off { fill: var(--color-timer-digit); opacity: 0.08; }
+  .digits .colon { fill: var(--color-timer-digit); filter: drop-shadow(0 0 6px var(--color-timer-digit)); }
+  .tabs { grid-column: 2; grid-row: 1 / 3; display: flex; flex-direction: column; gap: var(--space-2); }
+  .tab { position: relative; padding: var(--space-2) var(--space-3); clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 0 100%); }
+  .tab b { display: block; font-family: var(--font-display); font-weight: 900; font-size: 38px; line-height: 1; }
+  .tab span { display: block; font-size: 15px; font-weight: 700; letter-spacing: 0.04em; transform: scaleX(var(--compress-mild)); transform-origin: left; white-space: nowrap; }
+  .tab.int { background: var(--timer-blue-light); color: var(--alert-600); }
+  .tab.int::after { content: ""; position: absolute; right: 10px; top: 8px; width: 46px; height: 44px;
+    background: repeating-linear-gradient(-55deg, var(--alert-400) 0 6px, transparent 6px 12px); }
+  .tab.sys { background: var(--timer-navy); color: #fff; outline: 1px solid var(--timer-blue-light); outline-offset: -1px; }
+  .tab.sys b { font-family: var(--font-jp); font-weight: 700; font-size: 22px; }
+  .tab.ext { background: var(--timer-blue); color: var(--timer-blue-light); }
+  .tab.ext b { color: #dfe8ff; opacity: 0.55; }
+  .tab.ext span { color: #dfe8ff; opacity: 0.65; }
+  .modes { grid-column: 1 / 3; display: grid; grid-template-columns: repeat(4, 1fr) 1.4fr; gap: var(--space-0-5); }
+  .mode { height: 34px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+    background: color-mix(in srgb, var(--timer-blue) 55%, var(--timer-navy)); color: #c9d6f5; border-top: 2px solid var(--timer-blue-light); }
+  .mode.on { background: var(--timer-blue-light); color: var(--timer-navy); }
+  .mode.danger { background: var(--alert-600); color: #fff; border-top-color: var(--alert-300); flex-direction: column; line-height: 1; font-size: 14px; }
+  .mode.danger.on { background: var(--alert-400); text-shadow: var(--shadow-bloom); }
+  /* ruler ticks along the top edge, as on the film's housing */
+  .timer::before { content: ""; position: absolute; left: 0; right: 250px; top: 0; height: 7px; background: repeating-linear-gradient(90deg, #ffffff66 0 1px, transparent 1px 12px); pointer-events: none; }
+  /* EMERGENCY: under one minute the whole housing floods red, as in frame 45 */
+  .timer, .tab, .mode, .jp { transition: background-color .25s steps(3), color .25s steps(3); }
+  .timer.emg { background: linear-gradient(100deg, #ff3030 0%, var(--alert-400) 22%, var(--alert-600) 45%, var(--alert-950) 80%); }
+  .emg .digits { background: linear-gradient(90deg, #14010300, #140103d9 12%, #140103d9 88%, #14010300); }
+  .emg .jp { background: var(--alert-950); color: #ffd2cb; } .emg .en { color: #ffd2cb; }
+  .emg .digits .seg, .emg .digits .colon { fill: #ff2a2a; filter: drop-shadow(0 0 10px #ff2a2a); }
+  .emg .tab.int { background: var(--alert-300); color: var(--alert-950); } .emg .tab.int::after { background: repeating-linear-gradient(-55deg, var(--alert-950) 0 6px, transparent 6px 12px); }
+  .emg .tab.sys { background: var(--alert-950); outline-color: var(--alert-300); color: #ffd2cb; }
+  .emg .tab.ext { background: var(--alert-700); color: var(--alert-200); } .emg .tab.ext b, .emg .tab.ext span { color: var(--alert-200); }
+  .emg .mode { background: var(--alert-700); color: #ffb8b0; border-top-color: var(--alert-300); }
+  .emg .mode.danger.on { background: #ff3030; color: #fff; }
+  @media (prefers-reduced-motion: no-preference) { .emg .mode.danger.on { animation: emg .5s steps(2) infinite; } }
+  @keyframes emg { 50% { background: var(--alert-600); } }
+  .ctl { display: flex; gap: var(--space-2); margin-top: var(--space-3); }
+  .ctl button { font: 700 11px var(--font-sans); letter-spacing: 0.12em; padding: 6px 12px; background: transparent; color: var(--timer-blue-light); border: 1px solid var(--timer-blue-light); cursor: pointer; }
+  .ctl button:focus-visible { outline: 1px solid #fff; outline-offset: 2px; }
+</style>
+</head>
+<body>
+  <div class="timer" role="timer" aria-label="Active time remaining">
+    <div class="head"><div class="jp">活動限界まで<small>あと</small></div><div class="en">ACTIVE TIME REMAINING:</div></div>
+    <div class="digits" id="digits" aria-live="off"></div>
+    <div class="tabs">
+      <div class="tab int"><b>内部</b><span>INTERNAL</span></div>
+      <div class="tab sys"><b>主電源供給システム</b><span>MAIN ENERGY SUPPLY SYSTEM</span></div>
+      <div class="tab ext"><b>外部</b><span>EXTERNAL</span></div>
+    </div>
+    <div class="modes" id="modes">
+      <div class="mode">STOP</div><div class="mode">SLOW</div><div class="mode on">NORMAL</div><div class="mode">RACING</div>
+      <div class="mode danger"><span>DANGER</span><span>EMERGENCY</span></div>
+    </div>
+  </div>
+  <div class="ctl"><button id="cut">CUT CABLE</button><button id="reset">RESET 5:00</button><button id="low">JUMP TO 1:05</button></div>
+<script>
+// 7-segment digits drawn as SVG so no segment font is needed. Segments: a b c d e f g.
+const MAP = { 0:"abcdef",1:"bc",2:"abged",3:"abgcd",4:"fgbc",5:"afgcd",6:"afgedc",7:"abc",8:"abcdefg",9:"abcfgd" };
+const S = { a:"9,3 51,3 41,15 19,15", b:"53,5 53,48 43,42 43,17", c:"53,52 53,95 43,83 43,58", d:"9,97 51,97 41,85 19,85",
+            e:"7,52 7,95 17,83 17,58", f:"7,5 7,48 17,42 17,17", g:"10,50 19,43 41,43 50,50 41,57 19,57" };
+function digit(n){ const on = MAP[n]; return `<svg viewBox="0 0 60 100" aria-hidden="true">${
+  Object.entries(S).map(([k,p])=>`<polygon points="${p}" class="${on.includes(k)?"seg":"off"}"/>`).join("")}</svg>`; }
+const colon = `<svg viewBox="0 0 16 100" aria-hidden="true"><rect class="colon" x="4" y="30" width="8" height="10"/><rect class="colon" x="4" y="64" width="8" height="10"/></svg>`;
+const el = document.getElementById("digits"), modes = [...document.querySelectorAll(".mode")];
+const force = (location.hash.match(/left=([\d.]+)/) || [])[1];   // #left=45 pins the time remaining, in seconds
+let left = force ? force * 1000 : 299930, running = false, last = 0; // ms: 4:59:93
+function draw(){ const m = Math.floor(left/60000), s = Math.floor(left/1000)%60, c = Math.floor(left/10)%100;
+  el.innerHTML = digit(m) + colon + digit(Math.floor(s/10)) + digit(s%10) + colon + digit(Math.floor(c/10)) + digit(c%10);
+  el.parentElement.setAttribute("aria-label", `Active time remaining ${m} minutes ${s} seconds`);
+  modes.forEach(x=>x.classList.remove("on")); modes[left < 60000 ? 4 : 2].classList.add("on");
+  el.parentElement.classList.toggle("emg", left < 60000); }
+function tick(t){ if (!running) return; if (last) left = Math.max(0, left - (t - last)); last = t; draw(); if (left > 0) requestAnimationFrame(tick); }
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+document.getElementById("cut").onclick = () => { if (still) { left -= 1000; draw(); return; } running = true; last = 0; requestAnimationFrame(tick); };
+document.getElementById("low").onclick = () => { left = 65000; draw(); if (!still) { running = true; last = 0; requestAnimationFrame(tick); } };
+document.getElementById("reset").onclick = () => { running = false; left = 300000; draw(); };
+draw();
+</script>
+</body>
+</html>

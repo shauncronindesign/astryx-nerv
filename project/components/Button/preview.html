@@ -1,0 +1,114 @@
+<!-- @dsCard group="Actions" height=430 subtitle="Chamfered, glowing, condensed; plus label plates, mode keys and a guarded action with a hazard cover · Tactical theme, Alert row below" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; padding: var(--space-6); background: var(--color-background-body); font-family: var(--font-sans); color: var(--color-text-secondary); display: flex; flex-direction: column; gap: var(--space-5); }
+  .row { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+  .row-label { width: 78px; flex-shrink: 0; font-size: 10px; font-weight: 700; letter-spacing: 0.16em; color: var(--color-text-tertiary); }
+  .btn { --c: var(--chamfer-sm); --ink: var(--color-border-accent); position: relative; appearance: none; border: 0; cursor: pointer;
+    height: var(--size-element-md); padding: 0 var(--space-5); display: inline-flex; align-items: center; gap: var(--space-2);
+    font: 700 14px/1 var(--font-sans); letter-spacing: 0.04em; text-transform: uppercase; color: var(--color-text-accent);
+    --fill: var(--color-background-surface); background: var(--ink); clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, var(--c) 100%, 0 calc(100% - var(--c))); }
+  .btn span { display: inline-block; transform: scaleX(var(--compress-mild)); text-shadow: var(--shadow-bloom); }
+  /* 1px frame that follows the chamfer */
+  .btn::before { content: ""; position: absolute; inset: 1px; z-index: -1; background: var(--fill); clip-path: inherit; }
+  .btn.sm { height: var(--size-element-sm); padding: 0 var(--space-3); font-size: 12px; }
+  .btn.lg { height: var(--size-element-lg); padding: 0 var(--space-6); font-size: 17px; --c: var(--chamfer-md); }
+  .primary { --ink: var(--color-accent); --fill: var(--color-accent); color: var(--color-on-accent); box-shadow: inset 0 0 12px #ffffff40; }
+  .primary span { text-shadow: none; }
+  .primary::after { content: ""; position: absolute; right: 8px; top: 50%; width: 14px; height: 6px; margin-top: -3px;
+    background: repeating-linear-gradient(90deg, var(--color-on-accent) 0 2px, transparent 2px 4px); opacity: 0.55; }
+  .primary { padding-right: calc(var(--space-5) + 18px); }
+  .primary.sm { padding-right: calc(var(--space-3) + 18px); }
+  .primary.lg { padding-right: calc(var(--space-6) + 18px); }
+  .secondary { --fill: var(--color-background-surface); }
+  .ghost { background: transparent; } .ghost::before { display: none; }
+  .ghost span::before, .ghost span::after { content: "|"; padding: 0 0.35em; opacity: 0.9; }
+  .destructive { --fill: var(--color-background-error-inverted); color: var(--color-on-error); --ink: var(--color-border-alert); padding-left: calc(var(--space-5) + 18px); }
+  .destructive::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 16px; background: repeating-linear-gradient(135deg, var(--color-hazard) 0 4px, var(--color-hazard-alt) 4px 8px); }
+  .btn:hover:not(:disabled) { filter: brightness(1.18); }
+  .btn:active:not(:disabled) { filter: brightness(0.9); }
+  .btn:focus-visible { outline: 1px solid var(--color-border-accent); outline-offset: 3px; }
+  .btn:disabled { color: var(--color-text-disabled); --fill: var(--color-background-body); --ink: var(--color-border); cursor: default; }
+  .btn:disabled span { text-shadow: none; }
+  .blink { font-size: 9px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .blink { animation: none; } }
+  /* press feedback: a one-frame flash, like a key lighting under a finger */
+  .btn.hit { filter: brightness(1.9) !important; }
+  /* label plate: the solid orange plate from the decryption and diagram screens, as a button */
+  .plate { --ink: var(--color-label-plate); --fill: var(--color-label-plate); color: var(--color-on-label-plate); --c: 0px; }
+  .plate span { text-shadow: none; }
+  /* mode keys: the skewed key strip under the activity timers. One key is live; each has a lamp. */
+  .keys { display: inline-flex; gap: 3px; }
+  .key { appearance: none; border: 0; border-top: 2px solid var(--color-border-emphasized); height: 34px; padding: 0 16px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    font: 700 13px var(--font-sans); letter-spacing: .05em; color: var(--color-text-tertiary); background: var(--color-background-popover); transform: skewX(-8deg); }
+  .key::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--color-text-disabled); }
+  .key[aria-checked="true"] { background: var(--color-accent); color: var(--color-on-accent); border-top-color: var(--bloom-core); box-shadow: var(--shadow-bloom); }
+  .key[aria-checked="true"]::before { background: var(--color-on-accent); }
+  .key.danger { color: #ff8a70; border-top-color: var(--alert-300); } .key.danger::before { background: var(--alert-300); box-shadow: 0 0 6px var(--alert-300); }
+  .key.danger[aria-checked="true"] { background: var(--alert-300); color: #fff; }
+  .key:focus-visible { outline: 1px solid var(--color-border-accent); outline-offset: 3px; }
+  /* guarded action: a hazard cover sits over the key. First press lifts it and arms; a second press inside the window fires. */
+  .guard { position: relative; overflow: hidden; min-width: 210px; justify-content: center; }
+  .guard .cover { position: absolute; inset: 0; z-index: 1; display: flex; align-items: center; justify-content: center; gap: 8px; background: repeating-linear-gradient(135deg, var(--color-hazard) 0 8px, var(--color-hazard-alt) 8px 16px); transition: transform .14s steps(3); transform: none; }
+  .guard .cover b { background: var(--hazard-black); color: var(--color-hazard); padding: 2px 8px; font-size: 12px; letter-spacing: .08em; }
+  .guard.armed .cover { transform: translateY(-100%); }
+  .guard .fuse { position: absolute; left: 0; bottom: 0; height: 3px; width: 0; background: var(--bloom-core); z-index: 2; }
+  .guard.armed .fuse { width: 100%; transition: width 3s linear; }
+  .guard.fired { --fill: var(--bloom-core); color: var(--alert-950); }
+  .note { font-size: 10px; font-weight: 700; color: var(--color-text-tertiary); letter-spacing: .06em; }
+  .alertrow { padding: var(--space-3); margin: 0 calc(-1 * var(--space-6)); padding-left: var(--space-6); background: var(--color-background-body); }
+</style>
+</head>
+<body>
+  <div class="row"><span class="row-label">VARIANT</span>
+    <button class="btn primary"><span>Launch</span></button>
+    <button class="btn secondary"><span>Confirm sync</span></button>
+    <button class="btn ghost"><span>Details</span></button>
+    <button class="btn destructive"><span>Abort</span></button>
+  </div>
+  <div class="row"><span class="row-label">SIZE</span>
+    <button class="btn primary sm"><span>Small</span></button>
+    <button class="btn primary"><span>Medium</span></button>
+    <button class="btn primary lg"><span>Large</span></button>
+  </div>
+  <div class="row"><span class="row-label">STATE</span>
+    <button class="btn secondary" disabled><span>Standby</span></button>
+    <button class="btn secondary" aria-busy="true"><span class="blink">■</span><span>Booting</span></button>
+  </div>
+  <div class="row"><span class="row-label">PLATE</span>
+    <button class="btn plate"><span>Current Target Cylinders</span></button>
+    <button class="btn plate sm"><span>Matches</span></button>
+  </div>
+  <div class="row"><span class="row-label">MODE KEYS</span>
+    <div class="keys" role="radiogroup" aria-label="Drive mode">
+      <button class="key" role="radio" aria-checked="false">STOP</button><button class="key" role="radio" aria-checked="false">SLOW</button><button class="key" role="radio" aria-checked="true">NORMAL</button><button class="key" role="radio" aria-checked="false">RACING</button><button class="key danger" role="radio" aria-checked="false">EMERGENCY</button>
+    </div>
+  </div>
+  <div class="row"><span class="row-label">GUARDED</span>
+    <button class="btn destructive guard" id="guard" aria-describedby="gnote"><span class="cover" aria-hidden="true"><b>EJECT PLUG</b></span><span id="glabel">Confirm eject</span><i class="fuse"></i></button>
+    <span class="note" id="gnote" role="status">Press to lift the cover, press again within 3 seconds to fire.</span>
+  </div>
+  <div class="row alertrow" data-theme="alert"><span class="row-label">ON ALERT</span>
+    <button class="btn primary"><span>Acknowledge</span></button>
+    <button class="btn secondary"><span>Route to MAGI</span></button>
+    <button class="btn ghost"><span>Dismiss</span></button>
+  </div>
+<script>
+// press flash on every button
+document.querySelectorAll(".btn").forEach(b => b.addEventListener("click", () => { b.classList.add("hit"); setTimeout(() => b.classList.remove("hit"), 90); }));
+// mode keys behave as a radio group, with arrow keys
+const keys = [...document.querySelectorAll(".key")], pick = k => keys.forEach(x => { x.setAttribute("aria-checked", x === k); x.tabIndex = x === k ? 0 : -1; });
+keys.forEach((k, i) => { k.tabIndex = k.getAttribute("aria-checked") === "true" ? 0 : -1; k.addEventListener("click", () => pick(k));
+  k.addEventListener("keydown", e => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { const n = keys[(i + d + keys.length) % keys.length]; pick(n); n.focus(); } }); });
+// guarded action: arm, then a 3-second window to confirm; otherwise the cover drops back
+const guard = document.getElementById("guard"), note = document.getElementById("gnote"), glabel = document.getElementById("glabel"); let timer;
+guard.addEventListener("click", () => { if (guard.classList.contains("fired")) return;
+  if (!guard.classList.contains("armed")) { guard.classList.add("armed"); note.textContent = "ARMED. Press again to eject."; timer = setTimeout(() => { guard.classList.remove("armed"); note.textContent = "Disarmed. Cover closed."; }, 3000); }
+  else { clearTimeout(timer); guard.classList.add("fired"); glabel.textContent = "Ejected"; note.textContent = "Entry plug ejected."; setTimeout(() => { guard.classList.remove("fired", "armed"); glabel.textContent = "Confirm eject"; note.textContent = "Press to lift the cover, press again within 3 seconds to fire."; }, 2600); } });
+if (location.hash === "#armed") guard.classList.add("armed");   // #armed pins the lifted cover
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!-- @dsCard group="Data display" height=470 subtitle="Decryption Key · cylinders resolve, then every match bar snaps into one row at 100% · System Unlocked" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); }
+  svg { display: block; width: 100%; max-width: 980px; height: auto; background: #020100; }
+  text { font-family: var(--font-sans); font-weight: 700; fill: var(--decrypt-orange); }
+  .o { fill: var(--decrypt-orange); } .dk { fill: var(--decrypt-ground); }
+  .ln { stroke: var(--decrypt-orange); fill: none; stroke-width: 1.5; }
+  .hair { stroke: var(--decrypt-rule); fill: none; stroke-width: 1; }
+  .band { fill: var(--decrypt-panel); }
+  .ring { fill: none; stroke: var(--decrypt-rule); }
+  .disc { fill: #3a1f0c; }
+  .glow { filter: url(#bloom); }
+  .bar { fill: var(--decrypt-orange); stroke: var(--decrypt-orange); stroke-width: 1; }
+  .bar.open { fill: #1a0d04; }
+  .lab { font-size: 8.5px; text-anchor: middle; fill: var(--decrypt-ground); }
+  .lab.open { fill: var(--decrypt-orange); }
+  .cell { fill: none; stroke: var(--decrypt-rule); stroke-width: 1; }
+  .cell.on { fill: var(--decrypt-orange); stroke: var(--decrypt-orange); }
+  .st { font-size: 13px; } .st.on { fill: var(--decrypt-ground); }
+  .plus { stroke: #6d3e1b99; stroke-width: 1; }
+</style>
+</head>
+<body>
+<svg id="dk" viewBox="0 0 980 410" role="img" aria-label="Decryption key">
+  <defs>
+    <filter id="bloom" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="2.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <clipPath id="top"><rect width="980" height="410"/></clipPath>
+  </defs>
+  <g id="bg" clip-path="url(#top)"></g>
+  <!-- link dial, cut by the top edge -->
+  <g clip-path="url(#top)">
+    <circle class="disc" cx="560" cy="-30" r="120"/>
+    <circle class="ring" cx="560" cy="-30" r="150" stroke-width="18" opacity=".55"/>
+    <circle class="ring" cx="560" cy="-30" r="186" stroke-width="1"/>
+    <circle class="ring" cx="560" cy="-30" r="214" stroke-width="1" stroke-dasharray="2 9"/>
+    <path class="ring" d="M700 40 L760 72" stroke-width="1"/><text x="752" y="60" font-size="9" fill="#6d3e1b">80</text>
+    <text x="400" y="30" font-size="12" data-c=".84">ILINK</text>
+    <path class="ln" d="M440 34 H600"/>
+    <g id="link"></g>
+    <text x="604" y="30" font-size="15">%</text>
+  </g>
+  <!-- title row -->
+  <g class="glow"><text x="0" y="96" font-size="46" data-c=".8" letter-spacing="-1">Decryption Key</text></g>
+  <text x="284" y="96" font-size="15" data-c=".82">Black Chamber/ NERV EU Sealing Pillar No.01</text>
+  <g font-size="12.5"><rect class="ln" x="716" y="76" width="128" height="24"/><text x="723" y="93" data-c=".84">Interlink: Nominal</text>
+    <rect class="ln" x="850" y="76" width="130" height="24"/><text id="sys" x="857" y="93" data-c=".84">All Systems: Locked</text></g>
+  <rect class="o" x="108" y="112" width="222" height="20"/><text x="113" y="127" font-size="13.5" class="dk" data-c=".84">Current Target Cylinders</text>
+  <!-- chart -->
+  <rect class="band" x="108" y="206" width="872" height="60"/>
+  <path class="ln" d="M0 258 H86 L98 246 H108 V138 M108 300 V318 H980 M0 292 H86"/>
+  <path class="hair" d="M108 146 H980"/>
+  <g id="bars"></g>
+  <path class="ln" d="M108 236 H980"/>
+  <!-- side -->
+  <text x="0" y="164" font-size="14" data-c=".84">Total Progress</text>
+  <g class="glow"><text id="pct" x="96" y="212" font-size="44" text-anchor="end" letter-spacing="-1.5">96</text></g><text x="97" y="212" font-size="16" data-c=".84">%</text>
+  <rect class="o" x="0" y="268" width="86" height="19"/><text x="6" y="282.5" font-size="13" class="dk" data-c=".84">MATCHES</text>
+  <!-- clusters -->
+  <g id="clusters"></g>
+  <text x="0" y="378" font-size="12.5" data-c=".84">UKM-v7.0.8</text>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg", el = (t, a, p, tx) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); if (tx != null) n.textContent = tx; p.appendChild(n); return n; };
+const $ = id => document.getElementById(id);
+let seed = 11; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+// registration crosses
+for (let y = 22; y < 410; y += 62) for (let x = 30; x < 980; x += 124) el("path", { d: `M${x - 4} ${y} h8 M${x} ${y - 4} v8`, class: "plus" }, $("bg"));
+// link readout: three boxed digits
+"100".split("").forEach((d, i) => { el("rect", { x: 444 + i * 52, y: -8, width: 48, height: 40, class: "ln" }, $("link")); el("text", { x: 468 + i * 52, y: 28, "font-size": 40, "text-anchor": "middle" }, $("link"), d); });
+// 4 cylinders x 10 pins. Each pin: key bar above the line (A/B), match bar below (1-5).
+const MID = 236, pins = [];
+for (let i = 0; i < 40; i++) {
+  const x = 114 + i * 21.6 + Math.floor(i / 10) * 2, up = 26 + rnd() * 54, down = 22 + rnd() * 48, key = rnd() > .55 ? "A" : "B", n = 1 + (i % 5), g = el("g", {}, $("bars"));
+  el("path", { d: `M${x + 6} 146 V${MID - up - 3} M${x + 3} ${MID - up - 3} h6`, class: "ln", "stroke-width": 1 }, g);
+  const kb = el("rect", { x, y: MID - up, width: 12, height: up - 4, class: "bar" }, g), kl = el("text", { x: x + 6, y: MID - up + 10, class: "lab" }, g, key);
+  const mb = el("path", { class: "bar" }, g), ml = el("text", { x: x + 6, class: "lab" }, g, n);
+  pins.push({ x, down, kb, kl, mb, ml, at: 0.3 + rnd() * 0.68 });
+  if (i % 10 === 0 && i) el("path", { d: `M${x - 6} 146 V318`, class: "hair" }, $("bars"));
+}
+// clusters: fill bar, name, status cell
+const cl = ["A", "B", "C", "D"].map((k, i) => { const x = 108 + i * 218, g = el("g", {}, $("clusters"));
+  el("rect", { x, y: 326, width: 214, height: 7, class: "band" }, g); const fill = el("rect", { x, y: 326, width: 0, height: 7, class: "o" }, g);
+  el("text", { x: x + 6, y: 352, "font-size": 14, "data-c": ".84" }, g, "Cluster-" + k);
+  el("path", { d: `M${x} 338 V402`, class: "hair" }, g);
+  const cell = el("rect", { x: x + 1, y: 360, width: 216, height: 42, class: "cell" }, g), st = el("text", { x: x + 8, y: 378, class: "st", "data-c": ".84" }, g, "");
+  return { fill, cell, st, w: [0.92, 0.86, 0.97, 0.8][i] }; });
+// p: 0..1 progress through one decryption pass. At 1 every match bar snaps to a short slanted tooth.
+function render(p) {
+  const pct = Math.min(100, Math.round(90 + p * 10)), done = p >= 1;
+  $("pct").textContent = pct; $("sys").textContent = done ? "All Systems: Unlocked" : "All Systems: Locked";
+  $("dk").setAttribute("aria-label", `Decryption key, total progress ${pct} percent, ${done ? "all cylinders matched" : "clusters A to D decrypting stage 05B"}`);
+  pins.forEach(q => { const open = !done && p < q.at, h = done ? 20 : q.down, sk = done ? 5 : 0;
+    q.kb.setAttribute("class", "bar" + (open ? " open" : "")); q.kl.setAttribute("class", "lab" + (open ? " open" : ""));
+    q.mb.setAttribute("d", `M${q.x + sk} ${MID + 4} h12 l${-sk} ${h} h-12 z`); q.mb.setAttribute("class", "bar" + (open ? " open" : ""));
+    q.ml.setAttribute("y", MID + h - 1); q.ml.setAttribute("class", "lab" + (open ? " open" : "")); });
+  cl.forEach((c, i) => { c.fill.setAttribute("width", 214 * (done ? 1 : Math.min(1, p / c.w) * c.w));
+    const on = done || Math.floor(p * 8) % 4 === i; c.cell.setAttribute("class", "cell" + (on ? " on" : "")); c.st.setAttribute("class", "st" + (on ? " on" : ""));
+    c.st.textContent = done ? "Matched: Stage 05B" : "Decrypting: Stage 05B"; });
+}
+// condensed type: squeeze horizontally about the text's own x
+document.querySelectorAll("text[data-c]").forEach(t => { t.setAttribute("transform", `translate(${t.getAttribute("x")} ${t.getAttribute("y")}) scale(${t.dataset.c} 1)`); t.setAttribute("x", 0); t.setAttribute("y", 0); });
+const force = (location.hash.match(/p=([\d.]+)/) || [])[1];   // #p=0.6 or #p=1 pins a state
+render(force ? +force : 0.6);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const RUN = 7000, HOLD = 3000; const loop = t => { const u = t % (RUN + HOLD); render(u < RUN ? u / RUN * 0.999 : 1); requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!-- @dsCard group="Media" height=470 subtitle="Visualized Simulation · luminous field strands, white-hot core, lime file rail · The plan" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); }
+  .fs { position: relative; aspect-ratio: 980 / 400; max-width: 980px; background: #02040a; }
+  .rail { position: absolute; left: 0; top: 0; bottom: 0; width: 16px; display: flex; align-items: center; justify-content: center; }
+  .rail { background: var(--field-lime); box-shadow: 0 0 10px #9ccc3c88; }
+  .rail span { writing-mode: vertical-rl; transform: rotate(180deg); font: 700 10px var(--font-sans); color: #10180a; white-space: nowrap; }
+  .view { position: absolute; left: 20px; right: 0; top: 0; bottom: 0; overflow: hidden; border: 1px solid #2a3442;
+          background-image: linear-gradient(#5a7fa01f 1px, transparent 1px), linear-gradient(90deg, #5a7fa01f 1px, transparent 1px); background-size: 14px 14px; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .cap { position: absolute; left: 22px; top: 16px; color: #f2f5f8; z-index: 1; text-shadow: 0 0 8px #02040a; }
+  .cap h3 { margin: 0; font-size: 22px; font-weight: 700; transform: scaleX(.8); transform-origin: left; white-space: nowrap; }
+  .cap p { margin: 3px 0 0; font-size: 11px; line-height: 1.15; font-weight: 700; width: 400px; transform: scaleX(.84); transform-origin: left; }
+</style>
+</head>
+<body>
+<section class="fs" aria-label="Visualized simulation, case FAC192: estimated environmental and high-energy field conditions">
+  <div class="rail"><span>Visualized Simulation File: Case FAC192</span></div>
+  <div class="view">
+    <div class="cap"><h3>Visualized Simulation:</h3><p>Estimation of environmental and high energy field conditions necessary for new spear creation from Black Moon material</p></div>
+    <canvas id="c" width="1920" height="800" role="img" aria-label="Field strands in cyan, blue, gold and red converging on a white-hot core"></canvas>
+  </div>
+</section>
+<script>
+const cv = document.getElementById("c"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
+const css = getComputedStyle(document.body), col = v => css.getPropertyValue(v).trim();
+const C = { teal: col("--field-teal"), cyan: col("--sim-wire-bright"), blue: col("--field-blue"), gold: col("--field-gold"), red: col("--alert-300"), white: "#fff6e8" };
+let seed = 9; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+// Each strand is a closed-form curve: a path between two anchors, bent by a few sine terms.
+// Families give the picture its structure: big cyan loops, a blue under-swell, a red knot, a gold bundle, and the hot core.
+const strands = [];
+const add = (n, f) => { for (let i = 0; i < n; i++) strands.push(f(i / n)); };
+add(15, u => ({ c: C.cyan, w: .9 + rnd() * 2.4, a: .35 + rnd() * .4, cx: 1250 + rnd() * 240, cy: 380 + rnd() * 120, rx: 260 + rnd() * 260, ry: 220 + rnd() * 220, k: 1 + Math.floor(rnd() * 3), ph: rnd() * 6.28, sp: .2 + rnd() * .3, loop: 1 }));
+add(24, u => ({ c: C.teal, w: .7 + rnd(), a: .25 + rnd() * .3, cx: 900 + rnd() * 500, cy: 420 + rnd() * 200, rx: 500 + rnd() * 500, ry: 160 + rnd() * 260, k: 2 + Math.floor(rnd() * 3), ph: rnd() * 6.28, sp: .15 + rnd() * .25, loop: 1 }));
+add(30, u => ({ c: C.blue, w: 1 + rnd() * 1.5, a: .5, cx: 900 + rnd() * 700, cy: 640 + rnd() * 160, rx: 600 + rnd() * 500, ry: 120 + rnd() * 160, k: 1 + Math.floor(rnd() * 2), ph: rnd() * 6.28, sp: .1 + rnd() * .2, loop: 1 }));
+add(26, u => ({ c: C.red, w: .8 + rnd(), a: .5, cx: 520 + rnd() * 120, cy: 300 + rnd() * 80, rx: 60 + rnd() * 130, ry: 40 + rnd() * 110, k: 2 + Math.floor(rnd() * 4), ph: rnd() * 6.28, sp: .3 + rnd() * .4, loop: 1 }));
+add(30, u => ({ c: C.gold, w: .8 + rnd() * 1.2, a: .5, x0: 380 + rnd() * 200, y0: 360 + rnd() * 240, x1: 1180 + rnd() * 80, y1: 190 + rnd() * 50, bend: (rnd() - .5) * 320, k: 1 + rnd() * 2, ph: rnd() * 6.28, sp: .2 + rnd() * .3 }));
+add(5, u => ({ c: C.white, w: 1.1 + rnd() * 1.1, a: .8, x0: 380, y0: 330 + u * 150, x1: 1760, y1: 380 + (rnd() - .5) * 160, bend: 0, helix: 46 + rnd() * 30, k: 2.5 + rnd(), ph: u * 6.28, sp: .25 }));
+function pt(s, u, t) {
+  if (s.loop) { const a = u * 6.283 + s.ph + t * s.sp * .2, wob = 1 + .28 * Math.sin(a * s.k + t * s.sp);
+    return [s.cx + Math.cos(a) * s.rx * wob + Math.sin(a * 2 + s.ph) * 40, s.cy + Math.sin(a) * s.ry * wob + Math.cos(a * 3 + t * s.sp) * 30]; }
+  const x = s.x0 + (s.x1 - s.x0) * u, y = s.y0 + (s.y1 - s.y0) * u, arch = Math.sin(u * Math.PI);
+  return [x, y + arch * s.bend + Math.sin(u * 6.283 * s.k + s.ph + t * s.sp) * (s.helix || 24) * arch];
+}
+function draw(t) {
+  g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, W, H);
+  // under-glow: blue swell, red knot, hot core
+  [[1150, 620, 620, "#123a8a66"], [540, 320, 260, "#b0202844"], [1220, 210, 240, "#ffe9c044"]].forEach(([x, y, r, c]) => { const rg = g.createRadialGradient(x, y, 0, x, y, r); rg.addColorStop(0, c); rg.addColorStop(1, "transparent"); g.fillStyle = rg; g.fillRect(0, 0, W, H); });
+  g.globalCompositeOperation = "lighter"; g.lineCap = "round";
+  strands.forEach(s => { g.beginPath(); const N = s.loop ? 90 : 70;
+    for (let i = 0; i <= N; i++) { const [x, y] = pt(s, i / N, t); i ? g.lineTo(x, y) : g.moveTo(x, y); }
+    g.strokeStyle = s.c; g.globalAlpha = s.a * .35; g.lineWidth = s.w * 5; g.stroke();   // halo
+    g.globalAlpha = s.a; g.lineWidth = s.w; g.stroke(); });                              // core
+  g.globalAlpha = 1;
+}
+draw(0);
+if (!matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = t => { draw(t / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

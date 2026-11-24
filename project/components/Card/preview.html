@@ -1,0 +1,68 @@
+<!-- @dsCard group="Surfaces" height=600 subtitle="Chamfered plates with bracket headers · default, elevated, alert, system" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; padding: var(--space-6); background: var(--color-background-body); font-family: var(--font-sans); color: var(--color-text-secondary); }
+  .grid { display: flex; gap: var(--space-0-5); flex-wrap: wrap; }
+  .card { --c: var(--chamfer-md); --ink: var(--color-border); position: relative; width: 190px; --fill: var(--color-background-card); background: var(--ink);
+    clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+  .card::before { content: ""; position: absolute; inset: 1px; z-index: -1; background: var(--fill); clip-path: inherit; }
+  .head { display: flex; align-items: center; gap: 6px; padding: var(--space-2) var(--space-3) 0; font-size: 12px; font-weight: 700; color: var(--color-text-tertiary); }
+  .head::before { content: ""; width: 3px; height: 13px; background: currentColor; }
+  .head i { margin-left: auto; width: 16px; height: 5px; background: repeating-linear-gradient(90deg, currentColor 0 2px, transparent 2px 4px); opacity: 0.6; }
+  .body { padding: var(--space-2) var(--space-3) var(--space-3); display: flex; flex-direction: column; gap: 2px; }
+  .v { display: inline-block; font-size: 40px; font-weight: 700; line-height: 1; color: var(--color-text-primary); transform: scaleX(var(--compress-mild)); transform-origin: left; text-shadow: var(--shadow-bloom-strong); font-variant-numeric: tabular-nums; }
+  .u { font-size: 11px; font-weight: 700; color: var(--color-text-tertiary); padding-left: 8px; border-left: 2px solid var(--color-border-emphasized); }
+  .rail { height: 4px; margin: var(--space-2) var(--space-3) var(--space-3); background: var(--color-track); }
+  .rail b { display: block; height: 100%; width: var(--p); background: var(--color-accent); box-shadow: var(--shadow-glow-accent); }
+  .elevated { --ink: var(--color-border-accent); box-shadow: var(--shadow-med); }
+  .elevated .head { color: var(--color-text-accent); }
+  .alert { --ink: var(--color-border-alert); --fill: var(--color-background-alert); }
+  .alert::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: repeating-linear-gradient(135deg, var(--hazard-red) 0 6px, var(--hazard-black) 6px 12px); }
+  .alert .head, .alert .v { color: var(--color-error); }
+  .system { --ink: var(--color-border-blue); }
+  .system::before { background: repeating-linear-gradient(45deg, transparent 0 11px, #ffffff14 11px 12px), repeating-linear-gradient(-45deg, transparent 0 11px, #ffffff14 11px 12px), var(--color-background-system); }
+  .system .head { color: var(--color-info); }
+  .system .v { color: var(--color-text-cyan); }
+  /* --- report cards (frame 116): pale sheets on a green lattice board, one per unit, with a stamp when the situation ends --- */
+  .board { position: relative; margin-top: var(--space-6); padding: 26px 30px; max-width: 900px; display: flex; gap: 10px; justify-content: center; background: #020a04;
+    clip-path: polygon(40px 0, calc(100% - 40px) 0, 100% 40px, 100% calc(100% - 40px), calc(100% - 40px) 100%, 40px 100%, 0 calc(100% - 40px), 0 40px); }
+  .board > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .rep { position: relative; width: 168px; padding: 8px 10px 10px; background: #f3efe2e6; color: #2a2620; border: 3px solid var(--gold-700); box-shadow: 0 0 0 1px var(--tac-orange-400), 0 0 18px #fff8e080; text-align: center; }
+  .rep .tabs { display: flex; justify-content: space-between; font: 700 6px var(--font-sans); color: var(--tac-orange-600); margin-bottom: 6px; } .rep .tabs span { border: 1px solid currentColor; padding: 0 4px; }
+  .rep small { display: block; font-size: 10px; font-weight: 700; } .rep b { display: block; font-size: 26px; font-weight: 700; line-height: 1; transform: scaleX(.86); }
+  .rep .dmg { font-size: 13px; font-weight: 700; margin: 2px 0 8px; } .rep .k { font-size: 7px; font-weight: 700; color: #6a6258; margin-top: 5px; }
+  .rep .h { font-size: 13px; font-weight: 700; } .rep .pct { font-size: 24px; font-weight: 700; text-align: right; transform: scaleX(.86); transform-origin: right; margin-top: 2px; }
+  .rep.wide b { font-size: 15px; transform: none; line-height: 1.15; margin-top: 30px; }
+  .stamp { position: absolute; left: 50%; top: 50%; z-index: 2; transform: translate(-50%, -50%) rotate(-7deg) scale(1.6); opacity: 0; pointer-events: none; padding: 4px 22px; border: 4px solid var(--alert-300);
+    font: 900 60px var(--font-display); color: var(--alert-300); text-shadow: 0 0 10px var(--alert-300), 0 0 40px #e7323d88; background: repeating-linear-gradient(-45deg, #e7323d33 0 8px, transparent 8px 16px), #1a0204e6; white-space: nowrap; transition: transform .1s steps(2), opacity .1s steps(2); }
+  .board.ended .stamp { opacity: 1; transform: translate(-50%, -50%) rotate(-7deg) scale(1); }
+  .board.ended .rep { filter: brightness(.72) saturate(.7); }
+</style>
+</head>
+<body>
+  <div class="grid">
+    <div class="card"><div class="head">Sync Rate<i></i></div><div class="body"><span class="v">89.2%</span><span class="u">EVA-01 · Pilot S. Ikari</span></div><div class="rail" style="--p:89%"><b></b></div></div>
+    <div class="card elevated"><div class="head">Memory Check<i></i></div><div class="body"><span class="v">2048TB</span><span class="u">MAGI Casper · OK</span></div><div class="rail" style="--p:100%"><b></b></div></div>
+    <div class="card alert" data-theme="tactical"><div class="head">Internal Battery<i></i></div><div class="body"><span class="v">0:02:18</span><span class="u">External supply severed</span></div><div class="rail" style="--p:8%"><b></b></div></div>
+    <div class="card system"><div class="head">Direct Links<i></i></div><div class="body"><span class="v">108</span><span class="u">Central Dogma bus</span></div><div class="rail" style="--p:64%"><b></b></div></div>
+  </div>
+  <section class="board" id="board" aria-label="Unit status board">
+    <svg aria-hidden="true"><defs><pattern id="lat" width="28" height="24.2" patternUnits="userSpaceOnUse"><path d="M0 24.2 L14 0 L28 24.2 Z M0 0 H28 M14 0 V24.2" fill="none" stroke="#2fae4a" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#lat)" opacity=".8"/></svg>
+    <article class="rep wide"><div class="tabs"><span>Situation Record A-02</span><span>ADDRESS</span></div><b>TOKYO III<br>Districts</b></article>
+    <article class="rep"><div class="tabs"><span>Situation Record B-00</span><span>Case A1701</span></div><small>Eva Unit Status:</small><b>EVA-00</b><div class="dmg">Moderate Damage</div><div class="k">Pilot:</div><small>R. Ayanami</small><div class="h">Health: Normal</div><div class="k">Advanced Synchronization<br>Induced Feedback Rate</div><div class="pct" data-v="38.6">38.6%</div></article>
+    <article class="rep"><div class="tabs"><span>Situation Record B-01</span><span>Case A1701</span></div><small>Eva Unit Status:</small><b>EVA-01</b><div class="dmg">Extensive Damage</div><div class="k">Pilot:</div><small>S. Ikari</small><div class="h">Health: Normal</div><div class="k">Advanced Synchronization<br>Induced Feedback Rate</div><div class="pct" data-v="68.4">68.4%</div></article>
+    <article class="rep"><div class="tabs"><span>Situation Record B-02</span><span>Case A1701</span></div><small>Eva Unit Status:</small><b>EVA-02</b><div class="dmg">Minor Damage</div><div class="k">Pilot:</div><small>S. Asuka Langley</small><div class="h">Health: Normal</div><div class="k">Advanced Synchronization<br>Induced Feedback Rate</div><div class="pct" data-v="2.07">2.07%</div></article>
+    <article class="rep wide"><div class="tabs"><span>Situation Record B-02</span><span>ADDRESS</span></div><b>GEOFRONT<br>Upper Bulkhead Area</b></article>
+    <div class="stamp" role="status">状況終了</div>
+  </section>
+<script>
+// report cards: feedback rates waver while the situation is live; then the board is stamped 状況終了 (situation ended) and dims
+const board = document.getElementById("board"), pcts = [...document.querySelectorAll(".pct")], pin = location.hash;   // #ended pins the stamp
+if (pin === "#ended") board.classList.add("ended");
+else if (!matchMedia("(prefers-reduced-motion: reduce)").matches) setInterval(() => { const t = performance.now() / 1000, ended = t % 12 > 9; board.classList.toggle("ended", ended);
+  if (!ended) pcts.forEach((p, i) => { const v = +p.dataset.v; p.textContent = (v + Math.sin(t * 1.3 + i * 2) * v * 0.02).toFixed(v < 10 ? 2 : 1) + "%"; }); }, 300);
+</script>
+</body>
+</html>

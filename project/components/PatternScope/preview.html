@@ -1,0 +1,84 @@
+<!-- @dsCard group="Data display" height=500 subtitle="Pattern Simulation on the handheld viewer · blocky provisional pattern resolves to a clean sample · The spears" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); padding-top: 34px; }
+  svg { display: block; width: 100%; max-width: 980px; height: auto; overflow: visible; }
+  text { font-family: var(--font-sans); font-weight: 700; fill: var(--scope-orange); }
+  .lane { fill: #070402; stroke: #1c0f06; stroke-width: 1; }
+  .glow { filter: url(#bloom); }
+  .sec { font-size: 7.5px; fill: var(--scope-ember); }
+  .stem { stroke: var(--scope-ember); stroke-width: 1; }
+  .dash-o { stroke: #7a3a14; stroke-width: 1; } .dash-g { stroke: #2f5a1c; stroke-width: 1; }
+  .blk { fill: var(--color-scope); }
+  .ghost { fill: var(--color-scope); opacity: .5; filter: url(#haze); }
+  .spear { fill: none; stroke: var(--color-scope); stroke-width: 1.6; }
+  .caution { stroke: var(--alert-300); stroke-width: 2; } .ccap { fill: var(--alert-300); }
+  .ctext { font-size: 13px; fill: var(--alert-300); }
+  .tab { fill: var(--field-lime); } .tabt { font-size: 10px; fill: #10180a; text-anchor: middle; }
+</style>
+</head>
+<body>
+<svg id="s" viewBox="0 0 980 400" role="img" aria-label="Pattern simulation">
+  <defs>
+    <filter id="bloom" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="3.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="haze" x="-10%" y="-100%" width="120%" height="300%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.1"/></filter>
+  </defs>
+  <!-- device: three lanes, one per MAGI, with rounded shoulders like the handset's screen cut-outs -->
+  <rect class="lane" x="0" y="0" width="980" height="128" rx="10"/><rect class="lane" x="0" y="136" width="980" height="128" rx="10"/><rect class="lane" x="0" y="272" width="980" height="128" rx="10"/>
+  <rect class="tab" x="392" y="-14" width="196" height="14"/><text class="tabt" x="490" y="-3.5">Simulation File: Case FA0212</text>
+  <g id="grid"></g>
+  <!-- rotated labels: the handset is held upright in the film, so its type reads bottom-to-top in a landscape frame -->
+  <g class="glow" id="magi"></g>
+  <g class="glow"><path d="M102 392 V236" stroke="var(--scope-orange)" stroke-width="3"/>
+    <text font-size="15" transform="translate(120 392) rotate(-90)">Pattern Simulation:</text>
+    <text font-size="15" transform="translate(136 392) rotate(-90)">Possible shape transformation patterns of</text>
+    <text font-size="15" transform="translate(152 392) rotate(-90)">the two spears</text></g>
+  <g class="glow" font-size="10"><text transform="translate(304 96) rotate(-90)">| Provisional Pattern</text><text transform="translate(304 378) rotate(-90)">Sample Pattern |</text></g>
+  <g id="prov" class="glow"></g>
+  <g id="ghost"></g>
+  <g id="sample" class="glow"></g>
+  <g id="caut"><path class="caution" d="M512 22 V378"/><rect class="ccap" x="500" y="16" width="24" height="4"/><rect class="ccap" x="500" y="380" width="24" height="4"/>
+    <text class="ctext" transform="translate(508 372) rotate(-90)">Caution: Data inconsistencies detected</text></g>
+</svg>
+<script>
+const NS = "http://www.w3.org/2000/svg", el = (t, a, p, tx) => { const n = document.createElementNS(NS, t); for (const k in a) n.setAttribute(k, a[k]); if (tx != null) n.textContent = tx; p.appendChild(n); return n; };
+const $ = id => document.getElementById(id);
+[["3", 64], ["2", 200], ["1", 336]].forEach(([n, y]) => { const g = el("g", { transform: `translate(52 ${y}) rotate(-90)` }, $("magi"));
+  el("text", { "font-size": 15, "text-anchor": "middle", y: -8 }, g, "MAGI"); el("text", { "font-size": 15, "text-anchor": "middle", y: 8 }, g, "Achiral " + n);
+  el("text", { "font-size": 7, "text-anchor": "middle", y: 20, "font-weight": 400 }, g, "Operational"); });
+// section columns: stems across the centre line, rotated SEC labels, and rows of short dashes in orange and green
+const secs = ["SEC-ED", "SEC-11", "SEC-10", "SEC-09", "SEC-08", "SEC-07", "SEC-06", "SEC-05", "SEC-04", "SEC-03", "SEC-02", "SEC-01", "SEC-ST"], X0 = 176, DX = 64;
+secs.forEach((n, i) => { const x = X0 + i * DX, end = i === 0 || i === 12;
+  el("path", { d: `M${x} ${end ? 150 : 172} V${end ? 250 : 228}`, class: "stem" }, $("grid"));
+  [166, 262].forEach((y, k) => el("text", { class: "sec", transform: `translate(${x + (end ? -4 : 3)} ${end ? (k ? 300 : 122) : y + (k ? 26 : 0)}) rotate(-90)` }, $("grid"), n));
+  for (let r = 0; r < 9; r++) { const y = 14 + r * 46; [0, 32].forEach((o, k) => el("path", { d: `M${x + o} ${y} v10`, class: (r + k) % 2 ? "dash-g" : "dash-o" }, $("grid"))); } });
+let seed = 5; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const L = 240, R = 936, CX = 512;
+// spear outline: long shaft, double-helix twist at the grip, forked tip
+function spear(y) { let top = `M${L} ${y}`, bot = `M${L} ${y}`;
+  for (let x = L; x <= R; x += 6) { const d = x - CX, tw = Math.abs(d) < 60 ? Math.sin(d / 60 * Math.PI * 2) * 6 * (1 - Math.abs(d) / 60) : 0, th = 1 + 2.5 * Math.exp(-Math.pow((x - L - 40) / 60, 2));
+    top += ` L${x} ${(y - th + tw).toFixed(1)}`; bot += ` L${x} ${(y + th - tw).toFixed(1)}`; }
+  return top + " " + bot; }
+// blocky pattern: square cells along a lane; w = how settled (0 scattered fragments, 1 a solid band)
+function blocks(host, y, amp, w, cls) { host.textContent = ""; const g = el("g", { class: cls, filter: "url(#soft)" }, host);
+  for (let x = L; x < R; x += 9) { const env = 0.55 + 0.45 * Math.sin((x - L) / (R - L) * Math.PI), break_ = Math.abs(x - CX) < 16 ? 0.35 : 1;
+    if (rnd() > 0.25 + w * 0.75) continue; const h = (4 + rnd() * amp) * env * break_, off = (rnd() - 0.5) * amp * (1 - w) * 1.4;
+    el("rect", { x, y: y - h / 2 + off, width: 8 + (rnd() > 0.7 ? 9 : 0), height: Math.max(3, h), class: "blk" }, g); } }
+// stage 0: one unsettled band on the centre line. stage 1: provisional (top), ghost (middle), clean sample spear (bottom) + caution.
+function render(stage, tick) { seed = 5 + tick;
+  const lbl = stage ? "three lanes: provisional pattern, averaged ghost, clean sample; caution at SEC-07, data inconsistencies detected" : "one unsettled band forming on the centre line";
+  $("s").setAttribute("aria-label", "Pattern simulation of the two spears, " + lbl);
+  if (!stage) { blocks($("prov"), 200, 34, 0.9, ""); $("ghost").textContent = ""; $("sample").textContent = ""; $("caut").style.opacity = 0.25; return; }
+  blocks($("prov"), 120, 30, 0.45, ""); blocks($("ghost"), 196, 26, 1, "ghost");
+  $("sample").textContent = ""; el("path", { d: spear(238), class: "spear" }, $("sample")); el("path", { d: `M${R - 30} 238 l30 -5 M${R - 30} 238 l30 5`, class: "spear" }, $("sample"));
+  $("caut").style.opacity = tick % 6 < 4 ? 1 : 0.35; }
+const force = (location.hash.match(/stage=(\d)/) || [])[1];   // #stage=0 or #stage=1 pins a state
+render(force ? +force : 1, 0);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { let n = 0; setInterval(() => { n++; render(n % 60 < 22 ? 0 : 1, n); }, 140); }
+</script>
+</body>
+</html>

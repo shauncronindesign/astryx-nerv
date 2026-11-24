@@ -1,0 +1,60 @@
+<!-- @dsCard group="Feedback" height=640 subtitle="Big glowing chevron bands that point at their plate, EMERGENCY strip, angled tags, authority bar · frames 14, 59, 210, 213–215" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6); }
+  /* 1. the band: 45° chevrons pointing inward */
+  /* Big chevrons: two mirrored halves of 45° stripes meet in the middle, so the band reads as arrows pointing at its plate.
+     Stripes are 34px wide on a 68px pitch and bloom like everything bright in the films. */
+  .band { position: relative; height: 72px; display: flex; align-items: center; justify-content: center; overflow: hidden; filter: drop-shadow(0 0 8px #fbbd3d88); }
+  .band::before, .band::after { content: ""; position: absolute; top: 0; bottom: 0; width: 50%; --p: 96.17px;
+    background: repeating-linear-gradient(135deg, var(--color-hazard) 0 34px, transparent 34px 68px); background-size: var(--p) 100%; }
+  .band::before { left: 0; } .band::after { right: 0; transform: scaleX(-1); }
+  .band.rev::before, .band.rev::after { background-image: repeating-linear-gradient(45deg, var(--color-hazard) 0 34px, transparent 34px 68px); }
+  .band .badge { position: relative; z-index: 1; background: var(--hazard-black); box-shadow: 0 0 0 10px var(--hazard-black), var(--shadow-bloom); }
+  .band.red { --color-hazard: var(--hazard-red); }
+  .strip { position: relative; overflow: hidden; background: var(--hazard-black); }
+  .strip .mid { position: relative; padding: var(--space-3) var(--space-6) var(--space-2); display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: var(--space-4);
+    border-top: 4px solid var(--alert-300); border-bottom: 4px solid var(--alert-300); box-shadow: 0 -2px 14px #e7323d99, 0 2px 14px #e7323d99; grid-template-columns: 1fr; }
+  .badge { font-family: var(--font-display); font-weight: 900; font-size: 28px; color: var(--color-hazard); border: 2px solid var(--color-hazard); padding: 2px 10px; text-shadow: var(--shadow-bloom); }
+  .word { text-align: center; line-height: 1; }
+  .word small { display: block; font-family: var(--font-hardware); font-size: 15px; letter-spacing: 0.2em; color: var(--color-hazard); }
+  .word b { display: inline-block; font-size: 84px; font-weight: 700; letter-spacing: -0.02em; color: var(--color-hazard); text-shadow: 0 0 3px #fbbd3d, 0 0 18px #e22f2f; transform: scaleX(var(--compress-mild)); }
+  .word small.code { margin-top: 2px; }
+  @media (prefers-reduced-motion: no-preference) { .strip .word b { animation: flash 1.2s steps(1) infinite; } .strip .band::before, .strip .band::after { animation: crawl 1.4s linear infinite; } }
+  @keyframes flash { 60% { opacity: 0.25; } }
+  @keyframes crawl { to { background-position: calc(-1 * var(--p)) 0; } }
+  /* 2. angled tags */
+  .tags { display: flex; gap: var(--space-8); padding: var(--space-10) var(--space-8); align-items: center; }
+  .tag { display: inline-flex; align-items: stretch; transform: rotate(var(--slant-tag)); font-weight: 700; letter-spacing: 0.06em; }
+  .tag b { padding: 6px 14px; background: var(--color-hazard); color: var(--color-on-hazard); font-size: 18px; }
+  .tag i { width: 16px; background: repeating-linear-gradient(135deg, var(--color-hazard) 0 4px, transparent 4px 8px); }
+  .tag small { padding: 6px 8px; border: 1px solid var(--color-hazard); color: var(--color-hazard); font-size: 10px; display: flex; align-items: center; }
+  .tag.oor b { background: var(--alert-300); color: #fff; }
+  .tag.oor i { background: repeating-linear-gradient(135deg, var(--alert-300) 0 4px, transparent 4px 8px); }
+  .tag.oor small { border-color: var(--alert-300); color: var(--color-error); }
+  /* 3. authority bar */
+  .auth { position: relative; display: flex; align-items: stretch; height: 62px; border-top: 2px solid var(--color-border-accent); border-bottom: 2px solid var(--color-border-accent); box-shadow: var(--shadow-bloom); }
+  .auth .cap { width: 40px; background: repeating-linear-gradient(135deg, var(--color-text-accent) 0 6px, transparent 6px 14px); }
+  .auth .t { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 36px; font-weight: 700; color: var(--color-warning); text-shadow: var(--shadow-bloom-strong); }
+  .auth .code { position: absolute; top: -18px; left: 48px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--color-text-tertiary); }
+</style>
+</head>
+<body data-theme="tactical">
+  <section class="strip" role="alert" aria-label="Emergency. Condition red, code 102">
+    <div class="band"><span class="badge">非常事態</span></div>
+    <div class="mid">
+      <div class="word"><small>CONDITION:RED</small><b>EMERGENCY</b><small class="code">CODE:102</small></div>
+    </div>
+    <div class="band rev"><span class="badge">非常事態</span></div>
+  </section>
+  <div class="tags">
+    <span class="tag"><b>READY</b><i></i><small>EVA-08 ▸ LOCK</small></span>
+    <span class="tag oor"><b>OUT OF RANGE</b><i></i><small>Δ 1,250 m</small></span>
+    <span class="tag"><b>ARMED</b><i></i><small>CH-2</small></span>
+  </div>
+  <div class="auth"><span class="code">CODE.D11 4C 0x113</span><span class="cap"></span><span class="t">Executive Authority: Captain Katsuragi</span><span class="cap"></span></div>
+</body>
+</html>

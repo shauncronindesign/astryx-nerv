@@ -1,0 +1,71 @@
+<!-- @dsCard group="Forms" height=380 subtitle="Chamfered terminal fields with bracket labels, a command line, and a six-cell personal code that checks itself · Tactical theme" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body { margin: 0; padding: var(--space-6); background: var(--color-background-body); font-family: var(--font-sans); color: var(--color-text-primary); display: flex; flex-wrap: wrap; gap: var(--space-6); }
+  .field { --ink: var(--color-border-emphasized); display: flex; flex-direction: column; gap: 6px; width: 230px; }
+  label { display: inline-flex; align-items: center; gap: 0.4em; font-size: 12px; font-weight: 700; color: var(--color-text-secondary); }
+  label::before { content: ""; width: 1.5px; height: 1em; background: currentColor; }
+  .box { --c: 8px; position: relative; display: flex; align-items: center; height: var(--size-element-lg); background: var(--ink);
+    clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%); }
+  .box::before { content: ""; position: absolute; inset: 1px; z-index: -1; background: var(--color-background-body); clip-path: inherit; }
+  .box::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--ink); }
+  input { flex: 1; min-width: 0; height: 100%; padding: 0 var(--space-3) 0 var(--space-4); border: 0; outline: none; background: transparent;
+    font: 400 15px var(--font-mono); letter-spacing: 0.08em; color: var(--color-text-primary); caret-color: var(--color-text-accent); }
+  input::placeholder { color: var(--color-text-disabled); }
+  .field:hover:not(.disabled) { --ink: var(--color-text-secondary); }
+  .field:focus-within, .field.focused { --ink: var(--color-border-accent); }
+  .field:focus-within .box, .field.focused .box { box-shadow: var(--shadow-med); }
+  .field:focus-within input, .field.focused input { text-shadow: var(--shadow-bloom); }
+  .error { --ink: var(--color-error) !important; }
+  .error input { color: var(--color-error); }
+  .msg { display: inline-flex; align-items: stretch; align-self: flex-start; font-size: 11px; font-weight: 700; }
+  .msg b { padding: 2px 6px; background: var(--color-background-error-inverted); color: var(--color-on-error); }
+  .msg i { width: 12px; background: repeating-linear-gradient(135deg, var(--color-error) 0 3px, transparent 3px 6px); }
+  .disabled { --ink: var(--color-border); }
+  .disabled input { color: var(--color-text-disabled); }
+  .unit { padding-right: var(--space-3); font-size: 11px; font-weight: 700; color: var(--color-text-tertiary); }
+  /* --- personal code: six cells, as on the gate sign. Type to fill; it checks, then clears or rejects. --- */
+  .code { width: 100%; display: flex; align-items: flex-end; gap: var(--space-5); flex-wrap: wrap; }
+  .cells { position: relative; display: inline-flex; gap: 6px; }
+  .cells input { position: absolute; inset: 0; width: 100%; opacity: 0; cursor: text; }
+  .cell { width: 34px; height: var(--size-element-lg); display: flex; align-items: center; justify-content: center; border: 1px solid var(--color-border-emphasized); border-bottom-width: 3px;
+    font: 22px var(--font-mono); color: var(--color-text-primary); background: var(--color-background-body); }
+  .cell.now { border-color: var(--color-border-accent); box-shadow: var(--shadow-med); }
+  .cell.now::after { content: ""; width: 12px; height: 20px; background: var(--color-text-accent); }
+  .cells.ok .cell { border-color: var(--aaaw-green); color: var(--aaaw-green); text-shadow: 0 0 6px var(--aaaw-green); }
+  .cells.bad .cell { border-color: var(--color-error); color: var(--color-error); }
+  .verdict { font: 700 13px var(--font-sans); letter-spacing: .08em; color: var(--color-text-tertiary); min-width: 190px; }
+  .verdict.ok { color: var(--aaaw-green); text-shadow: 0 0 6px var(--aaaw-green); } .verdict.bad { color: var(--color-error); } .verdict.chk { color: var(--color-text-accent); text-shadow: var(--shadow-bloom); }
+  /* --- command line: prompt, typed text, block cursor --- */
+  .cli .box { padding-left: var(--space-3); gap: 8px; } .cli .box b { font: 700 13px var(--font-mono); color: var(--color-text-accent); text-shadow: var(--shadow-bloom); }
+  .cli input { padding-left: 0; }
+  @media (prefers-reduced-motion: no-preference) { .cell.now::after { animation: cur 1s steps(1) infinite; } }
+  @keyframes cur { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+  <div class="field"><label for="a">Unit designation</label><div class="box"><input id="a" placeholder="EVA-00"></div></div>
+  <div class="field focused"><label for="b">Auth code</label><div class="box"><input id="b" value="MAGI-3 / CASPER"></div></div>
+  <div class="field error"><label for="c">Umbilical</label><div class="box"><input id="c" value="SEVERED" aria-invalid="true" aria-describedby="cm"></div><span class="msg" id="cm"><b>External power lost</b><i></i></span></div>
+  <div class="field"><label for="e">Sync target</label><div class="box"><input id="e" value="41.3"><span class="unit">%</span></div></div>
+  <div class="field disabled"><label for="d">Unit-02 link</label><div class="box"><input id="d" value="OFFLINE" disabled></div></div>
+  <div class="field cli" style="width: 300px"><label for="cmd">Command</label><div class="box"><b>MAGI&gt;</b><input id="cmd" value="route sortie --vote" spellcheck="false"></div></div>
+  <div class="code">
+    <div class="field" style="width: auto"><label for="pc">Personal code</label>
+      <div class="cells" id="cells"><input id="pc" inputmode="numeric" maxlength="6" autocomplete="off" aria-describedby="verdict"><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span><span class="cell"></span></div></div>
+    <span class="verdict" id="verdict" role="status">SECURITY LEVEL:EEE · enter 6 digits</span>
+  </div>
+<script>
+// personal code: cells mirror a real input. Six digits trigger a check; 000000 is rejected so both outcomes can be seen.
+const pc = document.getElementById("pc"), box = document.getElementById("cells"), cells = [...box.querySelectorAll(".cell")], verdict = document.getElementById("verdict");
+function paint() { const v = pc.value.replace(/\D/g, "").slice(0, 6); pc.value = v; cells.forEach((c, i) => { c.textContent = i < v.length ? "●" : ""; c.classList.toggle("now", i === v.length && document.activeElement === pc); }); return v; }
+function check(v) { box.className = "cells"; verdict.className = "verdict chk"; verdict.textContent = "SECURITY:CHECK"; setTimeout(() => { const ok = v !== "000000"; box.classList.add(ok ? "ok" : "bad"); verdict.className = "verdict " + (ok ? "ok" : "bad"); verdict.textContent = ok ? "SECURITY:OK · gate unlocked" : "SECURITY:DENIED · code rejected"; pc.setAttribute("aria-invalid", String(!ok)); }, 700); }
+pc.addEventListener("input", () => { box.className = "cells"; verdict.className = "verdict"; verdict.textContent = "SECURITY LEVEL:EEE · enter 6 digits"; const v = paint(); if (v.length === 6) check(v); });
+pc.addEventListener("focus", paint); pc.addEventListener("blur", paint);
+if (location.hash === "#ok") { pc.value = "418802"; paint(); box.classList.add("ok"); verdict.className = "verdict ok"; verdict.textContent = "SECURITY:OK · gate unlocked"; }   // #ok pins a cleared code
+else paint();
+</script>
+</body>
+</html>

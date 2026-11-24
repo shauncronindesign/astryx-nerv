@@ -1,0 +1,87 @@
+<!-- @dsCard group="Data display" height=440 subtitle="Labels over the power grid: a chain of pylons on a radial floor, with power running up the trunk · Clock theme · frames 73, 77, 197" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); }
+  .stage { position: relative; height: 380px; overflow: hidden; background: var(--color-background-body); }
+  #grid { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .plate, .region, .marker, .sys { z-index: 1; }
+  /* small system tabs down the left edge */
+  .sys { position: absolute; left: 26px; display: inline-flex; align-items: stretch; gap: 4px; color: var(--color-text-primary); }
+  .sys::before, .sys::after { content: ""; width: 3px; background: currentColor; box-shadow: var(--shadow-bloom); }
+  .sys b { display: block; font-family: var(--font-jp); font-weight: 700; font-size: 13px; line-height: 1.1; text-shadow: var(--shadow-bloom); }
+  .sys small { display: block; font-size: 7px; font-weight: 700; color: var(--color-text-secondary); }
+  /* perspective floor grid */
+  .stage { perspective: 420px; perspective-origin: 50% 0%; }
+  .floor { position: absolute; left: -60%; right: -60%; top: 30%; height: 120%; transform: rotateX(58deg); transform-origin: top;
+    background:
+      repeating-linear-gradient(90deg, var(--color-border-emphasized) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(0deg, var(--color-border-emphasized) 0 1px, transparent 1px 48px);
+    opacity: 0.6; -webkit-mask: linear-gradient(to bottom, transparent, #000 40%); mask: linear-gradient(to bottom, transparent, #000 40%); }
+  /* triangle nodes */
+  .node { position: absolute; width: 0; height: 0; border-left: 11px solid transparent; border-right: 11px solid transparent;
+    border-bottom: 18px solid var(--color-bloom); filter: drop-shadow(0 0 6px var(--color-text-accent)) drop-shadow(0 0 14px var(--color-text-accent)); }
+  .node::after { content: ""; position: absolute; left: -6px; top: 6px; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 9px solid var(--color-background-body); }
+  .link { position: absolute; height: 2px; background: var(--color-bloom); box-shadow: var(--shadow-bloom); transform-origin: left; }
+
+  /* 1. system title plate: thick bars both sides, JP over EN */
+  .plate { position: absolute; display: inline-flex; align-items: stretch; gap: var(--space-2); color: var(--color-text-primary); }
+  .plate::before, .plate::after { content: ""; width: 5px; background: var(--color-text-primary); box-shadow: var(--shadow-bloom); }
+  .plate div { text-align: center; }
+  .plate b { display: block; font-family: var(--font-jp); font-weight: 700; font-size: 26px; line-height: 1.1; text-shadow: var(--shadow-bloom-strong); }
+  .plate small { display: block; font-size: 12px; font-weight: 700; color: var(--color-text-secondary); text-shadow: var(--shadow-bloom); }
+  /* 2. region label: JP over EN, underline that kinks down to the node */
+  .region { position: absolute; color: var(--color-text-primary); padding: 0 var(--space-2) 2px; border-bottom: 1.5px solid var(--color-text-primary); }
+  .region::before { content: ""; position: absolute; left: -14px; bottom: -1.5px; width: 16px; height: 1.5px; background: inherit; border-bottom: 1.5px solid var(--color-text-primary); transform: rotate(-35deg); transform-origin: right; }
+  .region b { display: block; font-family: var(--font-jp); font-weight: 700; font-size: 19px; line-height: 1.1; text-shadow: var(--shadow-bloom); }
+  .region small { display: block; font-size: 10px; font-weight: 700; color: var(--color-text-secondary); }
+  /* 3. crosshair marker: + | Label */
+  .marker { position: absolute; display: inline-flex; align-items: center; gap: 6px; color: var(--color-text-accent); font-weight: 700; font-size: 30px; line-height: 1; }
+  .marker .x { position: relative; width: 18px; height: 18px; }
+  .marker .x::before, .marker .x::after { content: ""; position: absolute; background: currentColor; box-shadow: var(--shadow-bloom); }
+  .marker .x::before { left: 8px; top: 0; width: 2px; height: 18px; } .marker .x::after { top: 8px; left: 0; height: 2px; width: 18px; }
+  .marker .bar { width: 4px; height: 30px; background: currentColor; box-shadow: var(--shadow-bloom); }
+  .marker span:last-child { display: inline-block; transform: scaleX(var(--compress-mild)); transform-origin: left; text-shadow: var(--shadow-bloom-strong); }
+</style>
+</head>
+<body data-theme="clock">
+  <div class="stage" role="img" aria-label="Electric power transmission schematic with region labels">
+    <canvas id="grid" width="1840" height="760"></canvas>
+
+    <div class="plate" style="left:40px;top:28px"><div><b>通常電力供給幹線系統図</b><small>Electric Power System</small></div></div>
+    <div class="plate" style="right:40px;bottom:40px"><div><b>電力伝送システム</b><small>Electric Power Transmission System</small></div></div>
+    <div class="region" style="left:330px;top:318px"><b>新九州電力管区</b><small>Shin-Kyusyu Region EPG</small></div>
+    <div class="region" style="left:560px;top:268px"><b>新関西電力管区</b><small>Shin-Kansai Region EPG</small></div>
+    <div class="region" style="left:716px;top:128px"><b>新東北電力管区</b><small>Shin-Tohoku Region EPG</small></div>
+    <div class="sys" style="top:112px"><div><b>関東システム</b><small>Kanto System</small></div></div>
+    <div class="sys" style="top:148px"><div><b>発電システム</b><small>Generation System</small></div></div>
+    <div class="sys" style="top:184px"><div><b>関西システム</b><small>Kansai System</small></div></div>
+    <div class="marker" style="left:44px;bottom:30px"><span class="x"></span><span class="bar"></span><span>Power Core</span></div>
+  </div>
+<script>
+/* The grid itself: hundreds of pylons along the island chain, on a radial floor. Power runs up the trunk in waves. */
+const cv = document.getElementById("grid"), g = cv.getContext("2d"), W = cv.width, H = cv.height;
+const css = getComputedStyle(cv), AMBER = css.getPropertyValue("--color-text-accent").trim(), CORE = css.getPropertyValue("--color-bloom").trim(), BG = css.getPropertyValue("--color-background-body").trim();
+let seed = 12; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const spine = u => [300 + 1260 * u + 60 * Math.sin(u * 7), 610 - 400 * u + 50 * Math.sin(u * 4.4 + 1)];
+const pylons = Array.from({ length: 170 }, () => { const u = Math.pow(rnd(), 0.85), [x, y] = spine(u), spread = 60 + 80 * Math.sin(u * Math.PI); return { u, x: x + (rnd() - .5) * spread * 2.6, y: y + (rnd() - .5) * spread, s: 18 + (1 - u) * 26 + rnd() * 10 }; }).sort((a, b) => a.y - b.y);
+function draw(t) { g.clearRect(0, 0, W, H);
+  // floor: rings and radials from a point below the frame
+  g.strokeStyle = AMBER; g.lineWidth = 1.5; g.globalAlpha = .28; for (let k = 2; k < 16; k++) { g.beginPath(); g.ellipse(W / 2, H + 120, k * 110, k * 44, 0, Math.PI, 2 * Math.PI); g.stroke(); }
+  for (let a = 0; a <= 36; a++) { const th = Math.PI + a / 36 * Math.PI; g.beginPath(); g.moveTo(W / 2 + Math.cos(th) * 220, H + 120 + Math.sin(th) * 88); g.lineTo(W / 2 + Math.cos(th) * 1760, H + 120 + Math.sin(th) * 704); g.stroke(); }
+  // trunk line and the power wave on it
+  g.globalAlpha = .9; g.shadowColor = AMBER; g.shadowBlur = 14; g.strokeStyle = CORE; g.lineWidth = 3; g.beginPath(); for (let u = 0; u <= 1.001; u += 0.02) { const [x, y] = spine(u); u ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke();
+  for (let k = 0; k < 3; k++) { const [x, y] = spine((t * 0.16 + k / 3) % 1); g.fillStyle = "#fff"; g.beginPath(); g.arc(x, y, 7, 0, 7); g.fill(); }
+  // pylons: hollow glowing triangles, brighter as the wave passes
+  pylons.forEach(p => { const lit = 0.5 + 0.5 * Math.max(0, Math.sin(p.u * 9 - t * 1.6)); g.globalAlpha = 0.45 + 0.55 * lit; g.shadowBlur = 8 + 14 * lit; g.fillStyle = CORE;
+    g.beginPath(); g.moveTo(p.x, p.y - p.s); g.lineTo(p.x + p.s * .62, p.y); g.lineTo(p.x - p.s * .62, p.y); g.closePath(); g.fill();
+    g.shadowBlur = 0; g.fillStyle = BG; g.beginPath(); g.moveTo(p.x, p.y - p.s * .52); g.lineTo(p.x + p.s * .3, p.y - p.s * .14); g.lineTo(p.x - p.s * .3, p.y - p.s * .14); g.closePath(); g.fill(); });
+  g.globalAlpha = 1; }
+const force = (location.hash.match(/t=([\d.]+)/) || [])[1];   // #t=2 pins a frame
+draw(force ? +force : 2);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { draw(ms / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

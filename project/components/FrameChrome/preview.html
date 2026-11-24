@@ -1,0 +1,87 @@
+<!-- @dsCard group="Surfaces" height=480 subtitle="AAAW interrogation-room frame with the choker in its content slot and an Executive Authority banner · Tactical theme · frames 197–210" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: #000; font-family: var(--font-sans); padding: var(--space-6); }
+  .frame { position: relative; height: 420px; background: var(--color-background-body); overflow: hidden; color: var(--color-text-accent); }
+  .frame::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, var(--color-scanline) 0 1px, transparent 1px 3px); }
+  /* corner ticks and edge marks */
+  .corner { position: absolute; width: 14px; height: 14px; border-color: var(--gold-700); border-style: solid; border-width: 0; }
+  .tl { left: 8px; top: 8px; border-left-width: 1px; border-top-width: 1px; } .tr { right: 8px; top: 8px; border-right-width: 1px; border-top-width: 1px; }
+  .bl { left: 8px; bottom: 8px; border-left-width: 1px; border-bottom-width: 1px; } .br { right: 8px; bottom: 8px; border-right-width: 1px; border-bottom-width: 1px; }
+  .rule { position: absolute; left: 26px; right: 26px; top: 26px; height: 1px; background: var(--gold-700); opacity: 0.6; }
+  .rule.b { top: auto; bottom: 26px; }
+  .src { position: absolute; left: 30px; top: 10px; font-size: 10px; font-weight: 700; color: var(--gold-300); }
+  .chips { position: absolute; right: 30px; top: 8px; display: flex; gap: 6px; }
+  .chips span { padding: 0 6px; border: 1px solid var(--gold-300); color: var(--gold-300); font-size: 9px; font-weight: 700; line-height: 14px; }
+  .side { position: absolute; left: 8px; top: 34%; width: 10px; height: 44%; background: var(--aaaw-green); box-shadow: 0 0 6px var(--aaaw-green); }
+  .side span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg); white-space: nowrap; font-size: 8px; font-weight: 700; color: var(--mint-900); }
+  .foot { position: absolute; right: 30px; bottom: 8px; font-size: 9px; font-weight: 700; color: var(--gold-300); }
+  .subj { position: absolute; left: 30px; bottom: 34px; display: flex; gap: 6px; align-items: center; }
+  .subj span { padding: 1px 6px; border: 1px solid var(--tac-orange-500); font-size: 11px; font-weight: 700; color: var(--gold-300); background: #0008; }
+  .subj i { width: 46px; height: 7px; background: repeating-linear-gradient(90deg, var(--tac-orange-400) 0 3px, transparent 3px 6px); }
+  .subj small { display: block; font-size: 8px; color: var(--color-text-tertiary); position: absolute; top: 100%; left: 0; white-space: nowrap; margin-top: 3px; }
+  /* title + content slot */
+  .title { position: absolute; left: 40px; top: 40px; color: var(--gold-300); }
+  .title h2 { margin: 0; font-size: 30px; font-weight: 700; line-height: 1; transform: scaleX(var(--compress-mild)); transform-origin: left; white-space: nowrap; text-shadow: var(--shadow-bloom-strong);
+    padding-left: 10px; border-left: 4px solid currentColor; }
+  .title p { margin: 4px 0 0 14px; font-size: 13px; font-weight: 700; }
+  .slot { position: absolute; left: 40px; right: 40px; top: 110px; bottom: 70px; display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  .status { list-style: none; margin: 0; padding: 0; }
+  .status li { font-size: 13px; font-weight: 700; color: var(--tac-orange-200); padding: 3px 0 3px 8px; border-left: 2px solid var(--tac-orange-500); margin-bottom: 8px; text-shadow: var(--shadow-bloom); }
+  .status li small { display: block; font-family: var(--font-mono); font-size: 7px; color: var(--color-text-tertiary); text-shadow: none; }
+  .status li.hd { border: 0; padding: 0; font-size: 14px; color: var(--gold-300); text-decoration: underline; text-underline-offset: 3px; }
+  .wire { position: relative; border: 1px solid #7d521e66; }
+  .wire canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* executive authority: a hazard-ended banner cuts across the screen and everything behind it dims */
+  .auth { position: absolute; left: 12%; right: 12%; top: 50%; transform: translateY(-50%) scaleY(0); z-index: 2; display: flex; align-items: stretch; border: 2px solid var(--gold-300); background: #1a0a04f2; box-shadow: var(--shadow-bloom); transition: transform .12s steps(3); }
+  .auth::before, .auth::after { content: ""; width: 34px; background: repeating-linear-gradient(-45deg, var(--gold-300) 0 6px, transparent 6px 12px); }
+  .auth b { flex: 1; text-align: center; padding: 10px 0; font-size: 24px; font-weight: 700; color: var(--gold-300); text-shadow: var(--shadow-bloom-strong); white-space: nowrap; }
+  .frame.authority .auth { transform: translateY(-50%) scaleY(1); }
+  .frame .title, .frame .slot, .frame .subj { transition: opacity .12s steps(2); }
+  .frame.authority .title, .frame.authority .slot, .frame.authority .subj { opacity: .22; }
+</style>
+</head>
+<body data-theme="tactical">
+  <section class="frame" id="frame" aria-label="AAAW Quarantined Interrogation Room 101, auxiliary projector 01, linked and online">
+    <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+    <div class="rule"></div><div class="rule b"></div>
+    <span class="src">AUX Projector 01</span>
+    <span class="chips"><span>Linked</span><span>ONLINE</span></span>
+    <div class="side" aria-hidden="true"><span>Case: BM-03 Comprehensive Report</span></div>
+    <div class="title"><h2>Deification Shutdown System Choker</h2><p>TEST-00 | BM-03 |</p></div>
+    <div class="slot">
+      <ul class="status">
+        <li class="hd">CMD Remote Commander Active Status</li>
+        <li>DSS Choker Connectivity: ACTIVE<small>Case 03 ECM5-L338 3 No. 581 Mode No. 9993</small></li>
+        <li>Synchronization Observation: ACTIVE<small>Case 03 ECM5-L338 4 No. 581 Mode No. 9994</small></li>
+        <li>Suppression Function: ACTIVE<small>Case 03 ECM5-L338 5 No. 581 Mode No. 9995</small></li>
+      </ul>
+      <div class="wire"><canvas id="choker" width="840" height="480" role="img" aria-label="DSS choker: a patterned band turning above its ground rings"></canvas></div>
+    </div>
+    <div class="subj"><span>Test Subject: BM-03</span><span>All Vitals: Normal</span><i></i><small>Mode: Test · Administrator: R. Akagi</small></div>
+    <div class="auth" role="status"><b>Executive Authority: Captain Katsuragi</b></div>
+    <span class="foot">AAAW / Quarantined Interrogation Room 101</span>
+  </section>
+<script>
+/* content slot: the choker as a turning band. Its face is a grid of tiles (green, gold, a few red, dark crosses) over red ground rings. */
+const cv = document.getElementById("choker"), g = cv.getContext("2d"), W = cv.width, H = cv.height, R = 250, HH = 46, CY = 210, SQ = 0.34;
+let seed = 2; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const COLS = 60, ROWS = 4, tiles = Array.from({ length: COLS * ROWS }, () => { const r = rnd(); return r < .5 ? "#7de03a" : r < .8 ? "#e8d040" : r < .9 ? "#e8402c" : "#1a1206"; });
+const P = (th, y) => [W / 2 + R * Math.cos(th), CY + R * SQ * Math.sin(th) + y, Math.sin(th)];
+function band(t, front) { for (let c = 0; c < COLS; c++) { const th = c / COLS * 6.283 + t * 0.25, th2 = th + 6.283 / COLS; if ((Math.sin(th + 3.1416 / COLS) > 0) !== front) continue;
+    for (let r = 0; r < ROWS; r++) { const y0 = -HH + r * (2 * HH / ROWS), y1 = y0 + 2 * HH / ROWS, a = P(th, y0), b = P(th2, y0), d = P(th2, y1), e = P(th, y1);
+      g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.lineTo(d[0], d[1]); g.lineTo(e[0], e[1]); g.closePath(); g.fillStyle = tiles[c * ROWS + r]; g.globalAlpha = front ? .92 : .38; g.fill(); g.strokeStyle = "#0a0602"; g.lineWidth = 1; g.stroke(); } } }
+function choker(t) { g.clearRect(0, 0, W, H);
+  g.strokeStyle = "#e8402c"; g.shadowColor = "#e8402c"; g.shadowBlur = 8; for (let k = 1; k <= 7; k++) { g.globalAlpha = .7 - k * .07; g.lineWidth = k % 3 ? 1.5 : 4; g.beginPath(); g.ellipse(W / 2, CY + 110, R * (0.5 + k * 0.16), R * SQ * (0.5 + k * 0.16), 0, 0, 7); g.stroke(); }
+  g.shadowBlur = 0; band(t, false); g.shadowColor = "#7de03a"; g.shadowBlur = 16; band(t, true); g.shadowBlur = 0; g.globalAlpha = 1;
+  g.strokeStyle = "#e8d040"; g.lineWidth = 2; [-HH, HH].forEach(y => { g.beginPath(); g.ellipse(W / 2, CY + y, R, R * SQ, 0, 0, Math.PI); g.stroke(); });
+  g.strokeStyle = "#e8d040"; g.lineWidth = 1; g.beginPath(); g.moveTo(W / 2 - 14, CY + 150); g.lineTo(W / 2 + 14, CY + 150); g.moveTo(W / 2, CY + 136); g.lineTo(W / 2, CY + 164); g.stroke(); }
+const frame = document.getElementById("frame"), pin = location.hash;   // #auth pins the authority banner
+choker(1.5); if (pin === "#auth") frame.classList.add("authority");
+if (!pin && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { const t = ms / 1000; choker(t); frame.classList.toggle("authority", t % 11 > 8); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>

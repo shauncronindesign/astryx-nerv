@@ -1,0 +1,68 @@
+<!-- @dsCard group="Targeting" height=450 subtitle="Impact simulation: a tilted polar disc, the impact column, shock rings, damage zones and unit tracks · Tactical theme · frames 113, 114, 140" -->
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  html, body { margin: 0; }
+  body { background: var(--color-background-body); font-family: var(--font-sans); padding: var(--space-6); }
+  .map { position: relative; height: 390px; overflow: hidden; background: radial-gradient(70% 90% at 42% 70%, #5a1410, #2c0404 60%, #100202); }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .obj { position: absolute; left: 18px; top: 14px; color: var(--tac-orange-400); font-weight: 700; font-size: 13px; line-height: 1.15; padding-left: 8px; border-left: 3px solid currentColor; text-shadow: var(--shadow-bloom); }
+  .obj small { display: block; font-size: 9px; color: var(--tac-orange-200); }
+  .tminus { position: absolute; right: 18px; top: 14px; font: 13px var(--font-mono); color: var(--gold-300); text-shadow: var(--shadow-bloom); letter-spacing: .08em; }
+  .cap { position: absolute; right: 18px; bottom: 18px; padding: 4px 10px; border: 1px solid var(--tac-orange-400); background: #1a0106cc; color: var(--tac-orange-200); text-align: center; text-shadow: var(--shadow-bloom); }
+  .cap b { display: block; font-family: var(--font-jp); font-size: 14px; color: var(--tac-orange-100); }
+  .cap small { font-size: 9px; font-weight: 700; }
+  .sim { position: absolute; left: 18px; bottom: 18px; padding: 4px 8px; border: 1px solid #fff; color: #fff; font-size: 9px; font-weight: 700; line-height: 1.3; background: #0006; }
+  .sim b { display: block; font-family: var(--font-jp); font-size: 11px; }
+</style>
+</head>
+<body data-theme="tactical">
+  <div class="map">
+    <canvas id="m" width="1800" height="780" role="img" aria-label="Impact simulation: the 8th Angel's impact column at the centre of a polar grid, three damage zones, and tracks to EVA-00, EVA-01 and EVA-02"></canvas>
+    <div class="obj">Object: 8<sup>th</sup> Angel<small>Impact Event Simulation</small></div>
+    <div class="tminus" id="tm">IMPACT T-00:42.0</div>
+    <div class="sim"><b>使徒落下地点における殲滅シミュレーション</b>Angel Impact Strike Interception<br>Tactical Simulation Pattern 6</div>
+    <div class="cap"><b>第8使徒直撃による爆砕被害予測図</b><small>Estimate of Blast Damage from 8th Angel Impact Event</small></div>
+  </div>
+<script>
+/* Everything on the ground sits on one tilted plane: plane(x, y) -> screen. The impact column rises from its centre. */
+const cv = document.getElementById("m"), g = cv.getContext("2d"), W = cv.width, H = cv.height, CX = 700, CY = 500, SQ = 0.46;
+const css = getComputedStyle(cv), v = n => css.getPropertyValue(n).trim(), GOLD = v("--gold-500"), PINK = v("--pink-300"), MAG = v("--magenta-500"), ORANGE = v("--tac-orange-400");
+const P = (x, y) => [CX + x, CY + y * SQ];
+const hexes = (list, R = 34) => list.map(([q, r]) => { const x = q * R * 1.5, y = (r + q / 2) * R * 1.732; return [...Array(6)].map((_, i) => P(x + R * Math.cos(i * Math.PI / 3), y + R * Math.sin(i * Math.PI / 3))); });
+const zones = [ [GOLD, hexes([[0,-1],[1,-1],[-1,0],[1,0],[0,1],[-1,1],[0,-2],[1,-2],[-1,-1],[2,-2],[-2,1],[2,-1],[0,0]])],
+  [PINK, hexes([[6,-7],[7,-7],[7,-8],[8,-8],[8,-9],[9,-9],[10,-10],[9,-8],[11,-10],[6,-6]])], [MAG, hexes([[6,0],[7,0],[7,1],[8,0],[8,1],[9,0],[6,1],[9,-1],[10,-1],[8,-1]])] ];
+const units = [["EVA-01", [[0, 0], [130, -130], [280, -100], [400, -300], [520, -270]]], ["EVA-00", [[520, -270], [640, -440], [800, -400]]], ["EVA-02", [[0, 0], [150, 120], [330, 170], [470, 260]]]];
+let seed = 4; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+const motes = Array.from({ length: 260 }, () => ({ a: rnd() * 6.283, u: rnd(), s: 0.3 + rnd() }));
+function draw(t) { g.clearRect(0, 0, W, H); g.lineCap = "round";
+  // polar grid
+  g.strokeStyle = "#ff6a4a"; g.lineWidth = 1.5; g.shadowColor = "#ff3a2a"; g.shadowBlur = 6;
+  for (let r = 90; r < 1500; r += 90) { g.globalAlpha = r % 270 ? .3 : .6; g.beginPath(); g.ellipse(CX, CY, r, r * SQ, 0, 0, 7); g.stroke(); }
+  g.globalAlpha = .3; for (let a = 0; a < 360; a += 15) { const [x, y] = P(Math.cos(a * Math.PI / 180) * 1500, Math.sin(a * Math.PI / 180) * 1500); g.beginPath(); g.moveTo(CX, CY); g.lineTo(x, y); g.stroke(); }
+  // damage zones
+  g.shadowBlur = 0; zones.forEach(([c, cells]) => cells.forEach(pts => { g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.globalAlpha = .7; g.fillStyle = c; g.fill(); g.globalAlpha = .9; g.strokeStyle = "#ffd2a6"; g.lineWidth = 1.2; g.stroke(); }));
+  // shock rings spreading from the impact point
+  g.shadowColor = "#ffb040"; g.shadowBlur = 18; g.strokeStyle = "#ffd070"; for (let k = 0; k < 3; k++) { const r = ((t * 110 + k * 240) % 720); g.globalAlpha = Math.max(0, .9 - r / 720); g.lineWidth = 5; g.beginPath(); g.ellipse(CX, CY, r, r * SQ, 0, 0, 7); g.stroke(); }
+  // unit tracks and tags
+  g.shadowColor = "#fff"; g.shadowBlur = 8; g.globalAlpha = 1; g.strokeStyle = "#fff"; g.lineWidth = 2.5;
+  units.forEach(([name, pts]) => { g.beginPath(); pts.forEach(([x, y], i) => { const [sx, sy] = P(x, y); i ? g.lineTo(sx, sy) : g.moveTo(sx, sy); }); g.stroke();
+    const [lx, ly] = P(...pts[pts.length - 1]); g.shadowBlur = 0; g.fillStyle = "#000a"; g.fillRect(lx + 10, ly - 30, 104, 30); g.strokeRect(lx + 10, ly - 30, 104, 30); g.fillStyle = "#fff"; g.font = "bold 20px Helvetica Neue, Arial, sans-serif"; g.fillText(name, lx + 20, ly - 8); g.shadowBlur = 8; });
+  // the impact column: a wide mouth far above narrowing to the dish, with motes falling through it
+  const TOP = CY - 500, RT = 380, RB = 70, col = g.createLinearGradient(0, TOP, 0, CY); col.addColorStop(0, "rgba(255,170,60,.05)"); col.addColorStop(.7, "rgba(255,170,60,.3)"); col.addColorStop(1, "rgba(255,230,150,.75)");
+  g.shadowBlur = 0; g.fillStyle = col; g.beginPath(); g.moveTo(CX - RT, TOP); g.lineTo(CX + RT, TOP); g.lineTo(CX + RB, CY); g.lineTo(CX - RB, CY); g.closePath(); g.fill();
+  g.fillStyle = "#ffe0a0"; motes.forEach(m => { const u = (m.u + t * 0.12 * m.s) % 1, r = RT + (RB - RT) * u, y = TOP + (CY - TOP) * u; g.globalAlpha = .25 + .6 * u; g.fillRect(CX + Math.cos(m.a + t * .3) * r * .92, y + Math.sin(m.a + t * .3) * r * SQ * .5, 3, 3); });
+  g.globalAlpha = .8; g.strokeStyle = ORANGE; g.lineWidth = 3; g.shadowColor = ORANGE; g.shadowBlur = 14; g.beginPath(); g.ellipse(CX, TOP + 60, RT * .88, RT * .88 * SQ, 0, 0, 7); g.stroke();
+  // the dish
+  g.globalAlpha = 1; g.shadowColor = "#fff2c0"; g.shadowBlur = 30; g.fillStyle = "#fff2c0"; g.beginPath(); g.ellipse(CX, CY, 46 + 6 * Math.sin(t * 4), (46 + 6 * Math.sin(t * 4)) * SQ, 0, 0, 7); g.fill();
+  g.strokeStyle = "#fff"; g.lineWidth = 2; g.shadowBlur = 6; [110, 170].forEach((r, i) => { g.setLineDash(i ? [8, 10] : []); g.beginPath(); g.ellipse(CX, CY, r, r * SQ, 0, 0, 7); g.stroke(); }); g.setLineDash([]);
+  // registration crosses
+  g.shadowBlur = 0; g.strokeStyle = ORANGE; g.lineWidth = 2; [[200, 620], [1500, 200], [1240, 680], [330, 250]].forEach(([x, y]) => { g.beginPath(); g.moveTo(x - 12, y); g.lineTo(x + 12, y); g.moveTo(x, y - 12); g.lineTo(x, y + 12); g.stroke(); });
+  const left = Math.max(0, 42 - (t % 42)); document.getElementById("tm").textContent = `IMPACT T-00:${left.toFixed(1).padStart(4, "0")}`; }
+const force = (location.hash.match(/t=([\d.]+)/) || [])[1];   // #t=3 pins a frame
+draw(force ? +force : 3);
+if (!force && !matchMedia("(prefers-reduced-motion: reduce)").matches) { const loop = ms => { draw(ms / 1000); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>
+</body>
+</html>
