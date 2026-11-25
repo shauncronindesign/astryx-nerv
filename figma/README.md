@@ -1,6 +1,7 @@
 # Figma companion
 
 Figma file: **Astryx NERV** — https://www.figma.com/design/qQZ7VjHkh7CbrRZKErKD4d
+Repo: https://github.com/shauncronindesign/astryx-nerv (private; this Mac pushes with a repo deploy key)
 
 | Page | What's there |
 |---|---|
